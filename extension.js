@@ -76,7 +76,6 @@ function activate(context) {
                     });
                 })
                 .then(() => {
-                    console.log("formatting");
                     vscode.commands.executeCommand(
                         "editor.action.formatDocument"
                     );

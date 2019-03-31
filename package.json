@@ -1,14 +1,16 @@
 {
-	"name": "BEM Helper",
+	"name": "bem_helper",
 	"displayName": "BEM Helper",
-	"description": "",
+	"description": "Improve writing html using BEM naming conventions.",
 	"version": "0.0.1",
+	"author": "Box-Of-Hats",
 	"engines": {
 		"vscode": "^1.32.0"
 	},
 	"categories": [
 		"Other"
 	],
+	"icon": "images/bem.png",
 	"activationEvents": [
 		"onCommand:extension.insertBemChild"
 	],
@@ -24,6 +26,11 @@
 	"scripts": {
 		"postinstall": "node ./node_modules/vscode/bin/install",
 		"test": "node ./node_modules/vscode/bin/test"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Box-Of-Hats/Bem-VSCode-Extension"
+
 	},
 	"devDependencies": {
 		"typescript": "^3.1.4",
