@@ -9,9 +9,6 @@ const vscode = require("vscode");
  * @param {vscode.ExtensionContext} context
  */
 function activate(context) {
-    // Use the console to output diagnostic information
-    // This line of code will only be executed once when your extension is activated
-    console.log("Registered BemFriend");
 
     //The template of an element
     let divTemplate = `<div class="{0}__"></div>`;
@@ -79,8 +76,9 @@ function activate(context) {
                     });
                 })
                 .then(() => {
+                    console.log("formatting");
                     vscode.commands.executeCommand(
-                        "vscode.executeFormatDocumentProvider"
+                        "editor.action.formatDocument"
                     );
                 });
         }
