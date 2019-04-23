@@ -13,13 +13,13 @@
 	],
 	"icon": "images/bem.png",
 	"activationEvents": [
-		"onCommand:extension.insertBemChild"
+		"onCommand:extension.insertBemElement"
 	],
 	"main": "./extension.js",
 	"contributes": {
 		"commands": [
 			{
-				"command": "extension.insertBemChild",
+				"command": "extension.insertBemElement",
 				"title": "BEM: Insert Element"
 			}
 		]

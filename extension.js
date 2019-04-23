@@ -9,7 +9,6 @@ const vscode = require("vscode");
  * @param {vscode.ExtensionContext} context
  */
 function activate(context) {
-
     //The template of an element
     let divTemplate = `<div class="{0}__"></div>`;
 
@@ -28,9 +27,8 @@ function activate(context) {
     // The command has been defined in the package.json file
     // Now provide the implementation of the command with  registerCommand
     // The commandId parameter must match the command field in package.json
-    let disposable = vscode.commands.registerCommand(
-        "extension.insertBemChild",
-        function() {
+    context.subscriptions.push(
+        vscode.commands.registerCommand("extension.insertBemElement", () => {
             // The code you place here will be executed every time your command is executed
 
             //Make our lives easier
@@ -75,10 +73,8 @@ function activate(context) {
                         value: 8
                     });
                 });
-        }
+        })
     );
-
-    context.subscriptions.push(disposable);
 }
 exports.activate = activate;
 
