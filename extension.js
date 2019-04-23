@@ -46,7 +46,7 @@ function activate(context) {
                 )
             );
 
-            var matches = precedingText.match(/class="([a-zA-Z0-9_]+ ?)+"/g);
+            var matches = precedingText.match(/class="([a-zA-Z0-9-]+ ?)+"/g);
 
             var lastMatch = matches[matches.length - 1];
 
