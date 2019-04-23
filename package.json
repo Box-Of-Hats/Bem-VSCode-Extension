@@ -20,7 +20,7 @@
 		"commands": [
 			{
 				"command": "extension.insertBemChild",
-				"title": "Insert BEM Child"
+				"title": "BEM: Insert Element"
 			}
 		]
 	},
