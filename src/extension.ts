@@ -1,8 +1,11 @@
 import * as vscode from 'vscode';
 
 
-function getParentClassName(html: string) {
-    var matches = html.match(/class="([a-zA-Z0-9-]+ ?)+"/g);
+function getParentClassName(html: string, matchElements: boolean) {
+
+    var r = matchElements ? /class="([a-zA-Z0-9-_]+ ?)+"/g : /class="([a-zA-Z0-9-]+ ?)+"/g
+
+    var matches = html.match(r);
 
     if (matches == null) {
         return null
@@ -24,7 +27,7 @@ export function activate(context: vscode.ExtensionContext) {
             let textEditor = vscode.window.activeTextEditor;
 
             if (textEditor == undefined) {
-                vscode.window.showErrorMessage('Text editor was null.');
+                vscode.window.showErrorMessage('No active text editor. Please open a file');
                 return
             }
             let cursorPosition = textEditor.selection.active;
@@ -38,7 +41,11 @@ export function activate(context: vscode.ExtensionContext) {
                 )
             );
 
-            var className = getParentClassName(precedingText);
+            var className = getParentClassName(precedingText, true);
+            if (className === null) {
+                vscode.window.showErrorMessage("Could not find any classes in current file.")
+                return
+            }
 
             var outputText = `<div class="${className} ${className}--"></div>`;
 
@@ -70,7 +77,7 @@ export function activate(context: vscode.ExtensionContext) {
             let textEditor = vscode.window.activeTextEditor;
 
             if (textEditor == undefined) {
-                vscode.window.showErrorMessage('Text editor was null.');
+                vscode.window.showErrorMessage('No active text editor. Please open a file');
                 return
             }
             let cursorPosition = textEditor.selection.active;
@@ -84,7 +91,11 @@ export function activate(context: vscode.ExtensionContext) {
                 )
             );
 
-            var className = getParentClassName(precedingText);
+            var className = getParentClassName(precedingText, false);
+            if (className === null) {
+                vscode.window.showErrorMessage("Could not find any classes in current file.")
+                return
+            }
 
             var outputText = `<div class="${className}__"></div>`;
 
