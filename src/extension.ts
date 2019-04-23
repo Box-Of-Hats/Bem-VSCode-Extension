@@ -1,6 +1,23 @@
 import * as vscode from 'vscode';
 
 
+function getParentClassName(html: string) {
+    var matches = html.match(/class="([a-zA-Z0-9-]+ ?)+"/g);
+
+    if (matches == null) {
+        return null
+    }
+
+    var lastMatch: string = matches[matches.length - 1];
+
+    var classNameMatches = lastMatch.match(/"(.*)"/);
+
+    if (classNameMatches == null) {
+        return null
+    }
+    return classNameMatches[classNameMatches.length - 1];
+}
+
 export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(
         vscode.commands.registerCommand("extension.insertBemModifier", () => {
@@ -21,22 +38,7 @@ export function activate(context: vscode.ExtensionContext) {
                 )
             );
 
-            var matches = precedingText.match(/class="([a-zA-Z0-9-_]+ ?)+"/g);
-
-            if (matches == null) {
-                vscode.window.showErrorMessage('Could not find any classes.');
-                return
-            }
-
-            var lastMatch: string = matches[matches.length - 1];
-
-            var classNameMatches = lastMatch.match(/"(.*)"/);
-
-            if (classNameMatches == null) {
-                vscode.window.showErrorMessage('Could not find any classnames.');
-                return
-            }
-            var className = classNameMatches[classNameMatches.length - 1];
+            var className = getParentClassName(precedingText);
 
             var outputText = `<div class="${className} ${className}--"></div>`;
 
@@ -82,22 +84,7 @@ export function activate(context: vscode.ExtensionContext) {
                 )
             );
 
-            var matches = precedingText.match(/class="([a-zA-Z0-9-]+ ?)+"/g);
-
-            if (matches == null) {
-                vscode.window.showErrorMessage('Could not find any classes.');
-                return
-            }
-
-            var lastMatch: string = matches[matches.length - 1];
-
-            var classNameMatches = lastMatch.match(/"(.*)"/);
-
-            if (classNameMatches == null) {
-                vscode.window.showErrorMessage('Could not find any classnames.');
-                return
-            }
-            var className = classNameMatches[classNameMatches.length - 1];
+            var className = getParentClassName(precedingText);
 
             var outputText = `<div class="${className}__"></div>`;
 
