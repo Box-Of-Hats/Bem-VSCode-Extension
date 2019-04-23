@@ -1,43 +1,49 @@
 {
-	"name": "bemhelper",
-	"displayName": "BEM Helper",
-	"description": "Improve writing html using BEM naming conventions.",
-	"version": "0.0.2",
-	"author": "Box-Of-Hats",
-	"publisher": "Box-Of-Hats",
-	"engines": {
-		"vscode": "^1.32.0"
-	},
-	"categories": [
-		"Other"
-	],
-	"icon": "images/bem.png",
-	"activationEvents": [
-		"onCommand:extension.insertBemElement"
-	],
-	"main": "./extension.js",
-	"contributes": {
-		"commands": [
-			{
-				"command": "extension.insertBemElement",
-				"title": "BEM: Insert Element"
-			}
-		]
-	},
-	"scripts": {
-		"postinstall": "node ./node_modules/vscode/bin/install",
-		"test": "node ./node_modules/vscode/bin/test"
-	},
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/Box-Of-Hats/Bem-VSCode-Extension"
-
-	},
-	"devDependencies": {
-		"typescript": "^3.1.4",
-		"vscode": "^1.1.25",
-		"eslint": "^4.11.0",
-		"@types/node": "^8.10.25",
-		"@types/mocha": "^2.2.42"
-	}
+    "name": "bemhelper",
+    "displayName": "BEM Helper",
+    "description": "Improve writing html using BEM naming conventions.",
+    "version": "0.0.3",
+    "author": "Box-Of-Hats",
+    "publisher": "Box-Of-Hats",
+    "engines": {
+        "vscode": "^1.32.0"
+    },
+    "categories": [
+        "Other"
+    ],
+    "icon": "images/bem.png",
+    "activationEvents": [
+        "onCommand:extension.insertBemElement"
+    ],
+    "main": "./out/extension.js",
+    "contributes": {
+        "commands": [
+            {
+                "command": "extension.insertBemElement",
+                "title": "BEM: Insert Element"
+            },
+            {
+                "command": "extension.insertBemModifier",
+                "title": "BEM: Insert Modifier"
+            }
+        ]
+    },
+    "scripts": {
+        "postinstall": "node ./node_modules/vscode/bin/install",
+        "test": "npm run compile && node ./node_modules/vscode/bin/test",
+        "compile": "tsc -p ./",
+        "vscode:prepublish": "npm run compile",
+        "watch": "tsc -watch -p ./"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Box-Of-Hats/Bem-VSCode-Extension"
+    },
+    "devDependencies": {
+        "typescript": "^3.1.4",
+        "vscode": "^1.1.25",
+        "tslint": "^5.8.0",
+        "@types/node": "^8.10.25",
+        "@types/mocha": "^2.2.42"
+    }
 }
