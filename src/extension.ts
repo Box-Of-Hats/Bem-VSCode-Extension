@@ -38,7 +38,7 @@ export function activate(context: vscode.ExtensionContext) {
             }
             var className = classNameMatches[classNameMatches.length - 1];
 
-            var outputText = `<div class="${className}--"></div>`;
+            var outputText = `<div class="${className} ${className}--"></div>`;
 
             var myEdit = vscode.TextEdit.insert(cursorPosition, outputText);
 
@@ -82,7 +82,7 @@ export function activate(context: vscode.ExtensionContext) {
                 )
             );
 
-            var matches = precedingText.match(/class="([a-zA-Z0-9-_]+ ?)+"/g);
+            var matches = precedingText.match(/class="([a-zA-Z0-9-]+ ?)+"/g);
 
             if (matches == null) {
                 vscode.window.showErrorMessage('Could not find any classes.');
