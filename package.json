@@ -2,7 +2,7 @@
     "name": "bemhelper",
     "displayName": "BEM Helper",
     "description": "Improve writing html using BEM naming conventions.",
-    "version": "0.0.4",
+    "version": "0.1.0",
     "author": "Box-Of-Hats",
     "publisher": "Box-Of-Hats",
     "engines": {

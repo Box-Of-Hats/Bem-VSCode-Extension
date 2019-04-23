@@ -22,3 +22,7 @@ Insert a BEM child with a class name matching the name that came before it.
     </div>
 </div>
 ```
+
+## Known issues
+
+- Classes wont be discovered if they contain _ characters.
