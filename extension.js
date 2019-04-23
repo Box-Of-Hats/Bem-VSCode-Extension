@@ -74,11 +74,6 @@ function activate(context) {
                         by: "character",
                         value: 8
                     });
-                })
-                .then(() => {
-                    vscode.commands.executeCommand(
-                        "editor.action.formatDocument"
-                    );
                 });
         }
     );
