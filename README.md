@@ -4,10 +4,16 @@ A VSCode extension to help when using the [BEM (Block-Element-Modifier)](http://
 
 ## Commands
 
-- insertBemChild
-- insertBemModifier
+- extension.insertBemElement
+- extension.insertBemModifier
 
-## Example
+## Diagnostic Help
+
+BEM helper provides warnings when class names are in violation of BEM naming standards.
+
+![Class name warnings](images/diagnostics_example.png)
+
+## Inserting Example
 
 ![Inserting a BEM child element](images/add_child_element.gif)
 

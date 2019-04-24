@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.2.0
+
+- Add diagnostic warnings when classes are nested more than block__element. E.g block__block__element
+- More reliable extension activation
+
 ## 0.1.0
 
 - Add InsertBemModifier command

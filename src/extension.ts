@@ -33,7 +33,7 @@ function updateDiagnostics(document: vscode.TextDocument, collection: vscode.Dia
 
         editorHighlights.push({
             code: '',
-            message: 'BEM violation - classes must only consist of 2 levels.',
+            message: 'BEM violation - classes must only consist of block and element.',
             range: new vscode.Range(startPos, endPos),
             severity: vscode.DiagnosticSeverity.Warning,
             source: '',
