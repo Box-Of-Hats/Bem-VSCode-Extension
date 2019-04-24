@@ -13,7 +13,10 @@
     ],
     "icon": "images/bem.png",
     "activationEvents": [
-        "onCommand:extension.insertBemElement"
+        "onLanguage:html",
+        "onLanguage:aspnetcorerazor",
+        "onCommand:extension.insertBemElement",
+        "onCommand:extension.insertBemModifier"
     ],
     "main": "./out/extension.js",
     "contributes": {
