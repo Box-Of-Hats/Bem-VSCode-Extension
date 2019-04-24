@@ -38,7 +38,7 @@ function updateDiagnostics(document: vscode.TextDocument, collection: vscode.Dia
             severity: vscode.DiagnosticSeverity.Warning,
             source: '',
             relatedInformation: [
-                new vscode.DiagnosticRelatedInformation(new vscode.Location(document.uri, new vscode.Range(new vscode.Position(1, 8), new vscode.Position(1, 9))), `${match}`)
+                new vscode.DiagnosticRelatedInformation(new vscode.Location(document.uri, new vscode.Range(new vscode.Position(1, 8), new vscode.Position(1, 9))), `${match[0]}`)
             ]
         });
     }
