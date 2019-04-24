@@ -1,6 +1,5 @@
 import * as vscode from 'vscode';
 
-
 function getParentClassName(html: string, matchElements: boolean) {
 
     var r = matchElements ? /class="([a-zA-Z0-9-_]+ ?)+"/g : /class="([a-zA-Z0-9-]+ ?)+"/g
@@ -20,6 +19,37 @@ function getParentClassName(html: string, matchElements: boolean) {
     }
     return classNameMatches[classNameMatches.length - 1];
 }
+
+function updateDiagnostics(document: vscode.TextDocument, collection: vscode.DiagnosticCollection): void {
+    let activeEditor = vscode.window.activeTextEditor;
+    const regex = /(class="[a-zA-Z0-9_-]+__[a-zA-Z0-9_-]+__*[a-zA-Z0-9_-]*__*[a-zA-Z0-9_-]*["]*)/g
+    const docText = document.getText();
+    var editorHighlights = new Array();
+
+    let match;
+    while (match = regex.exec(docText)) {
+        const startPos = activeEditor.document.positionAt(match.index);
+        const endPos = activeEditor.document.positionAt(match.index + match[0].length);
+
+        editorHighlights.push({
+            code: '',
+            message: 'BEM violation - classes must only consist of 2 levels.',
+            range: new vscode.Range(startPos, endPos),
+            severity: vscode.DiagnosticSeverity.Warning,
+            source: '',
+            relatedInformation: [
+                new vscode.DiagnosticRelatedInformation(new vscode.Location(document.uri, new vscode.Range(new vscode.Position(1, 8), new vscode.Position(1, 9))), `${match}`)
+            ]
+        });
+    }
+
+    if (editorHighlights.length > 0) {
+        collection.set(document.uri, editorHighlights);
+    } else {
+        collection.clear();
+    }
+}
+
 
 export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(
@@ -120,6 +150,12 @@ export function activate(context: vscode.ExtensionContext) {
                     });
                 });
         }));
+
+    const collection = vscode.languages.createDiagnosticCollection('BEM');
+    if (vscode.window.activeTextEditor) {
+        updateDiagnostics(vscode.window.activeTextEditor.document, collection);
+    }
+    context.subscriptions.push(vscode.workspace.onDidChangeTextDocument(e => updateDiagnostics(e.document, collection)));
 }
 exports.activate = activate;
 
