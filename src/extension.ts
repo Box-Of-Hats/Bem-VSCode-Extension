@@ -1,5 +1,10 @@
 import * as vscode from 'vscode';
 
+
+export function getClasses(html: string) {
+    return ["nav", "nav__item", "nav__item--four", "nav-two"];
+}
+
 function getParentClassName(html: string, matchElements: boolean) {
 
     var r = matchElements ? /class="([a-zA-Z0-9-_]+ ?)+"/g : /class="([a-zA-Z0-9-]+ ?)+"/g
@@ -161,7 +166,8 @@ exports.activate = activate;
 
 function deactivate() { }
 
-module.exports = {
-    activate,
-    deactivate
-};
+// module.exports = {
+//     activate,
+//     deactivate,
+//     generateCss
+// };
