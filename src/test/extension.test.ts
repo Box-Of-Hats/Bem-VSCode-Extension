@@ -5,7 +5,6 @@
 
 // The module 'assert' provides assertion methods from node
 import * as assert from 'assert';
-import * as vscode from 'vscode';
 import * as bemHelper from '../extension';
 // You can import and use all API from the 'vscode' module
 // as well as import your extension to test it
@@ -16,7 +15,7 @@ import * as bemHelper from '../extension';
 suite("Extension Tests", function () {
 
     // Defines a Mocha unit test
-    test("CSS Generation - Multiple", function () {
+    test("CSS Class extraction - Multiple", function () {
         const html = `
             <body>
                 <div class="nav">
@@ -33,14 +32,14 @@ suite("Extension Tests", function () {
         assert.deepEqual(actual, expected);
     });
 
-    test("CSS Generation - Single", function () {
+    test("CSS Class extraction - Single", function () {
         const html = `<div class="test-class-one"></div>`;
         const expected = "test-class-one";
         let actual = bemHelper.getClasses(html);
         assert.equal(actual, expected)
     });
 
-    test("CSS Generation - None", function () {
+    test("CSS Class extraction - None", function () {
         const html = ``;
         const expected: string[] = [];
         let actual = bemHelper.getClasses(html);
