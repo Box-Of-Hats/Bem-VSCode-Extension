@@ -22,12 +22,35 @@ suite("Extension Tests", function () {
                     <div class="nav__item">One</div>
                     <div class="nav__item">Two</div>
                     <div class="nav__item">Three</div>
-                    <div class="nav__item nav__item--four">Four</div>
+                    <div class="nav__item">Four</div>
                 </div>
                 <div class="nav-two"></div>
             </body>
         `;
-        const expected = ["nav", "nav__item", "nav__item--four", "nav-two"];
+        const expected = ["nav", "nav__item", "nav-two"];
+        let actual = bemHelper.getClasses(html);
+        assert.deepEqual(actual, expected);
+    });
+
+    test("CSS Class extraction - Complex", function () {
+        const html = `
+            <body>
+                <div class="nav">
+                    <div class="nav__item menu__item">One</div>
+                    <div class="nav__item">Two</div>
+                    <div class="nav__item menu__item">Three</div>
+                    <div class="nav__item nav__item--four">Four</div>
+                </div>
+                <div class="nav-two">
+                    <div class="nav-two__item">
+                        <div class="nav-two__item"></div>
+                        <div class="nav-two__item nav-two__item--two"></div>
+                    </div>
+                </div>
+            </body>
+        `;
+        const expected = ["nav", "nav__item", "nav__item--four", "nav-two", "nav-two__item",
+            "nav-two__item--two", "menu__item"];
         let actual = bemHelper.getClasses(html);
         assert.deepEqual(actual, expected);
     });

@@ -2,20 +2,31 @@ import * as vscode from 'vscode';
 
 
 export function getClasses(html: string) {
-    return ["nav", "nav__item", "nav__item--four", "nav-two"];
+    // TODO: Finished Implementation
+    let classNames: string[] = [];
+    const regex = /class="([a-zA-Z0-9-_]+)"/g;
+    const classNameRegex = /"(.*)"/;
+    let match;
+    while (match = regex.exec(html)) {
+        var className = classNameRegex.exec(match[0])[1];
+        if (classNames.indexOf(className) === -1){
+            classNames.push(className);
+        }
+    }
+    return classNames;
 }
 
 function getParentClassName(html: string, matchElements: boolean) {
 
-    var r = matchElements ? /class="([a-zA-Z0-9-_]+ ?)+"/g : /class="([a-zA-Z0-9-]+ ?)+"/g
+    const regex = matchElements ? /class="([a-zA-Z0-9-_]+ ?)+"/g : /class="([a-zA-Z0-9-]+ ?)+"/g
 
-    var matches = html.match(r);
+    var matches = html.match(regex);
 
     if (matches == null) {
         return null
     }
 
-    var lastMatch: string = matches[matches.length - 1];
+    var lastMatch = matches[matches.length - 1];
 
     var classNameMatches = lastMatch.match(/"(.*)"/);
 
@@ -164,10 +175,4 @@ export function activate(context: vscode.ExtensionContext) {
 }
 exports.activate = activate;
 
-function deactivate() { }
-
-// module.exports = {
-//     activate,
-//     deactivate,
-//     generateCss
-// };
+export function deactivate() { }
