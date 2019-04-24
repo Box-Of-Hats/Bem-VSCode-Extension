@@ -26,6 +26,18 @@
                 "command": "extension.insertBemModifier",
                 "title": "BEM: Insert Modifier"
             }
+        ],
+        "keybindings": [
+            {
+                "command": "extension.insertBemElement",
+                "key": "alt+b e",
+                "when": "editorTextFocus"
+            },
+            {
+                "command": "extension.insertBemModifier",
+                "key": "alt+b m",
+                "when": "editorTextFocus"
+            }
         ]
     },
     "scripts": {
