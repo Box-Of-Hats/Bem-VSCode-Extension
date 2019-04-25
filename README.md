@@ -4,8 +4,11 @@ A VSCode extension to help when using the [BEM (Block-Element-Modifier)](http://
 
 ## Commands
 
-- extension.insertBemElement
-- extension.insertBemModifier
+| Command name                 | Description                                                                      |
+| ---------------------------- | -------------------------------------------------------------------------------- |
+| bemHelper.insertBemElement   | Insert a new BEM element under the current block                                 |
+| bemHelper.insertBemModifier  | Insert a new BEM modified element, copying the classname of the previous element |
+| bemHelper.generateStyleSheet | Generate a new file containing CSS for the current HTML file                     |
 
 ## Diagnostic Help
 
@@ -17,21 +20,6 @@ BEM helper provides warnings when class names are in violation of BEM naming sta
 
 ![Inserting a BEM child element](images/add_child_element.gif)
 
-```html
-<div class="nav-bar">
-    <div class="nav-bar__item">One</div>
-    <div class="nav-bar__item">Two</div>
-    <div class="nav-bar__item nav-bar__item--wide">
-        <div class="nav-bar__title">
-            Three
-        </div>
-        <div class="nav-bar__body">
-            This is item number 3
-        </div>
-    </div>
-</div>
-```
-
 ## Known issues
 
-- Classes wont be discovered if they contain _ characters.
+-   Classes wont be discovered if they contain \_ characters.

@@ -16,7 +16,8 @@
         "onLanguage:html",
         "onLanguage:aspnetcorerazor",
         "onCommand:extension.insertBemElement",
-        "onCommand:extension.insertBemModifier"
+        "onCommand:extension.insertBemModifier",
+        "onCommand:extension.generateStyleSheet"
     ],
     "main": "./out/extension.js",
     "contributes": {
@@ -28,6 +29,10 @@
             {
                 "command": "extension.insertBemModifier",
                 "title": "BEM: Insert Modifier"
+            },
+            {
+                "command": "extension.generateStyleSheet",
+                "title": "BEM: Generate Stylesheet"
             }
         ],
         "keybindings": [
@@ -39,6 +44,11 @@
             {
                 "command": "extension.insertBemModifier",
                 "key": "alt+b m",
+                "when": "editorTextFocus"
+            },
+            {
+                "command": "extension.generateStyleSheet",
+                "key": "alt+b c",
                 "when": "editorTextFocus"
             }
         ]

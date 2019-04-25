@@ -1,44 +1,96 @@
-import * as vscode from 'vscode';
+import * as vscode from "vscode";
+
+export function generateStyleSheet(classNames: string[], flat: boolean) {
+    let styleSheet = ``;
+    classNames.sort().forEach(className => {
+        if (flat) {
+            styleSheet = `${styleSheet}${className} {}`;
+        } else {
+            //TODO: Implement nested stylesheet
+            /* e.g
+                block {
+                    &__elem {
+                        &--mod {
+                        }
+                    }
+                }
+            */
+        }
+    });
+    return styleSheet;
+}
+
+export function getClasses(html: string) {
+    let classNames: string[] = [];
+    const regex = /class="([a-zA-Z0-9-_ ]+)"/g;
+    const classNameRegex = /"(.*)"/;
+    let match;
+    while ((match = regex.exec(html))) {
+        var classes = classNameRegex.exec(match[0])[1];
+        classes.split(" ").forEach(className => {
+            if (classNames.indexOf(className) === -1) {
+                classNames.push(className);
+            }
+        });
+    }
+    return classNames;
+}
 
 function getParentClassName(html: string, matchElements: boolean) {
+    const regex = matchElements
+        ? /class="([a-zA-Z0-9-_]+ ?)+"/g
+        : /class="([a-zA-Z0-9-]+ ?)+"/g;
 
-    var r = matchElements ? /class="([a-zA-Z0-9-_]+ ?)+"/g : /class="([a-zA-Z0-9-]+ ?)+"/g
-
-    var matches = html.match(r);
+    var matches = html.match(regex);
 
     if (matches == null) {
-        return null
+        return null;
     }
 
-    var lastMatch: string = matches[matches.length - 1];
+    var lastMatch = matches[matches.length - 1];
 
     var classNameMatches = lastMatch.match(/"(.*)"/);
 
     if (classNameMatches == null) {
-        return null
+        return null;
     }
     return classNameMatches[classNameMatches.length - 1];
 }
 
-function updateDiagnostics(document: vscode.TextDocument, collection: vscode.DiagnosticCollection): void {
+function updateDiagnostics(
+    document: vscode.TextDocument,
+    collection: vscode.DiagnosticCollection
+): void {
     let activeEditor = vscode.window.activeTextEditor;
-    const regex = /(class="[a-zA-Z0-9_-]+__[a-zA-Z0-9_-]+__*[a-zA-Z0-9_-]*__*[a-zA-Z0-9_-]*["]*)/g
+    const regex = /(class="[a-zA-Z0-9_-]+__[a-zA-Z0-9_-]+__*[a-zA-Z0-9_-]*__*[a-zA-Z0-9_-]*["]*)/g;
     const docText = document.getText();
     var editorHighlights = new Array();
 
     let match;
-    while (match = regex.exec(docText)) {
+    while ((match = regex.exec(docText))) {
         const startPos = activeEditor.document.positionAt(match.index);
-        const endPos = activeEditor.document.positionAt(match.index + match[0].length);
+        const endPos = activeEditor.document.positionAt(
+            match.index + match[0].length
+        );
 
         editorHighlights.push({
-            code: '',
-            message: 'BEM violation - classes must only consist of block and element.',
+            code: "",
+            message:
+                "BEM violation - classes must only consist of block and element.",
             range: new vscode.Range(startPos, endPos),
             severity: vscode.DiagnosticSeverity.Warning,
-            source: '',
+            source: "",
             relatedInformation: [
-                new vscode.DiagnosticRelatedInformation(new vscode.Location(document.uri, new vscode.Range(new vscode.Position(1, 8), new vscode.Position(1, 9))), `${match[0]}`)
+                new vscode.DiagnosticRelatedInformation(
+                    new vscode.Location(
+                        document.uri,
+                        new vscode.Range(
+                            new vscode.Position(1, 8),
+                            new vscode.Position(1, 9)
+                        )
+                    ),
+                    `${match[0]}`
+                )
             ]
         });
     }
@@ -50,15 +102,16 @@ function updateDiagnostics(document: vscode.TextDocument, collection: vscode.Dia
     }
 }
 
-
 export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(
         vscode.commands.registerCommand("extension.insertBemModifier", () => {
             let textEditor = vscode.window.activeTextEditor;
 
             if (textEditor == undefined) {
-                vscode.window.showErrorMessage('No active text editor. Please open a file');
-                return
+                vscode.window.showErrorMessage(
+                    "No active text editor. Please open a file"
+                );
+                return;
             }
             let cursorPosition = textEditor.selection.active;
 
@@ -73,8 +126,10 @@ export function activate(context: vscode.ExtensionContext) {
 
             var className = getParentClassName(precedingText, true);
             if (className === null) {
-                vscode.window.showErrorMessage("Could not find any classes in current file.")
-                return
+                vscode.window.showErrorMessage(
+                    "Could not find any classes in current file."
+                );
+                return;
             }
 
             var outputText = `<div class="${className} ${className}--"></div>`;
@@ -99,16 +154,18 @@ export function activate(context: vscode.ExtensionContext) {
                         value: 8
                     });
                 });
-        }));
-
+        })
+    );
 
     context.subscriptions.push(
         vscode.commands.registerCommand("extension.insertBemElement", () => {
             let textEditor = vscode.window.activeTextEditor;
 
             if (textEditor == undefined) {
-                vscode.window.showErrorMessage('No active text editor. Please open a file');
-                return
+                vscode.window.showErrorMessage(
+                    "No active text editor. Please open a file"
+                );
+                return;
             }
             let cursorPosition = textEditor.selection.active;
 
@@ -123,8 +180,10 @@ export function activate(context: vscode.ExtensionContext) {
 
             var className = getParentClassName(precedingText, false);
             if (className === null) {
-                vscode.window.showErrorMessage("Could not find any classes in current file.")
-                return
+                vscode.window.showErrorMessage(
+                    "Could not find any classes in current file."
+                );
+                return;
             }
 
             var outputText = `<div class="${className}__"></div>`;
@@ -149,19 +208,40 @@ export function activate(context: vscode.ExtensionContext) {
                         value: 8
                     });
                 });
-        }));
+        })
+    );
 
-    const collection = vscode.languages.createDiagnosticCollection('BEM');
+    context.subscriptions.push(vscode.commands.registerCommand("extension.generateStyleSheet", () => {
+        let textEditor = vscode.window.activeTextEditor;
+
+        if (textEditor == undefined) {
+            vscode.window.showErrorMessage(
+                "No active text editor. Please open a file"
+            );
+            return;
+        }
+
+        let documentText = textEditor.document.getText();
+        let classes = getClasses(documentText);
+        let stylesheet = generateStyleSheet(classes, true);
+
+        vscode.workspace.openTextDocument({ language: "css", content: stylesheet, }).then(doc => {
+            vscode.window.showTextDocument(doc).then(e => {
+                vscode.commands.executeCommand("editor.action.formatDocument")
+            });
+        });
+    }));
+
+    const collection = vscode.languages.createDiagnosticCollection("BEM");
     if (vscode.window.activeTextEditor) {
         updateDiagnostics(vscode.window.activeTextEditor.document, collection);
     }
-    context.subscriptions.push(vscode.workspace.onDidChangeTextDocument(e => updateDiagnostics(e.document, collection)));
+    context.subscriptions.push(
+        vscode.workspace.onDidChangeTextDocument(e =>
+            updateDiagnostics(e.document, collection)
+        )
+    );
 }
 exports.activate = activate;
 
-function deactivate() { }
-
-module.exports = {
-    activate,
-    deactivate
-};
+export function deactivate() { }
