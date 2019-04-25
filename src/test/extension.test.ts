@@ -29,7 +29,7 @@ suite("Extension Tests", function () {
         `;
         const expected = ["nav", "nav__item", "nav-two"];
         let actual = bemHelper.getClasses(html);
-        assert.deepEqual(actual, expected);
+        assert.deepEqual(actual.sort(), expected.sort());
     });
 
     test("CSS Class extraction - Complex", function () {
@@ -52,7 +52,7 @@ suite("Extension Tests", function () {
         const expected = ["nav", "nav__item", "nav__item--four", "nav-two", "nav-two__item",
             "nav-two__item--two", "menu__item"];
         let actual = bemHelper.getClasses(html);
-        assert.deepEqual(actual, expected);
+        assert.deepEqual(actual.sort(), expected.sort());
     });
 
     test("CSS Class extraction - Single", function () {
@@ -66,6 +66,6 @@ suite("Extension Tests", function () {
         const html = ``;
         const expected: string[] = [];
         let actual = bemHelper.getClasses(html);
-        assert.deepEqual(actual, expected);
+        assert.deepEqual(actual.sort(), expected.sort());
     });
 });

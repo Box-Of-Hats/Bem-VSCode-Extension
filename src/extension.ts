@@ -2,16 +2,17 @@ import * as vscode from 'vscode';
 
 
 export function getClasses(html: string) {
-    // TODO: Finished Implementation
     let classNames: string[] = [];
-    const regex = /class="([a-zA-Z0-9-_]+)"/g;
+    const regex = /class="([a-zA-Z0-9-_ ]+)"/g;
     const classNameRegex = /"(.*)"/;
     let match;
     while (match = regex.exec(html)) {
-        var className = classNameRegex.exec(match[0])[1];
-        if (classNames.indexOf(className) === -1){
-            classNames.push(className);
-        }
+        var classes = classNameRegex.exec(match[0])[1];
+        classes.split(" ").forEach(className => {
+            if (classNames.indexOf(className) === -1){
+                classNames.push(className);
+            }
+        });
     }
     return classNames;
 }
