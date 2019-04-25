@@ -211,6 +211,27 @@ export function activate(context: vscode.ExtensionContext) {
         })
     );
 
+    context.subscriptions.push(vscode.commands.registerCommand("extension.generateStyleSheet", () => {
+        let textEditor = vscode.window.activeTextEditor;
+
+        if (textEditor == undefined) {
+            vscode.window.showErrorMessage(
+                "No active text editor. Please open a file"
+            );
+            return;
+        }
+
+        let documentText = textEditor.document.getText();
+        let classes = getClasses(documentText);
+        let stylesheet = generateStyleSheet(classes, true);
+
+        vscode.workspace.openTextDocument({ language: "css", content: stylesheet, }).then(doc => {
+            vscode.window.showTextDocument(doc).then(e => {
+                vscode.commands.executeCommand("editor.action.formatDocument")
+            });
+        });
+    }));
+
     const collection = vscode.languages.createDiagnosticCollection("BEM");
     if (vscode.window.activeTextEditor) {
         updateDiagnostics(vscode.window.activeTextEditor.document, collection);
@@ -223,4 +244,4 @@ export function activate(context: vscode.ExtensionContext) {
 }
 exports.activate = activate;
 
-export function deactivate() {}
+export function deactivate() { }
