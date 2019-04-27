@@ -8,8 +8,14 @@ export function generateStyleSheet(classNames: string[], flat: boolean) {
         if (flat) {
             styleSheet = `${styleSheet}${className}{}`;
         } else {
-            let block = className.split("__")[0];
-            let element = className.split("__")[1];
+            let block =
+                className.split("__")[0].split("--")[0] === undefined
+                    ? undefined
+                    : className.split("__")[0].split("--")[0];
+            let element =
+                className.split("__")[1] === undefined
+                    ? undefined
+                    : className.split("__")[1].split("--")[0];
             let modifier = className.split("--")[1];
 
             if (block !== undefined && !styles.hasOwnProperty(block)) {
@@ -248,18 +254,40 @@ export function activate(context: vscode.ExtensionContext) {
                 return;
             }
 
-            let documentText = textEditor.document.getText();
-            let classes = getClasses(documentText);
-            let stylesheet = generateStyleSheet(classes, true);
-
-            vscode.workspace
-                .openTextDocument({ language: "css", content: stylesheet })
-                .then(doc => {
-                    vscode.window.showTextDocument(doc).then(e => {
-                        vscode.commands.executeCommand(
-                            "editor.action.formatDocument"
+            vscode.window
+                .showQuickPick(["scss", "less", "css"], {
+                    placeHolder: "Choose a type of stylesheet to generate"
+                })
+                .then(stylesheetLanguage => {
+                    if (
+                        stylesheetLanguage === null ||
+                        stylesheetLanguage === undefined
+                    ) {
+                        vscode.window.showErrorMessage(
+                            "No stylesheet type selected."
                         );
-                    });
+                        return;
+                    }
+
+                    let documentText = textEditor.document.getText();
+                    let classes = getClasses(documentText);
+                    let stylesheet = generateStyleSheet(
+                        classes,
+                        stylesheetLanguage === "css"
+                    );
+
+                    vscode.workspace
+                        .openTextDocument({
+                            language: stylesheetLanguage,
+                            content: stylesheet
+                        })
+                        .then(doc => {
+                            vscode.window.showTextDocument(doc).then(e => {
+                                vscode.commands.executeCommand(
+                                    "editor.action.formatDocument"
+                                );
+                            });
+                        });
                 });
         })
     );

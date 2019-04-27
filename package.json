@@ -15,6 +15,9 @@
     "activationEvents": [
         "onLanguage:html",
         "onLanguage:aspnetcorerazor",
+        "onLanguage:javascriptreact",
+        "onLanguage:php",
+        "onLanguage:razor",
         "onCommand:extension.insertBemElement",
         "onCommand:extension.insertBemModifier",
         "onCommand:extension.generateStyleSheet"
@@ -48,7 +51,7 @@
             },
             {
                 "command": "extension.generateStyleSheet",
-                "key": "alt+b c",
+                "key": "alt+b s",
                 "when": "editorTextFocus"
             }
         ]

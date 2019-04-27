@@ -4,11 +4,11 @@ A VSCode extension to help when using the [BEM (Block-Element-Modifier)](http://
 
 ## Commands
 
-| Command name                 | Description                                                                      |
-| ---------------------------- | -------------------------------------------------------------------------------- |
-| bemHelper.insertBemElement   | Insert a new BEM element under the current block                                 |
-| bemHelper.insertBemModifier  | Insert a new BEM modified element, copying the classname of the previous element |
-| bemHelper.generateStyleSheet | Generate a new file containing CSS for the current HTML file                     |
+| Command name                 | Description                                                                      | Shortcut  |
+| ---------------------------- | -------------------------------------------------------------------------------- | --------- |
+| bemHelper.insertBemElement   | Insert a new BEM element under the current block                                 | alt + b e |
+| bemHelper.insertBemModifier  | Insert a new BEM modified element, copying the classname of the previous element | alt + b m |
+| bemHelper.generateStyleSheet | Generate a new file containing CSS/LESS/SCSS for the current HTML file           | alt + b s |
 
 ## Diagnostic Help
 

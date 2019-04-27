@@ -98,10 +98,10 @@ suite("Extension Tests", function() {
 
     test("CSS Generation - Multiple Nested", function() {
         var actual = bemHelper.generateStyleSheet(
-            ["test-class", "class-test__element", "class-test"],
+            ["test-class", "class-test__element", "class-test", "class-test__element--one", "class-test__element--two"],
             false
         );
-        var expected = "class-test{&__element{}}test-class{}";
+        var expected = "class-test{&__element{&--one{}&--two{}}}test-class{}";
         assert.equal(actual, expected);
     });
 });
