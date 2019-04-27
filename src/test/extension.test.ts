@@ -77,7 +77,7 @@ suite("Extension Tests", function() {
 
     test("CSS Generation - Single Flat", function() {
         var actual = bemHelper.generateStyleSheet(["test-class"], true);
-        var expected = "test-class{}";
+        var expected = ".test-class{}";
         assert.equal(actual, expected);
     });
 
@@ -86,13 +86,13 @@ suite("Extension Tests", function() {
             ["test-class", "test-class-two", "class-test"],
             true
         );
-        var expected = "class-test{}test-class{}test-class-two{}";
+        var expected = ".class-test{}.test-class{}.test-class-two{}";
         assert.equal(actual, expected);
     });
 
     test("CSS Generation - Single Nested", function() {
         var actual = bemHelper.generateStyleSheet(["test-class"], false);
-        var expected = "test-class{}";
+        var expected = ".test-class{}";
         assert.equal(actual, expected);
     });
 
@@ -101,7 +101,7 @@ suite("Extension Tests", function() {
             ["test-class", "class-test__element", "class-test", "class-test__element--one", "class-test__element--two"],
             false
         );
-        var expected = "class-test{&__element{&--one{}&--two{}}}test-class{}";
+        var expected = ".class-test{&__element{&--one{}&--two{}}}.test-class{}";
         assert.equal(actual, expected);
     });
 });

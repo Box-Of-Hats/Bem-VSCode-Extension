@@ -6,7 +6,7 @@ export function generateStyleSheet(classNames: string[], flat: boolean) {
 
     classNames.sort().forEach(className => {
         if (flat) {
-            styleSheet = `${styleSheet}${className}{}`;
+            styleSheet = `${styleSheet}.${className}{}`;
         } else {
             let block =
                 className.split("__")[0].split("--")[0] === undefined
@@ -38,7 +38,7 @@ export function generateStyleSheet(classNames: string[], flat: boolean) {
 
     if (!flat) {
         Object.keys(styles).forEach(block => {
-            styleSheet = `${styleSheet}${block}{`;
+            styleSheet = `${styleSheet}.${block}{`;
             Object.keys(styles[block]).forEach(element => {
                 styleSheet = `${styleSheet}&__${element}{`;
                 styles[block][element].forEach(modifier => {
