@@ -2,21 +2,47 @@ import * as vscode from "vscode";
 
 export function generateStyleSheet(classNames: string[], flat: boolean) {
     let styleSheet = ``;
+    let styles = {};
+
     classNames.sort().forEach(className => {
         if (flat) {
-            styleSheet = `${styleSheet}${className} {}`;
+            styleSheet = `${styleSheet}${className}{}`;
         } else {
-            //TODO: Implement nested stylesheet
-            /* e.g
-                block {
-                    &__elem {
-                        &--mod {
-                        }
-                    }
-                }
-            */
+            let block = className.split("__")[0];
+            let element = className.split("__")[1];
+            let modifier = className.split("--")[1];
+
+            if (block !== undefined && !styles.hasOwnProperty(block)) {
+                styles[block] = {};
+            }
+            if (
+                element !== undefined &&
+                !styles[block].hasOwnProperty(element)
+            ) {
+                styles[block][element] = [];
+            }
+            if (
+                modifier !== undefined &&
+                !styles[block][element].includes(modifier)
+            ) {
+                styles[block][element].push(modifier);
+            }
         }
     });
+
+    if (!flat) {
+        Object.keys(styles).forEach(block => {
+            styleSheet = `${styleSheet}${block}{`;
+            Object.keys(styles[block]).forEach(element => {
+                styleSheet = `${styleSheet}&__${element}{`;
+                styles[block][element].forEach(modifier => {
+                    styleSheet = `${styleSheet}&--${modifier}{}`;
+                });
+                styleSheet = `${styleSheet}}`;
+            });
+            styleSheet = `${styleSheet}}`;
+        });
+    }
     return styleSheet;
 }
 
@@ -211,26 +237,32 @@ export function activate(context: vscode.ExtensionContext) {
         })
     );
 
-    context.subscriptions.push(vscode.commands.registerCommand("extension.generateStyleSheet", () => {
-        let textEditor = vscode.window.activeTextEditor;
+    context.subscriptions.push(
+        vscode.commands.registerCommand("extension.generateStyleSheet", () => {
+            let textEditor = vscode.window.activeTextEditor;
 
-        if (textEditor == undefined) {
-            vscode.window.showErrorMessage(
-                "No active text editor. Please open a file"
-            );
-            return;
-        }
+            if (textEditor == undefined) {
+                vscode.window.showErrorMessage(
+                    "No active text editor. Please open a file"
+                );
+                return;
+            }
 
-        let documentText = textEditor.document.getText();
-        let classes = getClasses(documentText);
-        let stylesheet = generateStyleSheet(classes, true);
+            let documentText = textEditor.document.getText();
+            let classes = getClasses(documentText);
+            let stylesheet = generateStyleSheet(classes, true);
 
-        vscode.workspace.openTextDocument({ language: "css", content: stylesheet, }).then(doc => {
-            vscode.window.showTextDocument(doc).then(e => {
-                vscode.commands.executeCommand("editor.action.formatDocument")
-            });
-        });
-    }));
+            vscode.workspace
+                .openTextDocument({ language: "css", content: stylesheet })
+                .then(doc => {
+                    vscode.window.showTextDocument(doc).then(e => {
+                        vscode.commands.executeCommand(
+                            "editor.action.formatDocument"
+                        );
+                    });
+                });
+        })
+    );
 
     const collection = vscode.languages.createDiagnosticCollection("BEM");
     if (vscode.window.activeTextEditor) {
@@ -244,4 +276,4 @@ export function activate(context: vscode.ExtensionContext) {
 }
 exports.activate = activate;
 
-export function deactivate() { }
+export function deactivate() {}
