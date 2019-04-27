@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.3.0
+
+- Add GenerateStyleSheet command
+
 ## 0.2.0
 
 - Add diagnostic warnings when classes are nested more than block__element. E.g block__block__element
