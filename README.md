@@ -16,10 +16,15 @@ BEM helper provides warnings when class names are in violation of BEM naming sta
 
 ![Class name warnings](images/diagnostics_example.png)
 
-## Inserting Example
+## Inserting Elements
 
 ![Inserting a BEM child element](images/add_child_element.gif)
+
+## Generating LESS / SCSS / CSS
+
+![Generating a stylesheet from HTML](images/generate_stylesheet.gif)
 
 ## Known issues
 
 -   Classes wont be discovered if they contain \_ characters.
+-   Inserting a modifier after another modified element not functioning
