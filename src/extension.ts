@@ -86,7 +86,7 @@ function getParentClassName(html: string, matchElements: boolean) {
     if (classNameMatches == null) {
         return null;
     }
-    return classNameMatches[classNameMatches.length - 1];
+    return classNameMatches[classNameMatches.length - 1].split("--")[0].split(" ")[0];
 }
 
 function updateDiagnostics(
