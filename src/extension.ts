@@ -172,7 +172,7 @@ function getClassNameCaseProblems(
             break;
         case ClassNameCases.Kebab:
             //TODO: Add regex
-            //acceptedClassNameRegex = /(class="["]*)/g;
+            acceptedClassNameRegex = /(class="([a-z]+(-{1}[a-z]*)*)+["]*)/g;
             break;
         case ClassNameCases.Pascal:
             //TODO: Add regex
