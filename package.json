@@ -24,6 +24,37 @@
     ],
     "main": "./out/extension.js",
     "contributes": {
+        "configuration": [
+            {
+                "title": "BEM linting options",
+                "properties": {
+                    "bemHelper.showDepthWarnings": {
+                        "type": "boolean",
+                        "default": true,
+                        "description": "Highlight classes that contain more than a block and element. e.g block__block2__element",
+                        "scope": "resource"
+                    },
+                    "bemHelper.classNameCase": {
+                        "type": "string",
+                        "enum": [
+                            "any",
+                            "kebab",
+                            "camel",
+                            "pascal"
+                        ],
+                        "enumDescriptions": [
+                            "Allow Any-Cased style of class names.",
+                            "Allow kebab-cased style of class names.",
+                            "Allow camelCased style class names.",
+                            "Allow PascalCased style class names."
+                        ],
+                        "default": "kebab",
+                        "description": "The allowed case styling of class names.",
+                        "scope": "resource"
+                    }
+                }
+            }
+        ],
         "commands": [
             {
                 "command": "extension.insertBemElement",

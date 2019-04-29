@@ -1,5 +1,12 @@
 import * as vscode from "vscode";
 
+enum ClassNameCases {
+    Camel = "camel",
+    Pascal = "pascal",
+    Any = "any",
+    Kebab = "kebab"
+}
+
 export function generateStyleSheet(classNames: string[], flat: boolean) {
     let styleSheet = ``;
     let styles = {};
@@ -112,36 +119,30 @@ function getParentClassName(html: string, matchElements: boolean) {
         .split(" ")[0];
 }
 
-function updateDiagnostics(
-    document: vscode.TextDocument,
-    collection: vscode.DiagnosticCollection
-): void {
-    let activeEditor = vscode.window.activeTextEditor;
-    if (activeEditor === undefined) {
-        return;
-    }
+function getClassNameDepthProblems(
+    html: string,
+    activeEditor: vscode.TextEditor
+) {
     const regex = /(class="[a-zA-Z0-9_-]+__[a-zA-Z0-9_-]+__*[a-zA-Z0-9_-]*__*[a-zA-Z0-9_-]*["]*)/g;
-    const docText = document.getText();
-    var editorHighlights = new Array();
+
+    let errors = new Array();
 
     let match;
-    while ((match = regex.exec(docText))) {
+    while ((match = regex.exec(html))) {
         const startPos = activeEditor.document.positionAt(match.index);
         const endPos = activeEditor.document.positionAt(
             match.index + match[0].length
         );
-
-        editorHighlights.push({
+        errors.push({
             code: "",
-            message:
-                "BEM violation - classes must only consist of block and element.",
+            message: "BEM - classes must only consist of block and element.",
             range: new vscode.Range(startPos, endPos),
             severity: vscode.DiagnosticSeverity.Warning,
             source: "",
             relatedInformation: [
                 new vscode.DiagnosticRelatedInformation(
                     new vscode.Location(
-                        document.uri,
+                        activeEditor.document.uri,
                         new vscode.Range(
                             new vscode.Position(1, 8),
                             new vscode.Position(1, 9)
@@ -151,6 +152,99 @@ function updateDiagnostics(
                 )
             ]
         });
+    }
+    return errors;
+}
+
+function getClassNameCaseProblems(
+    html: string,
+    activeEditor: vscode.TextEditor,
+    casing: string
+) {
+    let errors = new Array();
+    let acceptedClassNameRegex;
+    switch (casing) {
+        case ClassNameCases.Any:
+            return errors;
+        case ClassNameCases.Camel:
+            //TODO: Add regex
+            //acceptedClassNameRegex = /(class="["]*)/g;
+            break;
+        case ClassNameCases.Kebab:
+            //TODO: Add regex
+            //acceptedClassNameRegex = /(class="["]*)/g;
+            break;
+        case ClassNameCases.Pascal:
+            //TODO: Add regex
+            //acceptedClassNameRegex = /(class="["]*)/g;
+            break;
+        default:
+            return errors;
+    }
+
+    if (!acceptedClassNameRegex) {
+        return errors;
+    }
+
+    let match;
+    while ((match = acceptedClassNameRegex.exec(html))) {
+        const startPos = activeEditor.document.positionAt(match.index);
+        const endPos = activeEditor.document.positionAt(
+            match.index + match[0].length
+        );
+        errors.push({
+            code: "",
+            message: `BEM - Class names must be in ${casing} case `,
+            range: new vscode.Range(startPos, endPos),
+            severity: vscode.DiagnosticSeverity.Warning,
+            source: "",
+            relatedInformation: [
+                new vscode.DiagnosticRelatedInformation(
+                    new vscode.Location(
+                        activeEditor.document.uri,
+                        new vscode.Range(
+                            new vscode.Position(1, 8),
+                            new vscode.Position(1, 9)
+                        )
+                    ),
+                    `${match[0]}`
+                )
+            ]
+        });
+    }
+    return errors;
+}
+
+function updateDiagnostics(
+    document: vscode.TextDocument,
+    collection: vscode.DiagnosticCollection
+): void {
+    let activeEditor = vscode.window.activeTextEditor;
+    if (activeEditor === undefined) {
+        return;
+    }
+    const docText = document.getText();
+    var editorHighlights = new Array();
+
+    if (
+        vscode.workspace.getConfiguration().get("bemHelper.showDepthWarnings")
+    ) {
+        editorHighlights = editorHighlights.concat(
+            getClassNameDepthProblems(docText, activeEditor)
+        );
+    }
+
+    let acceptedClassNameCase = vscode.workspace
+        .getConfiguration()
+        .get("bemHelper.classNameCase");
+    if (acceptedClassNameCase) {
+        editorHighlights = editorHighlights.concat(
+            getClassNameCaseProblems(
+                docText,
+                activeEditor,
+                acceptedClassNameCase.toString()
+            )
+        );
     }
 
     if (editorHighlights.length > 0) {
