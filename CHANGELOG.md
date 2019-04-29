@@ -4,6 +4,10 @@
 
 - Add GenerateStyleSheet command
 
+### 0.3.1
+
+- Fix consecutive modified elements not using the correct classnames
+
 ## 0.2.0
 
 - Add diagnostic warnings when classes are nested more than block__element. E.g block__block__element

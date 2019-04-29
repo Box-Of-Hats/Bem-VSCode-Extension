@@ -27,4 +27,3 @@ BEM helper provides warnings when class names are in violation of BEM naming sta
 ## Known issues
 
 -   Classes wont be discovered if they contain \_ characters.
--   Inserting a modifier after another modified element not functioning
