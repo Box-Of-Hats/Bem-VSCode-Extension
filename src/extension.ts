@@ -3,35 +3,41 @@ import * as vscode from "vscode";
 export function generateStyleSheet(classNames: string[], flat: boolean) {
     let styleSheet = ``;
     let styles = {};
+    const _blockModifierName = "__BLOCK__MODIFIER__";
 
     classNames.sort().forEach(className => {
         if (flat) {
             styleSheet = `${styleSheet}.${className}{}`;
         } else {
-            let block =
-                className.split("__")[0].split("--")[0] === undefined
-                    ? undefined
-                    : className.split("__")[0].split("--")[0];
-            let element =
-                className.split("__")[1] === undefined
-                    ? undefined
-                    : className.split("__")[1].split("--")[0];
+            let block = className.split("__")[0].split("--")[0];
+            let element = className.split("__")[1]
+                ? className.split("__")[1].split("--")[0]
+                : null;
             let modifier = className.split("--")[1];
 
-            if (block !== undefined && !styles.hasOwnProperty(block)) {
-                styles[block] = {};
-            }
-            if (
-                element !== undefined &&
-                !styles[block].hasOwnProperty(element)
-            ) {
-                styles[block][element] = [];
-            }
-            if (
-                modifier !== undefined &&
-                !styles[block][element].includes(modifier)
-            ) {
-                styles[block][element].push(modifier);
+            if (block) {
+                //Blocks
+                if (!styles.hasOwnProperty(block)) {
+                    styles[block] = {};
+                    styles[block][_blockModifierName] = [];
+                }
+
+                //Elements
+                if (element && !styles[block].hasOwnProperty(element)) {
+                    styles[block][element] = [];
+                }
+
+                //Modifiers
+                if (modifier) {
+                    if (!element) {
+                        //If there is no element, the modifier applies to the block
+                        styles[block][_blockModifierName].push(modifier);
+                    } else {
+                        if (!styles[block][element].includes(modifier)) {
+                            styles[block][element].push(modifier);
+                        }
+                    }
+                }
             }
         }
     });
@@ -39,13 +45,22 @@ export function generateStyleSheet(classNames: string[], flat: boolean) {
     if (!flat) {
         Object.keys(styles).forEach(block => {
             styleSheet = `${styleSheet}.${block}{`;
-            Object.keys(styles[block]).forEach(element => {
-                styleSheet = `${styleSheet}&__${element}{`;
-                styles[block][element].forEach(modifier => {
-                    styleSheet = `${styleSheet}&--${modifier}{}`;
+            Object.keys(styles[block])
+                .filter(element => {
+                    return element !== _blockModifierName;
+                })
+                .forEach(element => {
+                    styleSheet = `${styleSheet}&__${element}{`;
+                    styles[block][element].forEach(modifier => {
+                        styleSheet = `${styleSheet}&--${modifier}{}`;
+                    });
+                    styleSheet = `${styleSheet}}`;
                 });
-                styleSheet = `${styleSheet}}`;
+
+            styles[block][_blockModifierName].forEach(blockModifier => {
+                styleSheet = `${styleSheet}&--${blockModifier}{}`;
             });
+
             styleSheet = `${styleSheet}}`;
         });
     }
@@ -55,11 +70,17 @@ export function generateStyleSheet(classNames: string[], flat: boolean) {
 export function getClasses(html: string) {
     let classNames: string[] = [];
     const regex = /class="([a-zA-Z0-9-_ ]+)"/g;
-    const classNameRegex = /"(.*)"/;
+    const classNameRegex: RegExp = /"(.*)"/;
+    if (classNameRegex === null) {
+        return null;
+    }
     let match;
     while ((match = regex.exec(html))) {
-        var classes = classNameRegex.exec(match[0])[1];
-        classes.split(" ").forEach(className => {
+        var classes = classNameRegex.exec(match[0]);
+        if (classes === null || classes.length < 2) {
+            return;
+        }
+        classes[1].split(" ").forEach(className => {
             if (classNames.indexOf(className) === -1) {
                 classNames.push(className);
             }
@@ -86,7 +107,9 @@ function getParentClassName(html: string, matchElements: boolean) {
     if (classNameMatches == null) {
         return null;
     }
-    return classNameMatches[classNameMatches.length - 1].split("--")[0].split(" ")[0];
+    return classNameMatches[classNameMatches.length - 1]
+        .split("--")[0]
+        .split(" ")[0];
 }
 
 function updateDiagnostics(
@@ -94,6 +117,9 @@ function updateDiagnostics(
     collection: vscode.DiagnosticCollection
 ): void {
     let activeEditor = vscode.window.activeTextEditor;
+    if (activeEditor === undefined) {
+        return;
+    }
     const regex = /(class="[a-zA-Z0-9_-]+__[a-zA-Z0-9_-]+__*[a-zA-Z0-9_-]*__*[a-zA-Z0-9_-]*["]*)/g;
     const docText = document.getText();
     var editorHighlights = new Array();
@@ -247,7 +273,7 @@ export function activate(context: vscode.ExtensionContext) {
         vscode.commands.registerCommand("extension.generateStyleSheet", () => {
             let textEditor = vscode.window.activeTextEditor;
 
-            if (textEditor == undefined) {
+            if (!textEditor) {
                 vscode.window.showErrorMessage(
                     "No active text editor. Please open a file"
                 );
@@ -259,18 +285,18 @@ export function activate(context: vscode.ExtensionContext) {
                     placeHolder: "Choose a type of stylesheet to generate"
                 })
                 .then(stylesheetLanguage => {
-                    if (
-                        stylesheetLanguage === null ||
-                        stylesheetLanguage === undefined
-                    ) {
+                    if (!stylesheetLanguage) {
                         vscode.window.showErrorMessage(
                             "No stylesheet type selected."
                         );
                         return;
                     }
 
-                    let documentText = textEditor.document.getText();
+                    let documentText = textEditor!.document.getText();
                     let classes = getClasses(documentText);
+                    if (!classes) {
+                        return;
+                    }
                     let stylesheet = generateStyleSheet(
                         classes,
                         stylesheetLanguage === "css"

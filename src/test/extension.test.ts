@@ -1,9 +1,9 @@
 import * as assert from "assert";
 import * as bemHelper from "../extension";
 
-suite("Extension Tests", function() {
+suite("Extension Tests", () => {
     // Defines a Mocha unit test
-    test("CSS Class extraction - Multiple", function() {
+    test("CSS Class extraction - Multiple", () => {
         const html = `
             <body>
                 <div class="nav">
@@ -17,10 +17,10 @@ suite("Extension Tests", function() {
         `;
         const expected = ["nav", "nav__item", "nav-two"];
         let actual = bemHelper.getClasses(html);
-        assert.deepEqual(actual.sort(), expected.sort());
+        assert.deepEqual(actual!.sort(), expected.sort());
     });
 
-    test("CSS Class extraction - Complex", function() {
+    test("CSS Class extraction - Complex", () => {
         const html = `
             <body>
                 <div class="nav">
@@ -47,30 +47,30 @@ suite("Extension Tests", function() {
             "menu__item"
         ];
         let actual = bemHelper.getClasses(html);
-        assert.deepEqual(actual.sort(), expected.sort());
+        assert.deepEqual(actual!.sort(), expected.sort());
     });
 
-    test("CSS Class extraction - Single", function() {
+    test("CSS Class extraction - Single", () => {
         const html = `<div class="test-class-one"></div>`;
         const expected = "test-class-one";
         let actual = bemHelper.getClasses(html);
         assert.equal(actual, expected);
     });
 
-    test("CSS Class extraction - None", function() {
+    test("CSS Class extraction - None", () => {
         const html = ``;
         const expected: string[] = [];
         let actual = bemHelper.getClasses(html);
-        assert.deepEqual(actual.sort(), expected.sort());
+        assert.deepEqual(actual!.sort(), expected.sort());
     });
 
-    test("CSS Generation - Single Flat", function() {
+    test("CSS Generation - Single Flat", () => {
         var actual = bemHelper.generateStyleSheet(["test-class"], true);
         var expected = ".test-class{}";
         assert.equal(actual, expected);
     });
 
-    test("CSS Generation - Multiple Flat", function() {
+    test("CSS Generation - Multiple Flat", () => {
         var actual = bemHelper.generateStyleSheet(
             ["test-class", "test-class-two", "class-test"],
             true
@@ -79,13 +79,13 @@ suite("Extension Tests", function() {
         assert.equal(actual, expected);
     });
 
-    test("CSS Generation - Single Nested", function() {
+    test("CSS Generation - Single Nested", () => {
         var actual = bemHelper.generateStyleSheet(["test-class"], false);
         var expected = ".test-class{}";
         assert.equal(actual, expected);
     });
 
-    test("CSS Generation - Multiple Nested", function() {
+    test("CSS Generation - Multiple Nested", () => {
         var actual = bemHelper.generateStyleSheet(
             [
                 "test-class",
@@ -97,6 +97,15 @@ suite("Extension Tests", function() {
             false
         );
         var expected = ".class-test{&__element{&--one{}&--two{}}}.test-class{}";
+        assert.equal(actual, expected);
+    });
+
+    test("CSS Generation - Modified Blocks Nested", () => {
+        var actual = bemHelper.generateStyleSheet(
+            ["test-block", "test-block--mod", "test-block--mod-2"],
+            false
+        );
+        var expected = ".test-block{&--mod{}&--mod-2{}}";
         assert.equal(actual, expected);
     });
 });

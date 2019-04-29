@@ -1,20 +1,15 @@
 {
-	"rules": {
-		"no-string-throw": true,
-		"no-unused-expression": true,
-		"no-duplicate-variable": true,
-		"no-unused-variable": true,
-		"curly": true,
-		"class-name": true,
-		"semicolon": [
-			true,
-			"always"
-		],
-		"triple-equals": true,
-		"indent": [
-			true,
-			"spaces"
-		]
-	},
-	"defaultSeverity": "warning"
+    "rules": {
+        "no-string-throw": true,
+        "no-unused-expression": true,
+        "no-duplicate-variable": true,
+        "no-unused-variable": true,
+        "no-consecutive-blank-lines": true,
+        "curly": true,
+        "class-name": true,
+        "semicolon": [true, "always"],
+        "triple-equals": true,
+        "indent": [true, "spaces"]
+    },
+    "defaultSeverity": "warning"
 }
