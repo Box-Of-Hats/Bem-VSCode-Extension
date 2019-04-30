@@ -6,6 +6,7 @@ enum ClassNameCases {
     Snake = "snake"
 }
 
+//Generate a stylesheet from a list of classes.
 export function generateStyleSheet(classNames: string[], flat: boolean) {
     let styleSheet = ``;
     let styles = {};
@@ -73,6 +74,7 @@ export function generateStyleSheet(classNames: string[], flat: boolean) {
     return styleSheet;
 }
 
+//Get all classes from a block of html
 export function getClasses(html: string) {
     let classNames: string[] = [];
     const regex = /class="([a-zA-Z0-9-_ ]+)"/g;
@@ -95,6 +97,7 @@ export function getClasses(html: string) {
     return classNames;
 }
 
+//Get the last class name from a block of html
 function getParentClassName(html: string, matchElements: boolean) {
     const regex = matchElements
         ? /class="([a-zA-Z0-9-_]+ ?)+"/g
@@ -223,6 +226,7 @@ function getClassNameCaseProblems(
     return errors;
 }
 
+// Draw errors to the VScode window
 function updateDiagnostics(
     document: vscode.TextDocument,
     collection: vscode.DiagnosticCollection
