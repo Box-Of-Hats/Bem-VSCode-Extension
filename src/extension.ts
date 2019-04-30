@@ -4,7 +4,8 @@ enum ClassNameCases {
     Camel = "camel",
     Pascal = "pascal",
     Any = "any",
-    Kebab = "kebab"
+    Kebab = "kebab",
+    Snake = "snake"
 }
 
 export function generateStyleSheet(classNames: string[], flat: boolean) {
@@ -177,6 +178,9 @@ function getClassNameCaseProblems(
         case ClassNameCases.Pascal:
             //TODO: Add regex
             //acceptedClassNameRegex = /(class="["]*)/g;
+            break;
+        case ClassNameCases.Snake:
+            acceptedClassNameRegex = /^([a-z0-9_]*(__)?[a-z_]*(--)?)*$/g;
             break;
         default:
             return errors;
