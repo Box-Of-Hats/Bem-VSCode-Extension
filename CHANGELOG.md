@@ -1,16 +1,24 @@
 # Change Log
 
-### 0.3.2
+## 0.4.0
 
--   Fix LESS / SCSS stylesheet generation not working when modified blocks were present
+-   Add configurable kebab / snake case warnings for classnames.
+    -   bemHelper.classNameCase = "any" | "kebab" | "snake"
+-   Add toggle for showing depth warnings.
+    -   bemHelper.showDepthWarnings = true | false
+-   More reliable extension activation
+
+## 0.3.0
+
+-   Add GenerateStyleSheet command
 
 ### 0.3.1
 
 -   Fix consecutive modified elements not using the correct classnames
 
-## 0.3.0
+### 0.3.2
 
--   Add GenerateStyleSheet command
+-   Fix LESS / SCSS stylesheet generation not working when modified blocks were present
 
 ## 0.2.0
 
