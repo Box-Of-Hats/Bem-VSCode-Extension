@@ -2,6 +2,8 @@
 
 A VSCode extension to help when using the [BEM (Block-Element-Modifier)](http://getbem.com/naming) class naming convention in HTML.
 
+Get it on the [VSCode Marketplace](https://marketplace.visualstudio.com/items?itemName=Box-Of-Hats.bemhelper).
+
 ## Commands
 
 | Command name                 | Description                                                                      | Shortcut  |
