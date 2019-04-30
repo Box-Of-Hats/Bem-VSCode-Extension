@@ -1,8 +1,6 @@
 import * as vscode from "vscode";
 
 enum ClassNameCases {
-    Camel = "camel",
-    Pascal = "pascal",
     Any = "any",
     Kebab = "kebab",
     Snake = "snake"
@@ -168,16 +166,8 @@ function getClassNameCaseProblems(
     switch (casing) {
         case ClassNameCases.Any:
             return errors;
-        case ClassNameCases.Camel:
-            //TODO: Add regex
-            //acceptedClassNameRegex = /(class="["]*)/g;
-            break;
         case ClassNameCases.Kebab:
             acceptedClassNameRegex = /^[a-z0-9-]*(__)?[a-z0-9-]*(--)?$/g;
-            break;
-        case ClassNameCases.Pascal:
-            //TODO: Add regex
-            //acceptedClassNameRegex = /(class="["]*)/g;
             break;
         case ClassNameCases.Snake:
             acceptedClassNameRegex = /^([a-z0-9_]*(__)?[a-z_]*(--)?)*$/g;
@@ -230,33 +220,6 @@ function getClassNameCaseProblems(
             }
         }
     });
-
-    // let match;
-    // while ((match = acceptedClassNameRegex.exec(html))) {
-    //     const startPos = activeEditor.document.positionAt(match.index);
-    //     const endPos = activeEditor.document.positionAt(
-    //         match.index + match[0].length
-    //     );
-    //     errors.push({
-    //         code: "",
-    //         message: `BEM - Class names must be in ${casing} case `,
-    //         range: new vscode.Range(startPos, endPos),
-    //         severity: vscode.DiagnosticSeverity.Warning,
-    //         source: "",
-    //         relatedInformation: [
-    //             new vscode.DiagnosticRelatedInformation(
-    //                 new vscode.Location(
-    //                     activeEditor.document.uri,
-    //                     new vscode.Range(
-    //                         new vscode.Position(1, 8),
-    //                         new vscode.Position(1, 9)
-    //                     )
-    //                 ),
-    //                 `${match[0]}`
-    //             )
-    //         ]
-    //     });
-    // }
     return errors;
 }
 
