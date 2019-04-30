@@ -172,8 +172,7 @@ function getClassNameCaseProblems(
             //acceptedClassNameRegex = /(class="["]*)/g;
             break;
         case ClassNameCases.Kebab:
-            //TODO: Add regex
-            acceptedClassNameRegex = /^([a-z]+(-?[a-z0-9])*(__)*[a-z]+(-?[a-z0-9])(--)*[a-z]+(-?[a-z0-9]))*$/g; // /(class="([a-z]+(-{1}[a-z]*)*)+["]*)/g;
+            acceptedClassNameRegex = /^[a-z0-9-]*(__)?[a-z0-9-]*(--)?$/g;
             break;
         case ClassNameCases.Pascal:
             //TODO: Add regex
@@ -194,9 +193,7 @@ function getClassNameCaseProblems(
         if (!className.match(acceptedClassNameRegex)) {
             let i = -1;
             while ((i = html.indexOf(className, i + 1)) !== -1) {
-                const startPos = activeEditor.document.positionAt(
-                    i
-                );
+                const startPos = activeEditor.document.positionAt(i);
                 const endPos = activeEditor.document.positionAt(
                     i + className.length
                 );
@@ -223,7 +220,8 @@ function getClassNameCaseProblems(
                             ),
                             `${className}`
                         )
-                    ]
+                    ],
+                    className: className
                 });
             }
         }
