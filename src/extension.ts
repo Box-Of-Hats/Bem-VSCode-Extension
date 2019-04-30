@@ -123,40 +123,64 @@ function getParentClassName(html: string, matchElements: boolean) {
         .split(" ")[0];
 }
 
+//Is a class name following BEM conventions?
+function isBemClass(className: string): boolean {
+    return !(
+        className.split("__").length > 2 || className.split("--").length > 2
+    );
+}
+
 function getClassNameDepthProblems(
     html: string,
     activeEditor: vscode.TextEditor
 ) {
-    const regex = /(class="[a-zA-Z0-9_-]+__[a-zA-Z0-9_-]+__*[a-zA-Z0-9_-]*__*[a-zA-Z0-9_-]*["]*)/g;
-
     let errors = new Array();
 
-    let match;
-    while ((match = regex.exec(html))) {
-        const startPos = activeEditor.document.positionAt(match.index);
-        const endPos = activeEditor.document.positionAt(
-            match.index + match[0].length
-        );
-        errors.push({
-            code: "",
-            message: "BEM - classes must only consist of block and element.",
-            range: new vscode.Range(startPos, endPos),
-            severity: vscode.DiagnosticSeverity.Warning,
-            source: "",
-            relatedInformation: [
-                new vscode.DiagnosticRelatedInformation(
-                    new vscode.Location(
-                        activeEditor.document.uri,
-                        new vscode.Range(
-                            new vscode.Position(1, 8),
-                            new vscode.Position(1, 9)
-                        )
-                    ),
-                    `${match[0]}`
-                )
-            ]
-        });
+    let classes = getClasses(html);
+
+    if (!classes) {
+        return errors;
     }
+
+    classes.forEach(className => {
+        if (!isBemClass(className)) {
+            let i = -1;
+            while ((i = html.indexOf(className, i + 1)) !== -1) {
+                const startPos = activeEditor.document.positionAt(i);
+                const endPos = activeEditor.document.positionAt(
+                    i + className.length
+                );
+                errors.push({
+                    code: "",
+                    message:
+                        "BEM - classes must only consist of block and element.",
+                    range: new vscode.Range(startPos, endPos),
+                    severity: vscode.DiagnosticSeverity.Warning,
+                    source: "",
+                    relatedInformation: [
+                        new vscode.DiagnosticRelatedInformation(
+                            new vscode.Location(
+                                activeEditor.document.uri,
+                                new vscode.Range(
+                                    new vscode.Position(
+                                        startPos.line,
+                                        startPos.character
+                                    ),
+                                    new vscode.Position(
+                                        endPos.line,
+                                        endPos.character
+                                    )
+                                )
+                            ),
+                            `${className}`
+                        )
+                    ],
+                    className: className
+                });
+            }
+        }
+    });
+
     return errors;
 }
 
