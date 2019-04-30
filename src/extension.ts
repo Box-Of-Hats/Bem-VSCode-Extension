@@ -6,6 +6,8 @@ enum ClassNameCases {
     Snake = "snake"
 }
 
+//#region methods
+
 //Generate a stylesheet from a list of classes.
 export function generateStyleSheet(classNames: string[], flat: boolean) {
     let styleSheet = ``;
@@ -170,10 +172,10 @@ function getClassNameCaseProblems(
         case ClassNameCases.Any:
             return errors;
         case ClassNameCases.Kebab:
-            acceptedClassNameRegex = /^[a-z0-9-]*(__)?[a-z0-9-]*(--)?$/g;
+            acceptedClassNameRegex = /^([a-z0-9-]*((__){1}[a-z0-9-]+)?((--){1}[a-z0-9-]+)?)$/g; ///^([a-z0-9-]*(__)?[a-z0-9-]*(--)?[a-z-]*)*$/g;
             break;
         case ClassNameCases.Snake:
-            acceptedClassNameRegex = /^([a-z0-9_]*(__)?[a-z_]*(--)?)*$/g;
+            acceptedClassNameRegex = /^([a-z0-9_]*((__){1}[a-z0-9_]+)?((--){1}[a-z0-9_]+)?)$/g;
             break;
         default:
             return errors;
@@ -266,7 +268,10 @@ function updateDiagnostics(
     }
 }
 
+//#endregion
+
 export function activate(context: vscode.ExtensionContext) {
+    //#region Register commands
     context.subscriptions.push(
         vscode.commands.registerCommand("extension.insertBemModifier", () => {
             let textEditor = vscode.window.activeTextEditor;
@@ -318,10 +323,7 @@ export function activate(context: vscode.ExtensionContext) {
                         value: 8
                     });
                 });
-        })
-    );
-
-    context.subscriptions.push(
+        }),
         vscode.commands.registerCommand("extension.insertBemElement", () => {
             let textEditor = vscode.window.activeTextEditor;
 
@@ -372,10 +374,7 @@ export function activate(context: vscode.ExtensionContext) {
                         value: 8
                     });
                 });
-        })
-    );
-
-    context.subscriptions.push(
+        }),
         vscode.commands.registerCommand("extension.generateStyleSheet", () => {
             let textEditor = vscode.window.activeTextEditor;
 
@@ -423,17 +422,28 @@ export function activate(context: vscode.ExtensionContext) {
                 });
         })
     );
-
+    //#endregion
+    //#region Register Diagnostics
     const collection = vscode.languages.createDiagnosticCollection("BEM");
     if (vscode.window.activeTextEditor) {
         updateDiagnostics(vscode.window.activeTextEditor.document, collection);
     }
     context.subscriptions.push(
-        vscode.workspace.onDidChangeTextDocument(e =>
-            updateDiagnostics(e.document, collection)
-        )
+        vscode.workspace.onDidSaveTextDocument(e => {
+            updateDiagnostics(e, collection);
+        }),
+        vscode.workspace.onDidOpenTextDocument(e => {
+            updateDiagnostics(e, collection);
+        }),
+        vscode.window.onDidChangeActiveTextEditor(e => {
+            if (e) {
+                updateDiagnostics(e.document, collection);
+            }
+        })
     );
+    //#endregion
 }
+
 exports.activate = activate;
 
 export function deactivate() {}
