@@ -39,14 +39,12 @@
                         "enum": [
                             "any",
                             "kebab",
-                            "camel",
-                            "pascal"
+                            "snake"
                         ],
                         "enumDescriptions": [
                             "Allow Any-Cased style of class names.",
                             "Allow kebab-cased style of class names.",
-                            "Allow camelCased style class names.",
-                            "Allow PascalCased style class names."
+                            "Allow snake_cased style of class names."
                         ],
                         "default": "kebab",
                         "description": "The allowed case styling of class names.",

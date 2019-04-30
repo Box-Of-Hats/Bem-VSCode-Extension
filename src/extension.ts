@@ -1,10 +1,9 @@
 import * as vscode from "vscode";
 
 enum ClassNameCases {
-    Camel = "camel",
-    Pascal = "pascal",
     Any = "any",
-    Kebab = "kebab"
+    Kebab = "kebab",
+    Snake = "snake"
 }
 
 export function generateStyleSheet(classNames: string[], flat: boolean) {
@@ -163,55 +162,64 @@ function getClassNameCaseProblems(
 ) {
     let errors = new Array();
     let acceptedClassNameRegex;
+    let classes = getClasses(html);
     switch (casing) {
         case ClassNameCases.Any:
             return errors;
-        case ClassNameCases.Camel:
-            //TODO: Add regex
-            //acceptedClassNameRegex = /(class="["]*)/g;
-            break;
         case ClassNameCases.Kebab:
-            //TODO: Add regex
-            //acceptedClassNameRegex = /(class="["]*)/g;
+            acceptedClassNameRegex = /^[a-z0-9-]*(__)?[a-z0-9-]*(--)?$/g;
             break;
-        case ClassNameCases.Pascal:
-            //TODO: Add regex
-            //acceptedClassNameRegex = /(class="["]*)/g;
+        case ClassNameCases.Snake:
+            acceptedClassNameRegex = /^([a-z0-9_]*(__)?[a-z_]*(--)?)*$/g;
             break;
         default:
             return errors;
     }
 
+    if (!classes) {
+        return errors;
+    }
     if (!acceptedClassNameRegex) {
         return errors;
     }
 
-    let match;
-    while ((match = acceptedClassNameRegex.exec(html))) {
-        const startPos = activeEditor.document.positionAt(match.index);
-        const endPos = activeEditor.document.positionAt(
-            match.index + match[0].length
-        );
-        errors.push({
-            code: "",
-            message: `BEM - Class names must be in ${casing} case `,
-            range: new vscode.Range(startPos, endPos),
-            severity: vscode.DiagnosticSeverity.Warning,
-            source: "",
-            relatedInformation: [
-                new vscode.DiagnosticRelatedInformation(
-                    new vscode.Location(
-                        activeEditor.document.uri,
-                        new vscode.Range(
-                            new vscode.Position(1, 8),
-                            new vscode.Position(1, 9)
+    classes.forEach(className => {
+        if (!className.match(acceptedClassNameRegex)) {
+            let i = -1;
+            while ((i = html.indexOf(className, i + 1)) !== -1) {
+                const startPos = activeEditor.document.positionAt(i);
+                const endPos = activeEditor.document.positionAt(
+                    i + className.length
+                );
+                errors.push({
+                    code: "",
+                    message: `BEM - Class names must be in ${casing} case `,
+                    range: new vscode.Range(startPos, endPos),
+                    severity: vscode.DiagnosticSeverity.Warning,
+                    source: "",
+                    relatedInformation: [
+                        new vscode.DiagnosticRelatedInformation(
+                            new vscode.Location(
+                                activeEditor.document.uri,
+                                new vscode.Range(
+                                    new vscode.Position(
+                                        startPos.line,
+                                        startPos.character
+                                    ),
+                                    new vscode.Position(
+                                        endPos.line,
+                                        endPos.character
+                                    )
+                                )
+                            ),
+                            `${className}`
                         )
-                    ),
-                    `${match[0]}`
-                )
-            ]
-        });
-    }
+                    ],
+                    className: className
+                });
+            }
+        }
+    });
     return errors;
 }
 
