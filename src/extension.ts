@@ -86,7 +86,7 @@ export function getClasses(html: string) {
     }
     let match;
     while ((match = regex.exec(html))) {
-        var classes = classNameRegex.exec(match[0]);
+        let classes = classNameRegex.exec(match[0]);
         if (classes === null || classes.length < 2) {
             return;
         }
@@ -105,17 +105,17 @@ function getParentClassName(html: string, matchElements: boolean) {
         ? /class="([a-zA-Z0-9-_]+ ?)+"/g
         : /class="([a-zA-Z0-9-]+ ?)+"/g;
 
-    var matches = html.match(regex);
+    let matches = html.match(regex);
 
-    if (matches == null) {
+    if (matches === null) {
         return null;
     }
 
-    var lastMatch = matches[matches.length - 1];
+    let lastMatch = matches[matches.length - 1];
 
-    var classNameMatches = lastMatch.match(/"(.*)"/);
+    let classNameMatches = lastMatch.match(/"(.*)"/);
 
-    if (classNameMatches == null) {
+    if (classNameMatches === null) {
         return null;
     }
     return classNameMatches[classNameMatches.length - 1]
@@ -262,7 +262,7 @@ function updateDiagnostics(
         return;
     }
     const docText = document.getText();
-    var editorHighlights = new Array();
+    let editorHighlights = new Array();
 
     if (
         vscode.workspace.getConfiguration().get("bemHelper.showDepthWarnings")
@@ -300,7 +300,7 @@ export function activate(context: vscode.ExtensionContext) {
         vscode.commands.registerCommand("extension.insertBemModifier", () => {
             let textEditor = vscode.window.activeTextEditor;
 
-            if (textEditor == undefined) {
+            if (textEditor === undefined) {
                 vscode.window.showErrorMessage(
                     "No active text editor. Please open a file"
                 );
@@ -317,7 +317,7 @@ export function activate(context: vscode.ExtensionContext) {
                 )
             );
 
-            var className = getParentClassName(precedingText, true);
+            let className = getParentClassName(precedingText, true);
             if (className === null) {
                 vscode.window.showErrorMessage(
                     "Could not find any classes in current file."
@@ -325,9 +325,9 @@ export function activate(context: vscode.ExtensionContext) {
                 return;
             }
 
-            var outputText = `<div class="${className} ${className}--"></div>`;
+            let outputText = `<div class="${className} ${className}--"></div>`;
 
-            var myEdit = vscode.TextEdit.insert(cursorPosition, outputText);
+            let myEdit = vscode.TextEdit.insert(cursorPosition, outputText);
 
             let edit = new vscode.WorkspaceEdit();
             let uri = textEditor.document.uri;
@@ -351,7 +351,7 @@ export function activate(context: vscode.ExtensionContext) {
         vscode.commands.registerCommand("extension.insertBemElement", () => {
             let textEditor = vscode.window.activeTextEditor;
 
-            if (textEditor == undefined) {
+            if (textEditor === undefined) {
                 vscode.window.showErrorMessage(
                     "No active text editor. Please open a file"
                 );
@@ -368,7 +368,7 @@ export function activate(context: vscode.ExtensionContext) {
                 )
             );
 
-            var className = getParentClassName(precedingText, false);
+            let className = getParentClassName(precedingText, false);
             if (className === null) {
                 vscode.window.showErrorMessage(
                     "Could not find any classes in current file."
@@ -376,9 +376,9 @@ export function activate(context: vscode.ExtensionContext) {
                 return;
             }
 
-            var outputText = `<div class="${className}__"></div>`;
+            let outputText = `<div class="${className}__"></div>`;
 
-            var myEdit = vscode.TextEdit.insert(cursorPosition, outputText);
+            let myEdit = vscode.TextEdit.insert(cursorPosition, outputText);
 
             let edit = new vscode.WorkspaceEdit();
             let uri = textEditor.document.uri;
