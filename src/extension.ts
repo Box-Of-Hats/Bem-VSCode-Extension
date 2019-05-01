@@ -323,18 +323,18 @@ export function activate(context: vscode.ExtensionContext) {
                 );
                 return;
             }
-            let cursorPosition = textEditor.selection.active;
 
-            let precedingText = textEditor.document.getText(
-                new vscode.Range(
-                    0,
-                    0,
-                    cursorPosition.line,
-                    cursorPosition.character
-                )
+            let className = getParentClassName(
+                textEditor.document.getText(
+                    new vscode.Range(
+                        0,
+                        0,
+                        textEditor.selection.active.line,
+                        textEditor.selection.active.character
+                    )
+                ),
+                true
             );
-
-            let className = getParentClassName(precedingText, true);
             if (className === null) {
                 vscode.window.showErrorMessage(
                     "Could not find any classes in current file."
@@ -356,18 +356,18 @@ export function activate(context: vscode.ExtensionContext) {
                 );
                 return;
             }
-            let cursorPosition = textEditor.selection.active;
 
-            let precedingText = textEditor.document.getText(
-                new vscode.Range(
-                    0,
-                    0,
-                    cursorPosition.line,
-                    cursorPosition.character
-                )
+            let className = getParentClassName(
+                textEditor.document.getText(
+                    new vscode.Range(
+                        0,
+                        0,
+                        textEditor.selection.active.line,
+                        textEditor.selection.active.character
+                    )
+                ),
+                false
             );
-
-            let className = getParentClassName(precedingText, false);
             if (className === null) {
                 vscode.window.showErrorMessage(
                     "Could not find any classes in current file."
