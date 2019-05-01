@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.5.0
+
+-   Add Pascal and Camel case options for classnames
+    -   bemHelper.classNameCase = "any" | "kebab" | "snake" | "pascal" | "camel"
+
 ## 0.4.0
 
 -   Add configurable kebab / snake case warnings for classnames.
