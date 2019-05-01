@@ -465,6 +465,17 @@ export function activate(context: vscode.ExtensionContext) {
             }
         })
     );
+    if (
+        vscode.workspace.getConfiguration().get("bemHelper.responsiveLinting")
+    ) {
+        context.subscriptions.push(
+            vscode.workspace.onDidChangeTextDocument(e => {
+                if (e) {
+                    updateDiagnostics(e.document, collection);
+                }
+            })
+        );
+    }
     //#endregion
 }
 

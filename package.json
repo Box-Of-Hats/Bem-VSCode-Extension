@@ -47,6 +47,12 @@
                         "default": "kebab",
                         "description": "The allowed case styling of class names.",
                         "scope": "resource"
+                    },
+                    "bemHelper.responsiveLinting": {
+                        "type": "boolean",
+                        "default": true,
+                        "description": "Enable/disable linting checks whenever a file contents changes. Disable for increased performace. Reload window to take effect",
+                        "scope": "resource"
                     }
                 }
             }
