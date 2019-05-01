@@ -3,7 +3,9 @@ import * as vscode from "vscode";
 enum ClassNameCases {
     Any = "any",
     Kebab = "kebab",
-    Snake = "snake"
+    Snake = "snake",
+    CamelCase = "camel",
+    Pascal = "pascal"
 }
 
 //#region methods
@@ -130,6 +132,35 @@ function isBemClass(className: string): boolean {
     );
 }
 
+//Check if a className is in a given case
+export function isCaseMatch(className: string, caseType: string): boolean {
+    className = className.replace(/__/g, "").replace(/--/g, "");
+    let allowedClassNamePattern;
+    switch (caseType) {
+        case ClassNameCases.Any:
+            return true;
+        case ClassNameCases.Kebab:
+            allowedClassNamePattern = /^[a-z0-9-]+$/;
+            break;
+        case ClassNameCases.Snake:
+            allowedClassNamePattern = /^[a-z0-9_]+$/;
+            break;
+        case ClassNameCases.Pascal:
+            allowedClassNamePattern = /^[A-Z]{1}[a-zA-Z0-9]+$/;
+            break;
+        case ClassNameCases.CamelCase:
+            allowedClassNamePattern = /^[a-z]{1}[a-zA-Z0-9]+$/;
+            break;
+        default:
+            return false;
+    }
+    let matches = className.match(allowedClassNamePattern);
+    if (!matches) {
+        return false;
+    }
+    return true;
+}
+
 function getClassNameDepthProblems(
     html: string,
     activeEditor: vscode.TextEditor
@@ -190,30 +221,14 @@ function getClassNameCaseProblems(
     casing: string
 ) {
     let errors = new Array();
-    let acceptedClassNameRegex;
     let classes = getClasses(html);
-    switch (casing) {
-        case ClassNameCases.Any:
-            return errors;
-        case ClassNameCases.Kebab:
-            acceptedClassNameRegex = /^([a-z0-9-]*((__){1}[a-z0-9-]+)?((--){1}[a-z0-9-]+)?)$/g; ///^([a-z0-9-]*(__)?[a-z0-9-]*(--)?[a-z-]*)*$/g;
-            break;
-        case ClassNameCases.Snake:
-            acceptedClassNameRegex = /^([a-z0-9_]*((__){1}[a-z0-9_]+)?((--){1}[a-z0-9_]+)?)$/g;
-            break;
-        default:
-            return errors;
-    }
 
     if (!classes) {
         return errors;
     }
-    if (!acceptedClassNameRegex) {
-        return errors;
-    }
 
     classes.forEach(className => {
-        if (!className.match(acceptedClassNameRegex)) {
+        if (!isCaseMatch(className, casing)) {
             let i = -1;
             while ((i = html.indexOf(className, i + 1)) !== -1) {
                 const startPos = activeEditor.document.positionAt(i);

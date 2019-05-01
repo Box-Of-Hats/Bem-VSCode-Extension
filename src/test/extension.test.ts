@@ -65,28 +65,28 @@ suite("Extension Tests", () => {
     });
 
     test("CSS Generation - Single Flat", () => {
-        var actual = bemHelper.generateStyleSheet(["test-class"], true);
-        var expected = ".test-class{}";
+        let actual = bemHelper.generateStyleSheet(["test-class"], true);
+        let expected = ".test-class{}";
         assert.equal(actual, expected);
     });
 
     test("CSS Generation - Multiple Flat", () => {
-        var actual = bemHelper.generateStyleSheet(
+        let actual = bemHelper.generateStyleSheet(
             ["test-class", "test-class-two", "class-test"],
             true
         );
-        var expected = ".class-test{}.test-class{}.test-class-two{}";
+        let expected = ".class-test{}.test-class{}.test-class-two{}";
         assert.equal(actual, expected);
     });
 
     test("CSS Generation - Single Nested", () => {
-        var actual = bemHelper.generateStyleSheet(["test-class"], false);
-        var expected = ".test-class{}";
+        let actual = bemHelper.generateStyleSheet(["test-class"], false);
+        let expected = ".test-class{}";
         assert.equal(actual, expected);
     });
 
     test("CSS Generation - Multiple Nested", () => {
-        var actual = bemHelper.generateStyleSheet(
+        let actual = bemHelper.generateStyleSheet(
             [
                 "test-class",
                 "class-test__element",
@@ -96,16 +96,39 @@ suite("Extension Tests", () => {
             ],
             false
         );
-        var expected = ".class-test{&__element{&--one{}&--two{}}}.test-class{}";
+        let expected = ".class-test{&__element{&--one{}&--two{}}}.test-class{}";
         assert.equal(actual, expected);
     });
 
     test("CSS Generation - Modified Blocks Nested", () => {
-        var actual = bemHelper.generateStyleSheet(
+        let actual = bemHelper.generateStyleSheet(
             ["test-block", "test-block--mod", "test-block--mod-2"],
             false
         );
-        var expected = ".test-block{&--mod{}&--mod-2{}}";
+        let expected = ".test-block{&--mod{}&--mod-2{}}";
         assert.equal(actual, expected);
+    });
+
+    test("Class Name Case Matching", () => {
+        let pascalClass = "PascalClass__Elem--ModIfier";
+        let camelClass = "camelClass__elem--modIfier";
+        let kebabClass = "kebab-class__elem--mod-ifier";
+        let snakeClass = "snake_class__elem__mod_ifier";
+        assert.equal(bemHelper.isCaseMatch(camelClass, "camel"), true);
+        assert.equal(bemHelper.isCaseMatch(camelClass, "kebab"), false);
+        assert.equal(bemHelper.isCaseMatch(camelClass, "pascal"), false);
+        assert.equal(bemHelper.isCaseMatch(camelClass, "snake"), false);
+        assert.equal(bemHelper.isCaseMatch(kebabClass, "camel"), false);
+        assert.equal(bemHelper.isCaseMatch(kebabClass, "kebab"), true);
+        assert.equal(bemHelper.isCaseMatch(kebabClass, "pascal"), false);
+        assert.equal(bemHelper.isCaseMatch(kebabClass, "snake"), false);
+        assert.equal(bemHelper.isCaseMatch(pascalClass, "camel"), false);
+        assert.equal(bemHelper.isCaseMatch(pascalClass, "kebab"), false);
+        assert.equal(bemHelper.isCaseMatch(pascalClass, "pascal"), true);
+        assert.equal(bemHelper.isCaseMatch(pascalClass, "snake"), false);
+        assert.equal(bemHelper.isCaseMatch(snakeClass, "camel"), false);
+        assert.equal(bemHelper.isCaseMatch(snakeClass, "kebab"), false);
+        assert.equal(bemHelper.isCaseMatch(snakeClass, "pascal"), false);
+        assert.equal(bemHelper.isCaseMatch(snakeClass, "snake"), true);
     });
 });

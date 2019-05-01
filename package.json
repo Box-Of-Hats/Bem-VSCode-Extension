@@ -37,7 +37,9 @@
                         "enum": [
                             "any",
                             "kebab",
-                            "snake"
+                            "snake",
+                            "camel",
+                            "pascal"
                         ],
                         "enumDescriptions": [
                             "Allow Any-Cased style of class names.",
