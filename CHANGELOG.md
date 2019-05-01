@@ -8,6 +8,11 @@
     -   bemHelper.showDepthWarnings = true | false
 -   More reliable extension activation
 
+### 0.4.1
+
+-   Add configuration for enabling / disabling linting on document change
+    -   bemHelper.responsiveLinting = true | false
+
 ## 0.3.0
 
 -   Add GenerateStyleSheet command
