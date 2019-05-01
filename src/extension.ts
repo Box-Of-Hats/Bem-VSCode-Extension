@@ -279,6 +279,7 @@ function updateDiagnostics(
     const docText = document.getText();
     let editorHighlights = new Array();
 
+    //Verify class name depth
     if (
         vscode.workspace.getConfiguration().get("bemHelper.showDepthWarnings")
     ) {
@@ -287,6 +288,7 @@ function updateDiagnostics(
         );
     }
 
+    //Verify class name cases
     let acceptedClassNameCase = vscode.workspace
         .getConfiguration()
         .get("bemHelper.classNameCase");
@@ -339,29 +341,11 @@ export function activate(context: vscode.ExtensionContext) {
                 );
                 return;
             }
-
-            let outputText = `<div class="${className} ${className}--"></div>`;
-
-            let myEdit = vscode.TextEdit.insert(cursorPosition, outputText);
-
-            let edit = new vscode.WorkspaceEdit();
-            let uri = textEditor.document.uri;
-
-            edit.set(uri, [myEdit]);
-
-            vscode.workspace.applyEdit(edit);
-
-            vscode.commands.executeCommand("");
-
-            vscode.commands
-                .executeCommand("cursorMove", { to: "wrappedLineEnd" })
-                .then(() => {
-                    vscode.commands.executeCommand("cursorMove", {
-                        to: "left",
-                        by: "character",
-                        value: 8
-                    });
-                });
+            textEditor.insertSnippet(
+                new vscode.SnippetString(
+                    `<div class="${className} ${className}--$1">$0</div>`
+                )
+            );
         }),
         vscode.commands.registerCommand("extension.insertBemElement", () => {
             let textEditor = vscode.window.activeTextEditor;
@@ -391,28 +375,11 @@ export function activate(context: vscode.ExtensionContext) {
                 return;
             }
 
-            let outputText = `<div class="${className}__"></div>`;
-
-            let myEdit = vscode.TextEdit.insert(cursorPosition, outputText);
-
-            let edit = new vscode.WorkspaceEdit();
-            let uri = textEditor.document.uri;
-
-            edit.set(uri, [myEdit]);
-
-            vscode.workspace.applyEdit(edit);
-
-            vscode.commands.executeCommand("");
-
-            vscode.commands
-                .executeCommand("cursorMove", { to: "wrappedLineEnd" })
-                .then(() => {
-                    vscode.commands.executeCommand("cursorMove", {
-                        to: "left",
-                        by: "character",
-                        value: 8
-                    });
-                });
+            textEditor.insertSnippet(
+                new vscode.SnippetString(
+                    `<div class="${className}__$1">$0</div>`
+                )
+            );
         }),
         vscode.commands.registerCommand("extension.generateStyleSheet", () => {
             let textEditor = vscode.window.activeTextEditor;
