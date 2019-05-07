@@ -18,6 +18,7 @@
         "onLanguage:javascriptreact",
         "onLanguage:php",
         "onLanguage:razor",
+        "workspaceContains:*.jsx",
         "workspaceContains:*.html"
     ],
     "main": "./out/extension.js",

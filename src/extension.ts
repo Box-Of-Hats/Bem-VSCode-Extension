@@ -81,7 +81,7 @@ export function generateStyleSheet(classNames: string[], flat: boolean) {
 //Get all classes from a block of html
 export function getClasses(html: string) {
     let classNames: string[] = [];
-    const regex = /class="([a-zA-Z0-9-_ ]+)"/g;
+    const regex = /class(Name)?="([a-zA-Z0-9-_ ]+)"/g;
     const classNameRegex: RegExp = /"(.*)"/;
     if (classNameRegex === null) {
         return null;
