@@ -104,8 +104,8 @@ export function getClasses(html: string) {
 //Get the last class name from a block of html
 function getParentClassName(html: string, matchElements: boolean) {
     const regex = matchElements
-        ? /class="([a-zA-Z0-9-_]+ ?)+"/g
-        : /class="([a-zA-Z0-9-]+ ?)+"/g;
+        ? /class(Name)?="([a-zA-Z0-9-_]+ ?)+"/g
+        : /class(Name)?="([a-zA-Z0-9-]+ ?)+"/g;
 
     let matches = html.match(regex);
 
@@ -267,6 +267,21 @@ function getClassNameCaseProblems(
     return errors;
 }
 
+function getClassPropertyTitle(): string {
+    let textEditor = vscode.window.activeTextEditor;
+    if (!textEditor) {
+        return "class";
+    }
+    if (
+        textEditor.document.languageId === "javascriptreact" ||
+        textEditor.document.languageId === "typescriptreact"
+    ) {
+        return "className";
+    }
+
+    return "class";
+}
+
 // Draw errors to the VScode window
 function updateDiagnostics(
     document: vscode.TextDocument,
@@ -341,9 +356,10 @@ export function activate(context: vscode.ExtensionContext) {
                 );
                 return;
             }
+            let classProperty = getClassPropertyTitle();
             textEditor.insertSnippet(
                 new vscode.SnippetString(
-                    `<div class="${className} ${className}--$1">$0</div>`
+                    `<div ${classProperty}="${className} ${className}--$1">$0</div>`
                 )
             );
         }),
@@ -374,10 +390,10 @@ export function activate(context: vscode.ExtensionContext) {
                 );
                 return;
             }
-
+            let classProperty = getClassPropertyTitle();
             textEditor.insertSnippet(
                 new vscode.SnippetString(
-                    `<div class="${className}__$1">$0</div>`
+                    `<div ${classProperty}="${className}__$1">$0</div>`
                 )
             );
         }),

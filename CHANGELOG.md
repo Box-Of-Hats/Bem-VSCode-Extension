@@ -5,6 +5,7 @@
 -   Add Pascal and Camel case options for classnames
     -   bemHelper.classNameCase = "any" | "kebab" | "snake" | "pascal" | "camel"
 -   Element insertion now uses snippets so inserting elements should now feel a little smoother.
+-   Add support for React (jsx) files!
 
 ## 0.4.0
 

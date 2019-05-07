@@ -65,11 +65,11 @@ suite("Extension Tests", () => {
     });
 
     test("CSS Class extraction - JSX", () => {
-        const html = `<div className="parent-class"><div className="parent-class__child"></div></div>`
-        const expected = ["parent-class", "parent-class__child"]
-        let actual = bemHelper.getClasses(html)
-        assert.deepEqual(actual!.sort(), expected.sort())
-    })
+        const html = `<div className="parent-class"><div className="parent-class__child"></div></div>`;
+        const expected = ["parent-class", "parent-class__child"];
+        let actual = bemHelper.getClasses(html);
+        assert.deepEqual(actual!.sort(), expected.sort());
+    });
 
     test("CSS Generation - Single Flat", () => {
         let actual = bemHelper.generateStyleSheet(["test-class"], true);
