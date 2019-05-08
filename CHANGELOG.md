@@ -7,6 +7,11 @@
 -   Element insertion now uses snippets so inserting elements should now feel a little smoother.
 -   Add support for React (jsx) files!
 
+### 0.5.1
+
+-   Add autocompleting tag names! Tab through an inserted element snippet to get the list of options.
+    -   Configurable with bemHelper.tagList = ["div", "h1" ... "table", "MyCustomComponent"]
+
 ## 0.4.0
 
 -   Add configurable kebab / snake case warnings for classnames.
