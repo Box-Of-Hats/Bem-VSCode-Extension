@@ -327,6 +327,43 @@ function updateDiagnostics(
 //#endregion
 
 export function activate(context: vscode.ExtensionContext) {
+    let allTags = [
+        "div",
+        "div",
+        "base",
+        "blockquote",
+        "button",
+        "canvas",
+        "code",
+        "form",
+        "header",
+        "h1",
+        "h2",
+        "h3",
+        "h4",
+        "h5",
+        "h6",
+        "hr",
+        "img",
+        "input",
+        "label",
+        "li",
+        "nav",
+        "ol",
+        "option",
+        "p",
+        "select",
+        "span",
+        "table",
+        "tbody",
+        "td",
+        "textarea",
+        "tfoot",
+        "th",
+        "thead",
+        "tr",
+        "ul"
+    ];
     //#region Register commands
     context.subscriptions.push(
         vscode.commands.registerCommand("extension.insertBemModifier", () => {
@@ -359,7 +396,7 @@ export function activate(context: vscode.ExtensionContext) {
             let classProperty = getClassPropertyTitle();
             textEditor.insertSnippet(
                 new vscode.SnippetString(
-                    `<div ${classProperty}="${className} ${className}--$1">$0</div>`
+                    `<\${2|${allTags}|} ${classProperty}="${className} ${className}--$1">$0</$2>`
                 )
             );
         }),
@@ -393,7 +430,7 @@ export function activate(context: vscode.ExtensionContext) {
             let classProperty = getClassPropertyTitle();
             textEditor.insertSnippet(
                 new vscode.SnippetString(
-                    `<div ${classProperty}="${className}__$1">$0</div>`
+                    `<\${2|${allTags}|} ${classProperty}="${className}__$1">$0</$2>`
                 )
             );
         }),
