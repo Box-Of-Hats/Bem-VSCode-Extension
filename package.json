@@ -58,6 +58,48 @@
                         "default": true,
                         "description": "Enable/disable linting checks whenever a file contents changes. Disable for increased performace. Reload window to take effect",
                         "scope": "window"
+                    },
+                    "bemHelper.tagList": {
+                        "type": "array",
+                        "default": [
+                            "div",
+                            "div",
+                            "base",
+                            "blockquote",
+                            "button",
+                            "canvas",
+                            "code",
+                            "form",
+                            "header",
+                            "h1",
+                            "h2",
+                            "h3",
+                            "h4",
+                            "h5",
+                            "h6",
+                            "hr",
+                            "img",
+                            "input",
+                            "label",
+                            "li",
+                            "nav",
+                            "ol",
+                            "option",
+                            "p",
+                            "select",
+                            "span",
+                            "table",
+                            "tbody",
+                            "td",
+                            "textarea",
+                            "tfoot",
+                            "th",
+                            "thead",
+                            "tr",
+                            "ul"
+                        ],
+                        "description": "The list of HTML tags to use for BEM element snippet suggestions.",
+                        "scope": "window"
                     }
                 }
             }
