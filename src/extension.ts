@@ -424,6 +424,9 @@ export function activate(context: vscode.ExtensionContext) {
                         );
                         return;
                     }
+                    let infoMessage = vscode.window.setStatusBarMessage(
+                        `Generating ${stylesheetLanguage}...`
+                    );
 
                     let documentText = textEditor!.document.getText();
                     let classes = getClasses(documentText);
@@ -441,11 +444,14 @@ export function activate(context: vscode.ExtensionContext) {
                             content: stylesheet
                         })
                         .then(doc => {
-                            vscode.window.showTextDocument(doc).then(e => {
-                                vscode.commands.executeCommand(
-                                    "editor.action.formatDocument"
-                                );
-                            });
+                            vscode.window
+                                .showTextDocument(doc)
+                                .then(e => {
+                                    vscode.commands.executeCommand(
+                                        "editor.action.formatDocument"
+                                    );
+                                })
+                                .then(infoMessage.dispose());
                         });
                 });
         })
