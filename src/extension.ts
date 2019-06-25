@@ -304,7 +304,9 @@ function updateDiagnostics(
     }
 
     //Verify class name cases
-    let acceptedClassNameCase = vscode.workspace
+    let acceptedClassNameCase:
+        | string
+        | undefined = vscode.workspace
         .getConfiguration()
         .get("bemHelper.classNameCase");
     if (acceptedClassNameCase) {
@@ -312,7 +314,7 @@ function updateDiagnostics(
             getClassNameCaseProblems(
                 docText,
                 activeEditor,
-                acceptedClassNameCase.toString()
+                acceptedClassNameCase
             )
         );
     }
