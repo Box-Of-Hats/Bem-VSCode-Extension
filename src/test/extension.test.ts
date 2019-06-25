@@ -20,6 +20,23 @@ suite("Extension Tests", () => {
         assert.deepEqual(actual!.sort(), expected.sort());
     });
 
+    test("CSS Class extraction - Single Quotes", () => {
+        const html = `
+            <body>
+                <div class='nav'>
+                    <div class='nav__item'>One</div>
+                    <div class='nav__item'>Two</div>
+                    <div class='nav__item'>Three</div>
+                    <div class='nav__item'>Four</div>
+                </div>
+                <div class='nav-two'></div>
+            </body>
+        `;
+        const expected = ["nav", "nav__item", "nav-two"];
+        let actual = bemHelper.getClasses(html);
+        assert.deepEqual(actual!.sort(), expected.sort());
+    });
+
     test("CSS Class extraction - Complex", () => {
         const html = `
             <body>
