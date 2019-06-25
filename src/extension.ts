@@ -79,18 +79,18 @@ export function generateStyleSheet(classNames: string[], flat: boolean) {
 }
 
 //Get all classes from a block of html
-export function getClasses(html: string) {
+export function getClasses(html: string): string[] {
     let classNames: string[] = [];
-    const regex = /class(Name)?="([a-zA-Z0-9-_ ]+)"/g;
-    const classNameRegex: RegExp = /"(.*)"/;
+    const regex = /class(Name)?=["']{1}([a-zA-Z0-9-_ ]+)["']{1}/g;
+    const classNameRegex = /["']{1}(.*)["']{1}/;
     if (classNameRegex === null) {
-        return null;
+        return classNames;
     }
     let match;
     while ((match = regex.exec(html))) {
         let classes = classNameRegex.exec(match[0]);
         if (classes === null || classes.length < 2) {
-            return;
+            return classNames;
         }
         classes[1].split(" ").forEach(className => {
             if (classNames.indexOf(className) === -1) {

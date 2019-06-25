@@ -81,7 +81,7 @@ suite("Extension Tests", () => {
         assert.deepEqual(actual!.sort(), expected.sort());
     });
 
-    test("CSS Class extraction - JSX", () => {
+    test("CSS Class extraction - React", () => {
         const html = `<div className="parent-class"><div className="parent-class__child"></div></div>`;
         const expected = ["parent-class", "parent-class__child"];
         let actual = bemHelper.getClasses(html);
