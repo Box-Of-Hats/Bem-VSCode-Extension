@@ -12,6 +12,10 @@
 -   Add autocompleting tag names! Tab through an inserted element snippet to get the list of options.
     -   Configurable with bemHelper.tagList = ["div", "h1" ... "table", "MyCustomComponent"]
 
+### 0.5.3
+
+-   Add support for single quotes surrounding classnames, e.g class='block\_\_element'
+
 ## 0.4.0
 
 -   Add configurable kebab / snake case warnings for classnames.
