@@ -16,6 +16,10 @@
 
 -   Add support for single quotes surrounding classnames, e.g class='block\_\_element'
 
+### 0.5.4
+
+-   Fix bug where snake_case classes weren't being detected
+
 ## 0.4.0
 
 -   Add configurable kebab / snake case warnings for classnames.

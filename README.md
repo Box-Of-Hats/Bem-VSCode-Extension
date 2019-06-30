@@ -33,7 +33,3 @@ Generate stylesheets from your BEM markup using the `generateStylesheet` command
 If you don't like fancy pre-processors, you can also generate plain CSS.
 
 ![Generating a stylesheet from HTML](images/generate_stylesheet.gif)
-
-## Known issues
-
--   Classes wont be discovered if they contain \_ characters when inserting elements.
