@@ -101,17 +101,25 @@ export function getClasses(html: string): string[] {
     return classNames;
 }
 
-//Get the last class name from a block of html
-function getParentClassName(html: string, matchElements: boolean) {
-    const regex = matchElements
-        ? /class(Name)?="([a-zA-Z0-9-_]+ ?)+"/g
-        : /class(Name)?="([a-zA-Z0-9-]+ ?)+"/g;
+/*Get the last class name from a block of html
+ *html: The html string to extract from
+ *matchElements: Should the parent name include elements or just blocks?
+ */
+export function getParentClassName(html: string, matchElements: boolean) {
+    const classNameRegex = /class(Name)?="([a-zA-Z0-9-_]+ ?)+"/g;
 
-    let matches = html.match(regex);
+    let matches = html.match(classNameRegex);
 
     if (matches === null) {
         return null;
     }
+
+    //If only including blocks, remove element classes
+    matches = matchElements
+        ? matches
+        : matches.filter(match => {
+              return !match.includes("__");
+          });
 
     let lastMatch = matches[matches.length - 1];
 
