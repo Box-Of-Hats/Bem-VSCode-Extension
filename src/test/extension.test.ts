@@ -2,6 +2,50 @@ import * as assert from "assert";
 import * as bemHelper from "../extension";
 
 suite("Extension Tests", () => {
+    test("CSS Class extraction - Camel Case", () => {
+        const html = `
+            <body>
+                <div class="navBody">
+                    <div class="navBody__listItem">One</div>
+                    <div class="navBody__listItem">Two</div>
+                    <div class="navBody__listItem--wide">Three</div>
+                    <div class="navBody__listItem--wide">Four</div>
+                </div>
+                <div class="navFooter"></div>
+            </body>
+        `;
+        const expected = [
+            "navBody",
+            "navBody__listItem",
+            "navBody__listItem--wide",
+            "navFooter"
+        ];
+        let actual = bemHelper.getClasses(html);
+        assert.deepEqual(actual, expected);
+    });
+
+    test("CSS Class extraction - Pascal Case", () => {
+        const html = `
+            <body>
+                <div class="NavBody">
+                    <div class="NavBody__ListItem">One</div>
+                    <div class="NavBody__ListItem">Two</div>
+                    <div class="NavBody__ListItem--Wide">Three</div>
+                    <div class="NavBody__ListItem--Wide">Four</div>
+                </div>
+                <div class="NavFooter"></div>
+            </body>
+        `;
+        const expected = [
+            "NavBody",
+            "NavBody__ListItem",
+            "NavBody__ListItem--Wide",
+            "NavFooter"
+        ];
+        let actual = bemHelper.getClasses(html);
+        assert.deepEqual(actual, expected);
+    });
+
     test("CSS Class extraction - Snake Case", () => {
         const html = `
             <body>
@@ -54,7 +98,7 @@ suite("Extension Tests", () => {
         assert.deepEqual(actual.sort(), expected.sort());
     });
 
-    test("CSS Class extraction - Multiple", () => {
+    test("CSS Class extraction - Basic", () => {
         const html = `
             <body>
                 <div class="nav">
@@ -88,14 +132,7 @@ suite("Extension Tests", () => {
         assert.deepEqual(actual.sort(), expected.sort());
     });
 
-    test("CSS Class extraction - Single", () => {
-        const html = `<div class="test-class-one"></div>`;
-        const expected = "test-class-one";
-        let actual = bemHelper.getClasses(html);
-        assert.equal(actual, expected);
-    });
-
-    test("CSS Class extraction - None", () => {
+    test("CSS Class extraction - No Classes", () => {
         const html = ``;
         const expected: string[] = [];
         let actual = bemHelper.getClasses(html);
