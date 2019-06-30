@@ -457,7 +457,43 @@ function updateDiagnostics(
 //#endregion
 
 export function activate(context: vscode.ExtensionContext) {
-    //#region Register commands
+    registerCommands(context);
+    registerDiagnostics(context);
+}
+
+function registerDiagnostics(context: vscode.ExtensionContext) {
+    const collection = vscode.languages.createDiagnosticCollection("BEM");
+    if (vscode.window.activeTextEditor) {
+        updateDiagnostics(vscode.window.activeTextEditor.document, collection);
+    }
+    context.subscriptions.push(
+        vscode.workspace.onDidSaveTextDocument(e => {
+            updateDiagnostics(e, collection);
+        }),
+        vscode.workspace.onDidOpenTextDocument(e => {
+            updateDiagnostics(e, collection);
+        }),
+        vscode.window.onDidChangeActiveTextEditor(e => {
+            if (e) {
+                updateDiagnostics(e.document, collection);
+            }
+        })
+    );
+    if (
+        vscode.workspace.getConfiguration().get("bemHelper.responsiveLinting")
+    ) {
+        context.subscriptions.push(
+            vscode.workspace.onDidChangeTextDocument(e => {
+                if (e) {
+                    updateDiagnostics(e.document, collection);
+                }
+            })
+        );
+    }
+}
+
+// Register Commands
+function registerCommands(context: vscode.ExtensionContext) {
     context.subscriptions.push(
         vscode.commands.registerCommand("extension.insertBemModifier", () => {
             let textEditor = vscode.window.activeTextEditor;
@@ -586,37 +622,6 @@ export function activate(context: vscode.ExtensionContext) {
                 });
         })
     );
-    //#endregion
-    //#region Register Diagnostics
-    const collection = vscode.languages.createDiagnosticCollection("BEM");
-    if (vscode.window.activeTextEditor) {
-        updateDiagnostics(vscode.window.activeTextEditor.document, collection);
-    }
-    context.subscriptions.push(
-        vscode.workspace.onDidSaveTextDocument(e => {
-            updateDiagnostics(e, collection);
-        }),
-        vscode.workspace.onDidOpenTextDocument(e => {
-            updateDiagnostics(e, collection);
-        }),
-        vscode.window.onDidChangeActiveTextEditor(e => {
-            if (e) {
-                updateDiagnostics(e.document, collection);
-            }
-        })
-    );
-    if (
-        vscode.workspace.getConfiguration().get("bemHelper.responsiveLinting")
-    ) {
-        context.subscriptions.push(
-            vscode.workspace.onDidChangeTextDocument(e => {
-                if (e) {
-                    updateDiagnostics(e.document, collection);
-                }
-            })
-        );
-    }
-    //#endregion
 }
 
 exports.activate = activate;
