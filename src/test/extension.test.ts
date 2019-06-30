@@ -315,7 +315,7 @@ suite("Extension Tests", () => {
 
     test("Convert Class - Kebab => Snake", () => {
         let inputClassName = "test-class__test-child--modi-fier";
-        let expected = "test_class__test_child--modif_ier";
+        let expected = "test_class__test_child--modi_fier";
         let actual = bemHelper.convertClass(
             inputClassName,
             bemHelper.ClassNameCases.Snake
@@ -325,7 +325,7 @@ suite("Extension Tests", () => {
 
     test("Convert Class - Kebab => Pascal", () => {
         let inputClassName = "test-class__test-child--modi-fier";
-        let expected = "TestClass__TestChild--ModifiFier";
+        let expected = "TestClass__TestChild--ModiFier";
         let actual = bemHelper.convertClass(
             inputClassName,
             bemHelper.ClassNameCases.Pascal
@@ -425,7 +425,7 @@ suite("Extension Tests", () => {
 
     test("Convert Class - Pascal => Snake", () => {
         let inputClassName = "TestClass__testChild--modiFier";
-        let expected = "test_class__test-child--modi-fier";
+        let expected = "test_class__test_child--modi_fier";
         let actual = bemHelper.convertClass(
             inputClassName,
             bemHelper.ClassNameCases.Snake

@@ -8,6 +8,12 @@ export enum ClassNameCases {
     Pascal = "pascal"
 }
 
+interface BemClass {
+    block: string;
+    element?: string;
+    modifier?: string;
+}
+
 //#region methods
 
 //Generate a stylesheet from a list of classes.
@@ -148,10 +154,36 @@ export function getClassCaseType(className: string): ClassNameCases {
     return ClassNameCases.Any;
 }
 
-export function convertClass(sourceClass: string, toClassType: ClassNameCases) {
-    let outputClass = sourceClass;
+/*
+    Create a classstring from a BemClass object
+*/
+function createClass(bemClass: BemClass): string {
+    let classString = "";
 
-    let classNameWords = sourceClass
+    if (bemClass.element && bemClass.modifier) {
+        //block__element--modifier
+        classString = `${bemClass.block}__${bemClass.element}--${
+            bemClass.modifier
+        }`;
+    } else if (!bemClass.element && bemClass.modifier) {
+        //block--modifier
+        classString = `${bemClass.block}--${bemClass.modifier}`;
+    } else if (bemClass.element && !bemClass.modifier) {
+        //block__element
+        classString = `${bemClass.block}__${bemClass.element}`;
+    } else {
+        //block
+        classString = bemClass.block;
+    }
+    return classString;
+}
+
+/*Convert a string to a case
+ */
+function convertStringToCase(word: string, toClassType: ClassNameCases) {
+    let outputClass = word;
+
+    let classNameWords = word
         .replace("-", " ")
         .replace("_", " ")
         .split("")
@@ -195,6 +227,26 @@ export function convertClass(sourceClass: string, toClassType: ClassNameCases) {
             break;
     }
     return outputClass;
+}
+
+export function convertClass(sourceClass: string, toClassType: ClassNameCases) {
+    let modifier = sourceClass.includes("--")
+        ? sourceClass.split("--")[sourceClass.split("--").length - 1]
+        : "";
+    let element = sourceClass.includes("__")
+        ? sourceClass
+              .split("__")
+              [sourceClass.split("__").length - 1].split("--")[0]
+        : "";
+    let block = sourceClass.split("__")[0];
+
+    let classElements: BemClass = {
+        block: convertStringToCase(block, toClassType),
+        element: convertStringToCase(element, toClassType),
+        modifier: convertStringToCase(modifier, toClassType)
+    };
+
+    return createClass(classElements);
 }
 
 //Is a class name following BEM conventions?
