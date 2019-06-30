@@ -2,42 +2,29 @@ import * as assert from "assert";
 import * as bemHelper from "../extension";
 
 suite("Extension Tests", () => {
-    // Defines a Mocha unit test
-    test("CSS Class extraction - Multiple", () => {
+    test("CSS Class extraction - Snake Case", () => {
         const html = `
             <body>
-                <div class="nav">
-                    <div class="nav__item">One</div>
-                    <div class="nav__item">Two</div>
-                    <div class="nav__item">Three</div>
-                    <div class="nav__item">Four</div>
+                <div class="nav_body">
+                    <div class="nav_body__list_item">One</div>
+                    <div class="nav_body__list_item">Two</div>
+                    <div class="nav_body__list_item--wide">Three</div>
+                    <div class="nav_body__list_item--wide">Four</div>
                 </div>
-                <div class="nav-two"></div>
+                <div class="nav_footer"></div>
             </body>
         `;
-        const expected = ["nav", "nav__item", "nav-two"];
+        const expected = [
+            "nav_body",
+            "nav_body__list_item",
+            "nav_body__list_item--wide",
+            "nav_footer"
+        ];
         let actual = bemHelper.getClasses(html);
-        assert.deepEqual(actual!.sort(), expected.sort());
+        assert.deepEqual(actual, expected);
     });
 
-    test("CSS Class extraction - Single Quotes", () => {
-        const html = `
-            <body>
-                <div class='nav'>
-                    <div class='nav__item'>One</div>
-                    <div class='nav__item'>Two</div>
-                    <div class='nav__item'>Three</div>
-                    <div class='nav__item'>Four</div>
-                </div>
-                <div class='nav-two'></div>
-            </body>
-        `;
-        const expected = ["nav", "nav__item", "nav-two"];
-        let actual = bemHelper.getClasses(html);
-        assert.deepEqual(actual!.sort(), expected.sort());
-    });
-
-    test("CSS Class extraction - Complex", () => {
+    test("CSS Class extraction - Kebab Case", () => {
         const html = `
             <body>
                 <div class="nav">
@@ -64,7 +51,41 @@ suite("Extension Tests", () => {
             "menu__item"
         ];
         let actual = bemHelper.getClasses(html);
-        assert.deepEqual(actual!.sort(), expected.sort());
+        assert.deepEqual(actual.sort(), expected.sort());
+    });
+
+    test("CSS Class extraction - Multiple", () => {
+        const html = `
+            <body>
+                <div class="nav">
+                    <div class="nav__item">One</div>
+                    <div class="nav__item">Two</div>
+                    <div class="nav__item">Three</div>
+                    <div class="nav__item">Four</div>
+                </div>
+                <div class="nav-two"></div>
+            </body>
+        `;
+        const expected = ["nav", "nav__item", "nav-two"];
+        let actual = bemHelper.getClasses(html);
+        assert.deepEqual(actual.sort(), expected.sort());
+    });
+
+    test("CSS Class extraction - Single Quotes", () => {
+        const html = `
+            <body>
+                <div class='nav'>
+                    <div class='nav__item'>One</div>
+                    <div class='nav__item'>Two</div>
+                    <div class='nav__item'>Three</div>
+                    <div class='nav__item'>Four</div>
+                </div>
+                <div class='nav-two'></div>
+            </body>
+        `;
+        const expected = ["nav", "nav__item", "nav-two"];
+        let actual = bemHelper.getClasses(html);
+        assert.deepEqual(actual.sort(), expected.sort());
     });
 
     test("CSS Class extraction - Single", () => {
@@ -78,14 +99,14 @@ suite("Extension Tests", () => {
         const html = ``;
         const expected: string[] = [];
         let actual = bemHelper.getClasses(html);
-        assert.deepEqual(actual!.sort(), expected.sort());
+        assert.deepEqual(actual.sort(), expected.sort());
     });
 
     test("CSS Class extraction - React", () => {
         const html = `<div className="parent-class"><div className="parent-class__child"></div></div>`;
         const expected = ["parent-class", "parent-class__child"];
         let actual = bemHelper.getClasses(html);
-        assert.deepEqual(actual!.sort(), expected.sort());
+        assert.deepEqual(actual.sort(), expected.sort());
     });
 
     test("CSS Generation - Single Flat", () => {
