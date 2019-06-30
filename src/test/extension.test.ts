@@ -191,7 +191,7 @@ suite("Extension Tests", () => {
         assert.equal(actual, expected);
     });
 
-    test("Get Parent Class - Kebab Case (block)", () => {
+    test("Get Preceding Class - Kebab Case (block)", () => {
         let html = `
             <div class="body-class">
                 <div class="body-class__child-element"></div>
@@ -206,7 +206,7 @@ suite("Extension Tests", () => {
         assert.equal(actual, expected);
     });
 
-    test("Get Parent Class - Camel Case (block)", () => {
+    test("Get Preceding Class - Camel Case (block)", () => {
         let html = `
             <div class="bodyClass">
                 <div class="bodyClass__childElement"></div>
@@ -221,7 +221,7 @@ suite("Extension Tests", () => {
         assert.equal(actual, expected);
     });
 
-    test("Get Parent Class - Pascal Case (block)", () => {
+    test("Get Preceding Class - Pascal Case (block)", () => {
         let html = `
             <div class="BodyClass">
                 <div class="BodyClass__ChildElement"></div>
@@ -235,7 +235,7 @@ suite("Extension Tests", () => {
         assert.equal(actual, expected);
     });
 
-    test("Get Parent Class - Snake Case (block)", () => {
+    test("Get Preceding Class - Snake Case (block)", () => {
         let html = `
             <div class="body_class">
                 <div class="body_class__child_element"></div>
@@ -252,7 +252,7 @@ suite("Extension Tests", () => {
         assert.equal(actual, expected);
     });
 
-    test("Get Parent Class - Kebab Case (element)", () => {
+    test("Get Preceding Class - Kebab Case (element)", () => {
         let html = `
             <div class="body-class">
                 <div class="body-class__child-element"></div>
@@ -267,7 +267,7 @@ suite("Extension Tests", () => {
         assert.equal(actual, expected);
     });
 
-    test("Get Parent Class - Camel Case (element)", () => {
+    test("Get Preceding Class - Camel Case (element)", () => {
         let html = `
             <div class="bodyClass">
                 <div class="bodyClass__childElement"></div>
@@ -282,7 +282,7 @@ suite("Extension Tests", () => {
         assert.equal(actual, expected);
     });
 
-    test("Get Parent Class - Pascal Case (element)", () => {
+    test("Get Preceding Class - Pascal Case (element)", () => {
         let html = `
             <div class="BodyClass">
                 <div class="BodyClass__ChildElement"></div>
@@ -296,7 +296,7 @@ suite("Extension Tests", () => {
         assert.equal(actual, expected);
     });
 
-    test("Get Parent Class - Snake Case (element)", () => {
+    test("Get Preceding Class - Snake Case (element)", () => {
         let html = `
             <div class="body_class">
                 <div class="body_class__child_element"></div>
@@ -314,8 +314,8 @@ suite("Extension Tests", () => {
     });
 
     test("Convert Class - Kebab => Snake", () => {
-        let inputClassName = "test-class";
-        let expected = "test_class";
+        let inputClassName = "test-class__test-child--modi-fier";
+        let expected = "test_class__test_child--modif_ier";
         let actual = bemHelper.convertClass(
             inputClassName,
             bemHelper.ClassNameCases.Snake
@@ -324,8 +324,8 @@ suite("Extension Tests", () => {
     });
 
     test("Convert Class - Kebab => Pascal", () => {
-        let inputClassName = "test-class";
-        let expected = "TestClass";
+        let inputClassName = "test-class__test-child--modi-fier";
+        let expected = "TestClass__TestChild--ModifiFier";
         let actual = bemHelper.convertClass(
             inputClassName,
             bemHelper.ClassNameCases.Pascal
@@ -334,8 +334,8 @@ suite("Extension Tests", () => {
     });
 
     test("Convert Class - Kebab => Camel", () => {
-        let inputClassName = "test-class";
-        let expected = "testClass";
+        let inputClassName = "test-class__test-child--modi-fier";
+        let expected = "testClass__testChild--modiFier";
         let actual = bemHelper.convertClass(
             inputClassName,
             bemHelper.ClassNameCases.CamelCase
@@ -344,8 +344,8 @@ suite("Extension Tests", () => {
     });
 
     test("Convert Class - Snake => Kebab", () => {
-        let inputClassName = "test_class";
-        let expected = "test-class";
+        let inputClassName = "test_class__test_child--modi_fier";
+        let expected = "test-class__test-child--modi-fier";
         let actual = bemHelper.convertClass(
             inputClassName,
             bemHelper.ClassNameCases.Kebab
@@ -354,8 +354,8 @@ suite("Extension Tests", () => {
     });
 
     test("Convert Class - Snake => Pascal", () => {
-        let inputClassName = "test_class";
-        let expected = "TestClass";
+        let inputClassName = "test_class__test_child--modi_fier";
+        let expected = "TestClass__TestChild--ModiFier";
         let actual = bemHelper.convertClass(
             inputClassName,
             bemHelper.ClassNameCases.Pascal
@@ -364,8 +364,8 @@ suite("Extension Tests", () => {
     });
 
     test("Convert Class - Snake => Camel", () => {
-        let inputClassName = "test_class";
-        let expected = "testClass";
+        let inputClassName = "test_class__test_child--modi_fier";
+        let expected = "testClass__testChild--modiFier";
         let actual = bemHelper.convertClass(
             inputClassName,
             bemHelper.ClassNameCases.CamelCase
@@ -374,8 +374,8 @@ suite("Extension Tests", () => {
     });
 
     test("Convert Class - Camel => Kebab", () => {
-        let inputClassName = "testClass";
-        let expected = "test-class";
+        let inputClassName = "testClass__testChild--modiFier";
+        let expected = "test-class__test-child--modi-fier";
         let actual = bemHelper.convertClass(
             inputClassName,
             bemHelper.ClassNameCases.Kebab
@@ -384,8 +384,8 @@ suite("Extension Tests", () => {
     });
 
     test("Convert Class - Camel => Snake", () => {
-        let inputClassName = "testClass";
-        let expected = "test_class";
+        let inputClassName = "testClass__testChild--modiFier";
+        let expected = "test_class__test_child--modi_fier";
         let actual = bemHelper.convertClass(
             inputClassName,
             bemHelper.ClassNameCases.Snake
@@ -394,8 +394,8 @@ suite("Extension Tests", () => {
     });
 
     test("Convert Class - Camel => Pascal", () => {
-        let inputClassName = "testClass";
-        let expected = "TestClass";
+        let inputClassName = "testClass__testChild--modiFier";
+        let expected = "TestClass__TestChild--ModiFier";
         let actual = bemHelper.convertClass(
             inputClassName,
             bemHelper.ClassNameCases.Pascal
@@ -404,8 +404,8 @@ suite("Extension Tests", () => {
     });
 
     test("Convert Class - Pascal => Kebab", () => {
-        let inputClassName = "TestClass";
-        let expected = "test-class";
+        let inputClassName = "TestClass__TestChild--ModiFier";
+        let expected = "test-class__test-child--modi-fier";
         let actual = bemHelper.convertClass(
             inputClassName,
             bemHelper.ClassNameCases.Kebab
@@ -414,8 +414,8 @@ suite("Extension Tests", () => {
     });
 
     test("Convert Class - Pascal => Camel", () => {
-        let inputClassName = "TestClass";
-        let expected = "testClass";
+        let inputClassName = "TestClass__TestChild--ModiFier";
+        let expected = "testClass__testChild--modiFier";
         let actual = bemHelper.convertClass(
             inputClassName,
             bemHelper.ClassNameCases.CamelCase
@@ -424,8 +424,8 @@ suite("Extension Tests", () => {
     });
 
     test("Convert Class - Pascal => Snake", () => {
-        let inputClassName = "TestClass";
-        let expected = "test_class";
+        let inputClassName = "TestClass__testChild--modiFier";
+        let expected = "test_class__test-child--modi-fier";
         let actual = bemHelper.convertClass(
             inputClassName,
             bemHelper.ClassNameCases.Snake
