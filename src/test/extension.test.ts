@@ -191,7 +191,7 @@ suite("Extension Tests", () => {
         assert.equal(actual, expected);
     });
 
-    test("Get Parent Class - Kebab Case", () => {
+    test("Get Parent Class - Kebab Case (block)", () => {
         let html = `
             <div class="body-class">
                 <div class="body-class__child-element"></div>
@@ -206,7 +206,7 @@ suite("Extension Tests", () => {
         assert.equal(actual, expected);
     });
 
-    test("Get Parent Class - Camel Case", () => {
+    test("Get Parent Class - Camel Case (block)", () => {
         let html = `
             <div class="bodyClass">
                 <div class="bodyClass__childElement"></div>
@@ -221,7 +221,7 @@ suite("Extension Tests", () => {
         assert.equal(actual, expected);
     });
 
-    test("Get Parent Class - Pascal Case", () => {
+    test("Get Parent Class - Pascal Case (block)", () => {
         let html = `
             <div class="BodyClass">
                 <div class="BodyClass__ChildElement"></div>
@@ -235,7 +235,7 @@ suite("Extension Tests", () => {
         assert.equal(actual, expected);
     });
 
-    test("Get Parent Class - Snake Case", () => {
+    test("Get Parent Class - Snake Case (block)", () => {
         let html = `
             <div class="body_class">
                 <div class="body_class__child_element"></div>
@@ -249,6 +249,67 @@ suite("Extension Tests", () => {
         `;
         let actual = bemHelper.getParentClassName(html, false);
         let expected = "body_class_2";
+        assert.equal(actual, expected);
+    });
+
+    test("Get Parent Class - Kebab Case (element)", () => {
+        let html = `
+            <div class="body-class">
+                <div class="body-class__child-element"></div>
+                <div class="body-class__another-child"></div>
+                <div class="body-class__child-element body-class__child-element--modified"></div>
+            </div>
+            <div class="body-class-2">
+                <div class="body-class-2__child-1"></div>
+        `;
+        let actual = bemHelper.getParentClassName(html, true);
+        let expected = "body-class-2__child-1";
+        assert.equal(actual, expected);
+    });
+
+    test("Get Parent Class - Camel Case (element)", () => {
+        let html = `
+            <div class="bodyClass">
+                <div class="bodyClass__childElement"></div>
+                <div class="bodyClass__anotherChild"></div>
+                <div class="bodyClass__childElement bodyClass__childElement--modified"></div>
+            </div>
+            <div class="bodyClass-2">
+                <div class="bodyClass-2__child-1"></div>
+        `;
+        let actual = bemHelper.getParentClassName(html, true);
+        let expected = "bodyClass-2__child-1";
+        assert.equal(actual, expected);
+    });
+
+    test("Get Parent Class - Pascal Case (element)", () => {
+        let html = `
+            <div class="BodyClass">
+                <div class="BodyClass__ChildElement"></div>
+                <div class="BodyClass__AnotherChild"></div>
+            </div>
+            <div class="BodyClass-2">
+                    <div class="BodyClass-2__Child-1"></div>
+            `;
+        let actual = bemHelper.getParentClassName(html, true);
+        let expected = "BodyClass-2__Child-1";
+        assert.equal(actual, expected);
+    });
+
+    test("Get Parent Class - Snake Case (element)", () => {
+        let html = `
+            <div class="body_class">
+                <div class="body_class__child_element"></div>
+                <div class="body_class__another_child"></div>
+                <div
+                    class="body_class__child_element body_class__child_element--modified"
+                ></div>
+            </div>
+            <div class="body_class_2">
+                <div class="body_class_2__child_1"></div>
+        `;
+        let actual = bemHelper.getParentClassName(html, true);
+        let expected = "body_class_2__child_1";
         assert.equal(actual, expected);
     });
 
