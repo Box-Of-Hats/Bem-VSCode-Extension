@@ -505,16 +505,18 @@ export function convertClassToCaseCommand() {
 export function activate(context: vscode.ExtensionContext) {
     registerCommands(context);
     registerDiagnostics(context);
-    registerCodeActions(context);
-}
+    //registerCodeActions(context);
 
-function registerCodeActions(context: vscode.ExtensionContext) {
-    // context.subscriptions.push(
-    //     vscode.languages.registerCodeActionsProvider(
-    //         { pattern: "**/*.*", scheme: "file" },
-    //         new CodeActionProvider()
-    //     )
-    // );
+    context.subscriptions.push(
+        vscode.languages.registerCodeActionsProvider(
+            "markdown",
+            new BemHelperCodeActionsProvider(),
+            {
+                providedCodeActionKinds:
+                    BemHelperCodeActionsProvider.providedCodeActionKinds
+            }
+        )
+    );
 }
 
 function registerDiagnostics(context: vscode.ExtensionContext) {
@@ -687,3 +689,82 @@ function registerCommands(context: vscode.ExtensionContext) {
 exports.activate = activate;
 
 export function deactivate() {}
+
+/////////////////////////////////
+
+/**
+ * Provides code actions for converting :) to an smiley emoji.
+ */
+export class BemHelperCodeActionsProvider implements vscode.CodeActionProvider {
+    public static readonly providedCodeActionKinds = [
+        vscode.CodeActionKind.QuickFix
+    ];
+
+    public provideCodeActions(
+        document: vscode.TextDocument,
+        range: vscode.Range
+    ): vscode.CodeAction[] | undefined {
+        if (!this.shouldDisplayQuickFix(document, range)) {
+            return;
+        }
+
+        const replaceWithSmileyCatFix = this.createFix(document, range, "😺");
+
+        const replaceWithSmileyFix = this.createFix(document, range, "😀");
+        // Marking a single fix as `preferred` means that users can apply it with a
+        // single keyboard shortcut using the `Auto Fix` command.
+        replaceWithSmileyFix.isPreferred = true;
+
+        // let classNames = getClasses(document.getText(range));
+        // let oldClassName = "";
+        // if (classNames) {
+        //     oldClassName = classNames[0];
+        // }
+        // let kebabClassName = convertClass(oldClassName, ClassNameCases.Kebab);
+
+        // const replaceWithSmileyHankyFix = this.createFix(
+        //     document,
+        //     range,
+        //     kebabClassName
+        // );
+
+        const replaceWithSmileyHankyFix = this.createFix(
+            document,
+            range,
+            "Biggest Yeet"
+        );
+
+        return [
+            replaceWithSmileyCatFix,
+            replaceWithSmileyFix,
+            replaceWithSmileyHankyFix
+        ];
+    }
+
+    private shouldDisplayQuickFix(
+        document: vscode.TextDocument,
+        range: vscode.Range
+    ) {
+        const start = range.start;
+        const line = document.lineAt(start.line);
+        return line.text.includes("class=");
+    }
+
+    private createFix(
+        document: vscode.TextDocument,
+        range: vscode.Range,
+        replacementString: string
+    ): vscode.CodeAction {
+        const fix = new vscode.CodeAction(
+            `Convert to ${replacementString}`,
+            vscode.CodeActionKind.QuickFix
+        );
+        fix.edit = new vscode.WorkspaceEdit();
+        fix.edit.replace(
+            document.uri,
+            new vscode.Range(range.start, range.start.translate(0, 2)),
+            replacementString
+        );
+        return fix;
+    }
+}
