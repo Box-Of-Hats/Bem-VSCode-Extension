@@ -134,7 +134,20 @@ export function getPrecedingClassName(html: string, matchElements: boolean) {
 }
 
 export function convertClass(sourceClass: string, toClassType: ClassNameCases) {
-    return sourceClass;
+    let outputClass = sourceClass;
+    switch (toClassType) {
+        case ClassNameCases.Kebab:
+            break;
+        case ClassNameCases.Snake:
+            break;
+        case ClassNameCases.CamelCase:
+            break;
+        case ClassNameCases.Pascal:
+            break;
+        default:
+            break;
+    }
+    return outputClass;
 }
 
 //Is a class name following BEM conventions?
@@ -145,7 +158,10 @@ function isBemClass(className: string): boolean {
 }
 
 //Check if a className is in a given case
-export function isCaseMatch(className: string, caseType: string): boolean {
+export function isCaseMatch(
+    className: string,
+    caseType: ClassNameCases
+): boolean {
     className = className.replace(/__/g, "").replace(/--/g, "");
     let allowedClassNamePattern;
     switch (caseType) {
@@ -230,7 +246,7 @@ function getClassNameDepthProblems(
 function getClassNameCaseProblems(
     html: string,
     activeEditor: vscode.TextEditor,
-    casing: string
+    casing: ClassNameCases
 ) {
     let errors = new Array();
     let classes = getClasses(html);
@@ -317,10 +333,11 @@ function updateDiagnostics(
 
     //Verify class name cases
     let acceptedClassNameCase:
-        | string
+        | ClassNameCases
         | undefined = vscode.workspace
         .getConfiguration()
         .get("bemHelper.classNameCase");
+
     if (acceptedClassNameCase) {
         editorHighlights = editorHighlights.concat(
             getClassNameCaseProblems(

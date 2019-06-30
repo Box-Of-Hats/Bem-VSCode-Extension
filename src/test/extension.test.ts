@@ -438,21 +438,81 @@ suite("Extension Tests", () => {
         let camelClass = "camelClass__elem--modIfier";
         let kebabClass = "kebab-class__elem--mod-ifier";
         let snakeClass = "snake_class__elem__mod_ifier";
-        assert.equal(bemHelper.isCaseMatch(camelClass, "camel"), true);
-        assert.equal(bemHelper.isCaseMatch(camelClass, "kebab"), false);
-        assert.equal(bemHelper.isCaseMatch(camelClass, "pascal"), false);
-        assert.equal(bemHelper.isCaseMatch(camelClass, "snake"), false);
-        assert.equal(bemHelper.isCaseMatch(kebabClass, "camel"), false);
-        assert.equal(bemHelper.isCaseMatch(kebabClass, "kebab"), true);
-        assert.equal(bemHelper.isCaseMatch(kebabClass, "pascal"), false);
-        assert.equal(bemHelper.isCaseMatch(kebabClass, "snake"), false);
-        assert.equal(bemHelper.isCaseMatch(pascalClass, "camel"), false);
-        assert.equal(bemHelper.isCaseMatch(pascalClass, "kebab"), false);
-        assert.equal(bemHelper.isCaseMatch(pascalClass, "pascal"), true);
-        assert.equal(bemHelper.isCaseMatch(pascalClass, "snake"), false);
-        assert.equal(bemHelper.isCaseMatch(snakeClass, "camel"), false);
-        assert.equal(bemHelper.isCaseMatch(snakeClass, "kebab"), false);
-        assert.equal(bemHelper.isCaseMatch(snakeClass, "pascal"), false);
-        assert.equal(bemHelper.isCaseMatch(snakeClass, "snake"), true);
+        assert.equal(
+            bemHelper.isCaseMatch(
+                camelClass,
+                bemHelper.ClassNameCases.CamelCase
+            ),
+            true
+        );
+        assert.equal(
+            bemHelper.isCaseMatch(camelClass, bemHelper.ClassNameCases.Kebab),
+            false
+        );
+        assert.equal(
+            bemHelper.isCaseMatch(camelClass, bemHelper.ClassNameCases.Pascal),
+            false
+        );
+        assert.equal(
+            bemHelper.isCaseMatch(camelClass, bemHelper.ClassNameCases.Snake),
+            false
+        );
+        assert.equal(
+            bemHelper.isCaseMatch(
+                kebabClass,
+                bemHelper.ClassNameCases.CamelCase
+            ),
+            false
+        );
+        assert.equal(
+            bemHelper.isCaseMatch(kebabClass, bemHelper.ClassNameCases.Kebab),
+            true
+        );
+        assert.equal(
+            bemHelper.isCaseMatch(kebabClass, bemHelper.ClassNameCases.Pascal),
+            false
+        );
+        assert.equal(
+            bemHelper.isCaseMatch(kebabClass, bemHelper.ClassNameCases.Snake),
+            false
+        );
+        assert.equal(
+            bemHelper.isCaseMatch(
+                pascalClass,
+                bemHelper.ClassNameCases.CamelCase
+            ),
+            false
+        );
+        assert.equal(
+            bemHelper.isCaseMatch(pascalClass, bemHelper.ClassNameCases.Kebab),
+            false
+        );
+        assert.equal(
+            bemHelper.isCaseMatch(pascalClass, bemHelper.ClassNameCases.Pascal),
+            true
+        );
+        assert.equal(
+            bemHelper.isCaseMatch(pascalClass, bemHelper.ClassNameCases.Snake),
+            false
+        );
+        assert.equal(
+            bemHelper.isCaseMatch(
+                snakeClass,
+                bemHelper.ClassNameCases.CamelCase
+            ),
+            false
+        );
+        assert.equal(
+            bemHelper.isCaseMatch(snakeClass, bemHelper.ClassNameCases.Kebab),
+            false
+        );
+        assert.equal(
+            bemHelper.isCaseMatch(snakeClass, bemHelper.ClassNameCases.Pascal),
+            false
+        );
+        assert.equal(
+            bemHelper.isCaseMatch(snakeClass, bemHelper.ClassNameCases.Snake),
+            true
+        );
     });
 });
