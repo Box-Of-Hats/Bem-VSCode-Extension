@@ -23,6 +23,14 @@
             "isBackground": false,
             "group": "none",
             "problemMatcher": []
+        },
+        {
+            "label": "npm: compile",
+            "type": "shell",
+            "command": "npm run compile",
+            "isBackground": true,
+            "group": "test",
+            "problemMatcher": []
         }
     ]
 }
