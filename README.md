@@ -36,4 +36,4 @@ If you don't like fancy pre-processors, you can also generate plain CSS.
 
 ## Known issues
 
--   Classes wont be discovered if they contain \_ characters.
+-   Classes wont be discovered if they contain \_ characters when inserting elements.
