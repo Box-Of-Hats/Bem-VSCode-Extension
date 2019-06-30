@@ -28,7 +28,15 @@
             "label": "npm: compile",
             "type": "shell",
             "command": "npm run compile",
-            "isBackground": true,
+            "isBackground": false,
+            "presentation": {
+                "echo": false,
+                "reveal": "never",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": false
+            },
             "group": "test",
             "problemMatcher": []
         }
