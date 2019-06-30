@@ -470,43 +470,35 @@ export function convertClassToCaseCommand() {
     }
 
     vscode.window
-        .showQuickPick(["scss", "less", "css"], {
-            placeHolder: "Choose a type of stylesheet to generate"
-        })
-        .then(stylesheetLanguage => {
-            if (!stylesheetLanguage) {
-                vscode.window.showErrorMessage("No stylesheet type selected.");
+        .showQuickPick(
+            [
+                ClassNameCases.Kebab.valueOf(),
+                ClassNameCases.Snake.valueOf(),
+                ClassNameCases.Pascal.valueOf(),
+                ClassNameCases.CamelCase.valueOf()
+            ],
+            {
+                placeHolder: "Choose a class case"
+            }
+        )
+        .then(caseType => {
+            if (!caseType) {
+                vscode.window.showErrorMessage("No class case selected.");
                 return;
             }
-            let infoMessage = vscode.window.setStatusBarMessage(
-                `Generating ${stylesheetLanguage}...`
-            );
-
-            let documentText = textEditor!.document.getText();
-            let classes = getClasses(documentText);
-            if (!classes) {
+            if (!textEditor) {
                 return;
             }
-            let stylesheet = generateStyleSheet(
-                classes,
-                stylesheetLanguage === "css"
+            let selectionText = textEditor.document.getText(
+                textEditor.selection
             );
 
-            vscode.workspace
-                .openTextDocument({
-                    language: stylesheetLanguage,
-                    content: stylesheet
-                })
-                .then(doc => {
-                    vscode.window
-                        .showTextDocument(doc)
-                        .then(e => {
-                            vscode.commands.executeCommand(
-                                "editor.action.formatDocument"
-                            );
-                        })
-                        .then(infoMessage.dispose());
-                });
+            let newClassname = convertClass(selectionText, <ClassNameCases>(
+                caseType
+            ));
+            textEditor.insertSnippet(
+                new vscode.SnippetString(`${newClassname}`)
+            );
         });
 }
 
