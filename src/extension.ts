@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 
-enum ClassNameCases {
+export enum ClassNameCases {
     Any = "any",
     Kebab = "kebab",
     Snake = "snake",
@@ -131,6 +131,10 @@ export function getPrecedingClassName(html: string, matchElements: boolean) {
     return classNameMatches[classNameMatches.length - 1]
         .split("--")[0]
         .split(" ")[0];
+}
+
+export function convertClass(sourceClass: string, toClassType: ClassNameCases) {
+    return sourceClass;
 }
 
 //Is a class name following BEM conventions?

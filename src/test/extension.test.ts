@@ -313,6 +313,126 @@ suite("Extension Tests", () => {
         assert.equal(actual, expected);
     });
 
+    test("Convert Class - Kebab => Snake", () => {
+        let inputClassName = "test-class";
+        let expected = "test_class";
+        let actual = bemHelper.convertClass(
+            inputClassName,
+            bemHelper.ClassNameCases.Snake
+        );
+        assert.equal(actual, expected);
+    });
+
+    test("Convert Class - Kebab => Pascal", () => {
+        let inputClassName = "test-class";
+        let expected = "TestClass";
+        let actual = bemHelper.convertClass(
+            inputClassName,
+            bemHelper.ClassNameCases.Pascal
+        );
+        assert.equal(actual, expected);
+    });
+
+    test("Convert Class - Kebab => Camel", () => {
+        let inputClassName = "test-class";
+        let expected = "testClass";
+        let actual = bemHelper.convertClass(
+            inputClassName,
+            bemHelper.ClassNameCases.CamelCase
+        );
+        assert.equal(actual, expected);
+    });
+
+    test("Convert Class - Snake => Kebab", () => {
+        let inputClassName = "test_class";
+        let expected = "test-class";
+        let actual = bemHelper.convertClass(
+            inputClassName,
+            bemHelper.ClassNameCases.Kebab
+        );
+        assert.equal(actual, expected);
+    });
+
+    test("Convert Class - Snake => Pascal", () => {
+        let inputClassName = "test_class";
+        let expected = "TestClass";
+        let actual = bemHelper.convertClass(
+            inputClassName,
+            bemHelper.ClassNameCases.Pascal
+        );
+        assert.equal(actual, expected);
+    });
+
+    test("Convert Class - Snake => Camel", () => {
+        let inputClassName = "test_class";
+        let expected = "testClass";
+        let actual = bemHelper.convertClass(
+            inputClassName,
+            bemHelper.ClassNameCases.CamelCase
+        );
+        assert.equal(actual, expected);
+    });
+
+    test("Convert Class - Camel => Kebab", () => {
+        let inputClassName = "testClass";
+        let expected = "test-class";
+        let actual = bemHelper.convertClass(
+            inputClassName,
+            bemHelper.ClassNameCases.Kebab
+        );
+        assert.equal(actual, expected);
+    });
+
+    test("Convert Class - Camel => Snake", () => {
+        let inputClassName = "testClass";
+        let expected = "test_class";
+        let actual = bemHelper.convertClass(
+            inputClassName,
+            bemHelper.ClassNameCases.Snake
+        );
+        assert.equal(actual, expected);
+    });
+
+    test("Convert Class - Camel => Pascal", () => {
+        let inputClassName = "testClass";
+        let expected = "TestClass";
+        let actual = bemHelper.convertClass(
+            inputClassName,
+            bemHelper.ClassNameCases.Pascal
+        );
+        assert.equal(actual, expected);
+    });
+
+    test("Convert Class - Pascal => Kebab", () => {
+        let inputClassName = "TestClass";
+        let expected = "test-class";
+        let actual = bemHelper.convertClass(
+            inputClassName,
+            bemHelper.ClassNameCases.Kebab
+        );
+        assert.equal(actual, expected);
+    });
+
+    test("Convert Class - Pascal => Camel", () => {
+        let inputClassName = "TestClass";
+        let expected = "testClass";
+        let actual = bemHelper.convertClass(
+            inputClassName,
+            bemHelper.ClassNameCases.CamelCase
+        );
+        assert.equal(actual, expected);
+    });
+
+    test("Convert Class - Pascal => Snake", () => {
+        let inputClassName = "TestClass";
+        let expected = "test_class";
+        let actual = bemHelper.convertClass(
+            inputClassName,
+            bemHelper.ClassNameCases.Snake
+        );
+        assert.equal(actual, expected);
+    });
+
     test("Class Name Case Matching", () => {
         let pascalClass = "PascalClass__Elem--ModIfier";
         let camelClass = "camelClass__elem--modIfier";
