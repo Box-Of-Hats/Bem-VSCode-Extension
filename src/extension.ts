@@ -14,33 +14,6 @@ interface BemClass {
     modifier?: string;
 }
 
-//#region code action provider
-
-// export class CodeActionProvider implements vscode.CodeActionProvider {
-//     provideCodeActions(
-//         document: vscode.TextDocument,
-//         range: vscode.Range | vscode.Selection,
-//         context: vscode.CodeActionContext,
-//         token: vscode.CancellationToken
-//     ): vscode.ProviderResult<(vscode.Command | vscode.CodeAction)[]> {
-//         const editor = vscode.window.activeTextEditor;
-//         if (!editor) {
-//             return [];
-//         }
-//         const selectedText = editor.document.getText(editor.selection);
-//         const codeActions = [];
-//         if (bemCodeActions.isCodeActionAvailable(selectedText)) {
-//             codeActions.push({
-//                 command: "extension.convertClassToCase",
-//                 title: "Convert class to case"
-//             });
-//         }
-//         return codeActions;
-//     }
-// }
-
-//#endregion
-
 //#region methods
 
 //Generate a stylesheet from a list of classes.
