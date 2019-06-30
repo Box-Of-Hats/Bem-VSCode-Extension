@@ -1,4 +1,5 @@
 import * as vscode from "vscode";
+// import * as bemCodeActions from "./codeActions";
 
 export enum ClassNameCases {
     Any = "any",
@@ -13,6 +14,33 @@ interface BemClass {
     element?: string;
     modifier?: string;
 }
+
+//#region code action provider
+
+// export class CodeActionProvider implements vscode.CodeActionProvider {
+//     provideCodeActions(
+//         document: vscode.TextDocument,
+//         range: vscode.Range | vscode.Selection,
+//         context: vscode.CodeActionContext,
+//         token: vscode.CancellationToken
+//     ): vscode.ProviderResult<(vscode.Command | vscode.CodeAction)[]> {
+//         const editor = vscode.window.activeTextEditor;
+//         if (!editor) {
+//             return [];
+//         }
+//         const selectedText = editor.document.getText(editor.selection);
+//         const codeActions = [];
+//         if (bemCodeActions.isCodeActionAvailable(selectedText)) {
+//             codeActions.push({
+//                 command: "extension.convertClassToCase",
+//                 title: "Convert class to case"
+//             });
+//         }
+//         return codeActions;
+//     }
+// }
+
+//#endregion
 
 //#region methods
 
@@ -197,7 +225,10 @@ function convertStringToCase(word: string, toClassType: ClassNameCases) {
         .join("")
         .toLowerCase()
         .trim()
-        .split(" ");
+        .split(" ")
+        .filter(word => {
+            return word;
+        });
 
     switch (toClassType) {
         case ClassNameCases.Kebab:
@@ -459,6 +490,16 @@ function updateDiagnostics(
 export function activate(context: vscode.ExtensionContext) {
     registerCommands(context);
     registerDiagnostics(context);
+    registerCodeActions(context);
+}
+
+function registerCodeActions(context: vscode.ExtensionContext) {
+    // context.subscriptions.push(
+    //     vscode.languages.registerCodeActionsProvider(
+    //         { pattern: "**/*.*", scheme: "file" },
+    //         new CodeActionProvider()
+    //     )
+    // );
 }
 
 function registerDiagnostics(context: vscode.ExtensionContext) {
@@ -619,6 +660,51 @@ function registerCommands(context: vscode.ExtensionContext) {
                                 })
                                 .then(infoMessage.dispose());
                         });
+                });
+        }),
+
+        vscode.commands.registerCommand("extension.convertClassToCase", () => {
+            let textEditor = vscode.window.activeTextEditor;
+
+            if (!textEditor) {
+                vscode.window.showErrorMessage(
+                    "No active text editor. Please open a file"
+                );
+                return;
+            }
+
+            vscode.window
+                .showQuickPick(
+                    [
+                        ClassNameCases.Kebab.valueOf(),
+                        ClassNameCases.Snake.valueOf(),
+                        ClassNameCases.Pascal.valueOf(),
+                        ClassNameCases.CamelCase.valueOf()
+                    ],
+                    {
+                        placeHolder: "Choose a class case"
+                    }
+                )
+                .then(caseType => {
+                    if (!caseType) {
+                        vscode.window.showErrorMessage(
+                            "No class case selected."
+                        );
+                        return;
+                    }
+                    if (!textEditor) {
+                        return;
+                    }
+                    let selectionText = textEditor.document.getText(
+                        textEditor.selection
+                    );
+
+                    let newClassname = convertClass(selectionText, <
+                        ClassNameCases
+                    >caseType);
+                    textEditor.insertSnippet(
+                        new vscode.SnippetString(`${newClassname}`)
+                    );
                 });
         })
     );

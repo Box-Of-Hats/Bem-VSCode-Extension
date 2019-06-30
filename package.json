@@ -116,6 +116,10 @@
             {
                 "command": "extension.generateStyleSheet",
                 "title": "BEM: Generate Stylesheet"
+            },
+            {
+                "command": "extension.convertClassToCase",
+                "title": "BEM: Convert class case"
             }
         ],
         "keybindings": [
