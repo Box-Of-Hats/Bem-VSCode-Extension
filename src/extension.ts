@@ -1,5 +1,4 @@
 import * as vscode from "vscode";
-// import * as bemCodeActions from "./codeActions";
 
 export enum ClassNameCases {
     Any = "any",
@@ -487,6 +486,57 @@ function updateDiagnostics(
 
 //#endregion
 
+export function convertClassToCaseCommand() {
+    let textEditor = vscode.window.activeTextEditor;
+
+    if (!textEditor) {
+        vscode.window.showErrorMessage(
+            "No active text editor. Please open a file"
+        );
+        return;
+    }
+
+    vscode.window
+        .showQuickPick(["scss", "less", "css"], {
+            placeHolder: "Choose a type of stylesheet to generate"
+        })
+        .then(stylesheetLanguage => {
+            if (!stylesheetLanguage) {
+                vscode.window.showErrorMessage("No stylesheet type selected.");
+                return;
+            }
+            let infoMessage = vscode.window.setStatusBarMessage(
+                `Generating ${stylesheetLanguage}...`
+            );
+
+            let documentText = textEditor!.document.getText();
+            let classes = getClasses(documentText);
+            if (!classes) {
+                return;
+            }
+            let stylesheet = generateStyleSheet(
+                classes,
+                stylesheetLanguage === "css"
+            );
+
+            vscode.workspace
+                .openTextDocument({
+                    language: stylesheetLanguage,
+                    content: stylesheet
+                })
+                .then(doc => {
+                    vscode.window
+                        .showTextDocument(doc)
+                        .then(e => {
+                            vscode.commands.executeCommand(
+                                "editor.action.formatDocument"
+                            );
+                        })
+                        .then(infoMessage.dispose());
+                });
+        });
+}
+
 export function activate(context: vscode.ExtensionContext) {
     registerCommands(context);
     registerDiagnostics(context);
@@ -664,48 +714,7 @@ function registerCommands(context: vscode.ExtensionContext) {
         }),
 
         vscode.commands.registerCommand("extension.convertClassToCase", () => {
-            let textEditor = vscode.window.activeTextEditor;
-
-            if (!textEditor) {
-                vscode.window.showErrorMessage(
-                    "No active text editor. Please open a file"
-                );
-                return;
-            }
-
-            vscode.window
-                .showQuickPick(
-                    [
-                        ClassNameCases.Kebab.valueOf(),
-                        ClassNameCases.Snake.valueOf(),
-                        ClassNameCases.Pascal.valueOf(),
-                        ClassNameCases.CamelCase.valueOf()
-                    ],
-                    {
-                        placeHolder: "Choose a class case"
-                    }
-                )
-                .then(caseType => {
-                    if (!caseType) {
-                        vscode.window.showErrorMessage(
-                            "No class case selected."
-                        );
-                        return;
-                    }
-                    if (!textEditor) {
-                        return;
-                    }
-                    let selectionText = textEditor.document.getText(
-                        textEditor.selection
-                    );
-
-                    let newClassname = convertClass(selectionText, <
-                        ClassNameCases
-                    >caseType);
-                    textEditor.insertSnippet(
-                        new vscode.SnippetString(`${newClassname}`)
-                    );
-                });
+            convertClassToCaseCommand();
         })
     );
 }
