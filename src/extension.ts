@@ -105,7 +105,7 @@ export function getClasses(html: string): string[] {
  *html: The html string to extract from
  *matchElements: Should the parent name include elements or just blocks?
  */
-export function getParentClassName(html: string, matchElements: boolean) {
+export function getPrecedingClassName(html: string, matchElements: boolean) {
     const classNameRegex = /class(Name)?="([a-zA-Z0-9-_]+ ?)+"/g;
 
     let matches = html.match(classNameRegex);
@@ -349,7 +349,7 @@ export function activate(context: vscode.ExtensionContext) {
                 return;
             }
 
-            let className = getParentClassName(
+            let className = getPrecedingClassName(
                 textEditor.document.getText(
                     new vscode.Range(
                         0,
@@ -386,7 +386,7 @@ export function activate(context: vscode.ExtensionContext) {
                 return;
             }
 
-            let className = getParentClassName(
+            let className = getPrecedingClassName(
                 textEditor.document.getText(
                     new vscode.Range(
                         0,

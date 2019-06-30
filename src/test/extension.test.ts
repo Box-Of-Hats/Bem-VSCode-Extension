@@ -201,7 +201,7 @@ suite("Extension Tests", () => {
             <div class="body-class-2">
                 <div class="body-class-2__child-1"></div>
         `;
-        let actual = bemHelper.getParentClassName(html, false);
+        let actual = bemHelper.getPrecedingClassName(html, false);
         let expected = "body-class-2";
         assert.equal(actual, expected);
     });
@@ -216,7 +216,7 @@ suite("Extension Tests", () => {
             <div class="bodyClass-2">
                 <div class="bodyClass-2__child-1"></div>
         `;
-        let actual = bemHelper.getParentClassName(html, false);
+        let actual = bemHelper.getPrecedingClassName(html, false);
         let expected = "bodyClass-2";
         assert.equal(actual, expected);
     });
@@ -230,7 +230,7 @@ suite("Extension Tests", () => {
             <div class="BodyClass-2">
                     <div class="BodyClass-2__Child-1"></div>
             `;
-        let actual = bemHelper.getParentClassName(html, false);
+        let actual = bemHelper.getPrecedingClassName(html, false);
         let expected = "BodyClass-2";
         assert.equal(actual, expected);
     });
@@ -247,7 +247,7 @@ suite("Extension Tests", () => {
             <div class="body_class_2">
                 <div class="body_class_2__child_1"></div>
         `;
-        let actual = bemHelper.getParentClassName(html, false);
+        let actual = bemHelper.getPrecedingClassName(html, false);
         let expected = "body_class_2";
         assert.equal(actual, expected);
     });
@@ -262,7 +262,7 @@ suite("Extension Tests", () => {
             <div class="body-class-2">
                 <div class="body-class-2__child-1"></div>
         `;
-        let actual = bemHelper.getParentClassName(html, true);
+        let actual = bemHelper.getPrecedingClassName(html, true);
         let expected = "body-class-2__child-1";
         assert.equal(actual, expected);
     });
@@ -277,7 +277,7 @@ suite("Extension Tests", () => {
             <div class="bodyClass-2">
                 <div class="bodyClass-2__child-1"></div>
         `;
-        let actual = bemHelper.getParentClassName(html, true);
+        let actual = bemHelper.getPrecedingClassName(html, true);
         let expected = "bodyClass-2__child-1";
         assert.equal(actual, expected);
     });
@@ -291,7 +291,7 @@ suite("Extension Tests", () => {
             <div class="BodyClass-2">
                     <div class="BodyClass-2__Child-1"></div>
             `;
-        let actual = bemHelper.getParentClassName(html, true);
+        let actual = bemHelper.getPrecedingClassName(html, true);
         let expected = "BodyClass-2__Child-1";
         assert.equal(actual, expected);
     });
@@ -308,7 +308,7 @@ suite("Extension Tests", () => {
             <div class="body_class_2">
                 <div class="body_class_2__child_1"></div>
         `;
-        let actual = bemHelper.getParentClassName(html, true);
+        let actual = bemHelper.getPrecedingClassName(html, true);
         let expected = "body_class_2__child_1";
         assert.equal(actual, expected);
     });
