@@ -133,16 +133,63 @@ export function getPrecedingClassName(html: string, matchElements: boolean) {
         .split(" ")[0];
 }
 
+export function getClassCaseType(className: string): ClassNameCases {
+    className = className.replace(/__/g, "").replace(/--/g, "");
+
+    if (className.match(/^[a-z0-9-]+$/)) {
+        return ClassNameCases.Kebab;
+    } else if (className.match(/^[a-z0-9_]+$/)) {
+        return ClassNameCases.Snake;
+    } else if (className.match(/^[A-Z]{1}[a-zA-Z0-9]+$/)) {
+        return ClassNameCases.Pascal;
+    } else if (className.match(/^[a-z]{1}[a-zA-Z0-9]+$/)) {
+        return ClassNameCases.CamelCase;
+    }
+    return ClassNameCases.Any;
+}
+
 export function convertClass(sourceClass: string, toClassType: ClassNameCases) {
     let outputClass = sourceClass;
+
+    let classNameWords = sourceClass
+        .replace("-", " ")
+        .replace("_", " ")
+        .split("")
+        .map(char => {
+            if (char.match(/^[A-Z]$/)) {
+                return ` ${char}`;
+            } else {
+                return char;
+            }
+        })
+        .join("")
+        .toLowerCase()
+        .trim()
+        .split(" ");
+
     switch (toClassType) {
         case ClassNameCases.Kebab:
+            outputClass = classNameWords.join("-");
             break;
         case ClassNameCases.Snake:
+            outputClass = classNameWords.join("_");
             break;
         case ClassNameCases.CamelCase:
+            outputClass = classNameWords
+                .map((word, index) => {
+                    if (index === 0) {
+                        return word;
+                    }
+                    return `${word[0].toUpperCase()}${word.slice(1)}`;
+                })
+                .join("");
             break;
         case ClassNameCases.Pascal:
+            outputClass = classNameWords
+                .map(word => {
+                    return `${word[0].toUpperCase()}${word.slice(1)}`;
+                })
+                .join("");
             break;
         default:
             break;
