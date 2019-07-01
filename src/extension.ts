@@ -509,7 +509,7 @@ export function activate(context: vscode.ExtensionContext) {
 
     context.subscriptions.push(
         vscode.languages.registerCodeActionsProvider(
-            "markdown",
+            "*",
             new BemHelperCodeActionsProvider(),
             {
                 providedCodeActionKinds:
@@ -707,38 +707,93 @@ export class BemHelperCodeActionsProvider implements vscode.CodeActionProvider {
         if (!this.shouldDisplayQuickFix(document, range)) {
             return;
         }
-
-        const replaceWithSmileyCatFix = this.createFix(document, range, "😺");
-
-        const replaceWithSmileyFix = this.createFix(document, range, "😀");
+        //simple example
+        //const replaceWithSmileyFix = this.createFix(document, range, "😀", 2);
         // Marking a single fix as `preferred` means that users can apply it with a
         // single keyboard shortcut using the `Auto Fix` command.
-        replaceWithSmileyFix.isPreferred = true;
+        //replaceWithSmileyFix.isPreferred = true;
 
-        // let classNames = getClasses(document.getText(range));
-        // let oldClassName = "";
-        // if (classNames) {
-        //     oldClassName = classNames[0];
-        // }
-        // let kebabClassName = convertClass(oldClassName, ClassNameCases.Kebab);
+        let fixes: vscode.CodeAction[] = [];
 
-        // const replaceWithSmileyHankyFix = this.createFix(
-        //     document,
-        //     range,
-        //     kebabClassName
-        // );
+        let acceptedClassNameCase:
+            | ClassNameCases
+            | undefined = vscode.workspace
+            .getConfiguration()
+            .get("bemHelper.classNameCase");
 
-        const replaceWithSmileyHankyFix = this.createFix(
-            document,
-            range,
-            "Biggest Yeet"
-        );
+        if (!acceptedClassNameCase) {
+            // No case is set so provide all quick fixes
+            fixes = [
+                ClassNameCases.Kebab,
+                ClassNameCases.Snake,
+                ClassNameCases.CamelCase,
+                ClassNameCases.Pascal
+            ].map(textCase => {
+                const start = range.start;
+                const line = document.lineAt(start.line);
+                let classNames = getClasses(line.text);
+                let oldClassName = "";
+                if (classNames) {
+                    oldClassName = classNames[0];
+                }
+                if (!oldClassName) {
+                    oldClassName = "";
+                }
+                let convertedClassName = convertClass(oldClassName, textCase);
+                const classStringStart = 'class="';
+                let classNameRange = new vscode.Range(
+                    new vscode.Position(
+                        range.start.line,
+                        line.text.indexOf(classStringStart) +
+                            classStringStart.length
+                    ),
+                    range.end
+                );
 
-        return [
-            replaceWithSmileyCatFix,
-            replaceWithSmileyFix,
-            replaceWithSmileyHankyFix
-        ];
+                let fix = this.createFix(
+                    document,
+                    classNameRange,
+                    convertedClassName,
+                    oldClassName.length
+                );
+                return fix;
+            });
+        } else {
+            // An accepted class name is provided so only give that as a quickfix option
+            const start = range.start;
+            const line = document.lineAt(start.line);
+            let classNames = getClasses(line.text);
+            let oldClassName = "";
+            if (classNames) {
+                oldClassName = classNames[0];
+            }
+            if (!oldClassName) {
+                oldClassName = "";
+            }
+            let convertedClassName = convertClass(
+                oldClassName,
+                acceptedClassNameCase
+            );
+            const classStringStart = 'class="';
+            let classNameRange = new vscode.Range(
+                new vscode.Position(
+                    range.start.line,
+                    line.text.indexOf(classStringStart) +
+                        classStringStart.length
+                ),
+                range.end
+            );
+
+            fixes.push(
+                this.createFix(
+                    document,
+                    classNameRange,
+                    convertedClassName,
+                    oldClassName.length
+                )
+            );
+        }
+        return fixes;
     }
 
     private shouldDisplayQuickFix(
@@ -753,7 +808,8 @@ export class BemHelperCodeActionsProvider implements vscode.CodeActionProvider {
     private createFix(
         document: vscode.TextDocument,
         range: vscode.Range,
-        replacementString: string
+        replacementString: string,
+        overwriteLength: number
     ): vscode.CodeAction {
         const fix = new vscode.CodeAction(
             `Convert to ${replacementString}`,
@@ -762,7 +818,10 @@ export class BemHelperCodeActionsProvider implements vscode.CodeActionProvider {
         fix.edit = new vscode.WorkspaceEdit();
         fix.edit.replace(
             document.uri,
-            new vscode.Range(range.start, range.start.translate(0, 2)),
+            new vscode.Range(
+                range.start,
+                range.start.translate(0, overwriteLength)
+            ),
             replacementString
         );
         return fix;
