@@ -106,31 +106,35 @@
         ],
         "commands": [
             {
-                "command": "extension.insertBemElement",
-                "title": "BEM: Insert Element"
+                "command": "extension.bemHelper.insertElement",
+                "title": "BEM Helper: Insert Element"
             },
             {
-                "command": "extension.insertBemModifier",
-                "title": "BEM: Insert Modifier"
+                "command": "extension.bemHelper.insertModifiedElement",
+                "title": "BEM Helper: Insert Modifier"
             },
             {
-                "command": "extension.generateStyleSheet",
-                "title": "BEM: Generate Stylesheet"
+                "command": "extension.bemHelper.generateStyleSheet",
+                "title": "BEM Helper: Generate Stylesheet"
+            },
+            {
+                "command": "extension.bemHelper.convertSelectionToCase",
+                "title": "BEM Helper: Convert Selection to Case"
             }
         ],
         "keybindings": [
             {
-                "command": "extension.insertBemElement",
+                "command": "extension.bemHelper.insertElement",
                 "key": "alt+b e",
                 "when": "editorTextFocus"
             },
             {
-                "command": "extension.insertBemModifier",
+                "command": "extension.bemHelper.insertModifiedElement",
                 "key": "alt+b m",
                 "when": "editorTextFocus"
             },
             {
-                "command": "extension.generateStyleSheet",
+                "command": "extension.bemHelper.generateStyleSheet",
                 "key": "alt+b s",
                 "when": "editorTextFocus"
             }

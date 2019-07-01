@@ -13,6 +13,9 @@ export interface BemClass {
 }
 
 export class BemHelper {
+    /*
+     * Generate a stylesheet from a list of BEM class names
+     */
     public generateStyleSheet(classNames: string[], flat: boolean): string {
         let styleSheet = ``;
         let styles = {};
@@ -102,11 +105,15 @@ export class BemHelper {
         }
         return classNames;
     }
-    /*Get the last class name from a block of html
-     *html: The html string to extract from
-     *matchElements: Should the parent name include elements or just blocks?
+    /*
+     * Get the last class name from a block of html
+     * html: The html string to extract from
+     * matchElements: Should the parent name include elements or just blocks?
      */
-    public getPrecedingClassName(html: string, matchElements: boolean): string {
+    public getPrecedingClassName(
+        html: string,
+        includeElements: boolean
+    ): string {
         const classNameRegex = /class(Name)?="([a-zA-Z0-9-_]+ ?)+"/g;
 
         let matches = html.match(classNameRegex);
@@ -116,7 +123,7 @@ export class BemHelper {
         }
 
         //If only including blocks, remove element classes
-        matches = matchElements
+        matches = includeElements
             ? matches
             : matches.filter(match => {
                   return !match.includes("__");
@@ -134,6 +141,9 @@ export class BemHelper {
             .split(" ")[0];
     }
 
+    /*
+     * Get the case type of a classname
+     */
     public getClassCaseType(className: string): ClassNameCases {
         className = className.replace(/__/g, "").replace(/--/g, "");
 
@@ -149,8 +159,8 @@ export class BemHelper {
         return ClassNameCases.Any;
     }
     /*
-    Create a classstring from a BemClass object
-*/
+     *   Create a classstring from a BemClass object
+     */
     public createClass(bemClass: BemClass): string {
         let classString = "";
 
@@ -171,7 +181,8 @@ export class BemHelper {
         }
         return classString;
     }
-    /*Convert a string to a case
+    /*
+     * Convert a string to a case
      */
     public convertStringToCase(word: string, toClassType: ClassNameCases) {
         let outputClass = word;
@@ -225,8 +236,8 @@ export class BemHelper {
         return outputClass;
     }
     /*
-        Convert a class string to specified case
-    */
+     *   Convert a class string to specified case
+     */
     public convertClass(
         sourceClass: string,
         toClassType: ClassNameCases
@@ -249,14 +260,17 @@ export class BemHelper {
 
         return this.createClass(classElements);
     }
-    /*Is a class name following BEM conventions?
+    /*
+     * Is a class name following BEM conventions?
      */
     public isBemClass(className: string): boolean {
         return !(
             className.split("__").length > 2 || className.split("--").length > 2
         );
     }
-    //Check if a className is in a given case
+    /*
+     * Check if a className is in a given case
+     */
     public isCaseMatch(className: string, caseType: ClassNameCases): boolean {
         className = className.replace(/__/g, "").replace(/--/g, "");
         let allowedClassNamePattern;
@@ -284,9 +298,15 @@ export class BemHelper {
         }
         return true;
     }
-    // public getClassNameDepthProblems() {}
-    // public getClassNameCaseProblems() {}
-    // public getClassPropertyTitle() {}
-    // public updateDiagnostics() {}
-    // public convertClassToCaseCommand() {}
+
+    /*
+     * Get the appropriate class property word for a given language
+     */
+    public getClassPropertyWord(language: string): string {
+        if (["javascriptreact", "typescriptreact"].indexOf(language) !== -1) {
+            return "className";
+        }
+
+        return "class";
+    }
 }

@@ -1,8 +1,9 @@
 import * as vscode from "vscode";
 
-import { BemHelper, ClassNameCases } from "./BemHelper";
+//import { BemHelper, ClassNameCases } from "./BemHelper";
+import { BemCommandProvider } from "./BemCommandProvider";
 
-let bemHelper = new BemHelper();
+//let bemHelper = new BemHelper();
 
 //#region methods
 
@@ -112,21 +113,6 @@ function getClassNameCaseProblems(
     return errors;
 }
 
-function getClassPropertyWord(): string {
-    let textEditor = vscode.window.activeTextEditor;
-    if (!textEditor) {
-        return "class";
-    }
-    if (
-        textEditor.document.languageId === "javascriptreact" ||
-        textEditor.document.languageId === "typescriptreact"
-    ) {
-        return "className";
-    }
-
-    return "class";
-}
-
 // Draw errors to the VScode window
 function updateDiagnostics(
     document: vscode.TextDocument,
@@ -173,49 +159,6 @@ function updateDiagnostics(
 }
 
 //#endregion
-
-export function convertClassToCaseCommand() {
-    let textEditor = vscode.window.activeTextEditor;
-
-    if (!textEditor) {
-        vscode.window.showErrorMessage(
-            "No active text editor. Please open a file"
-        );
-        return;
-    }
-
-    vscode.window
-        .showQuickPick(
-            [
-                ClassNameCases.Kebab.valueOf(),
-                ClassNameCases.Snake.valueOf(),
-                ClassNameCases.Pascal.valueOf(),
-                ClassNameCases.CamelCase.valueOf()
-            ],
-            {
-                placeHolder: "Choose a class case"
-            }
-        )
-        .then(caseType => {
-            if (!caseType) {
-                vscode.window.showErrorMessage("No class case selected.");
-                return;
-            }
-            if (!textEditor) {
-                return;
-            }
-            let selectionText = textEditor.document.getText(
-                textEditor.selection
-            );
-
-            let newClassname = bemHelper.convertClass(selectionText, <
-                ClassNameCases
-            >caseType);
-            textEditor.insertSnippet(
-                new vscode.SnippetString(`${newClassname}`)
-            );
-        });
-}
 
 export function activate(context: vscode.ExtensionContext) {
     registerCommands(context);
@@ -267,137 +210,34 @@ function registerDiagnostics(context: vscode.ExtensionContext) {
 
 // Register Commands
 function registerCommands(context: vscode.ExtensionContext) {
+    let bemCommandProvider = new BemCommandProvider();
+
     context.subscriptions.push(
-        vscode.commands.registerCommand("extension.insertBemModifier", () => {
-            let textEditor = vscode.window.activeTextEditor;
-
-            if (textEditor === undefined) {
-                vscode.window.showErrorMessage(
-                    "No active text editor. Please open a file"
-                );
-                return;
+        vscode.commands.registerCommand(
+            "extension.bemHelper.insertModifiedElement",
+            () => {
+                bemCommandProvider.insertElementAtCursor(true);
             }
-
-            let className = bemHelper.getPrecedingClassName(
-                textEditor.document.getText(
-                    new vscode.Range(
-                        0,
-                        0,
-                        textEditor.selection.active.line,
-                        textEditor.selection.active.character
-                    )
-                ),
-                true
-            );
-            if (className === null) {
-                vscode.window.showErrorMessage(
-                    "Could not find any classes in current file."
-                );
-                return;
+        ),
+        vscode.commands.registerCommand(
+            "extension.bemHelper.insertElement",
+            () => {
+                bemCommandProvider.insertElementAtCursor(false);
             }
-            let classProperty = getClassPropertyWord();
-            let tagList = vscode.workspace
-                .getConfiguration()
-                .get("bemHelper.tagList");
-            textEditor.insertSnippet(
-                new vscode.SnippetString(
-                    `<\${2|${tagList}|} ${classProperty}="${className} ${className}--$1">$0</$2>`
-                )
-            );
-        }),
-        vscode.commands.registerCommand("extension.insertBemElement", () => {
-            let textEditor = vscode.window.activeTextEditor;
-
-            if (textEditor === undefined) {
-                vscode.window.showErrorMessage(
-                    "No active text editor. Please open a file"
-                );
-                return;
+        ),
+        vscode.commands.registerCommand(
+            "extension.bemHelper.generateStyleSheet",
+            () => {
+                bemCommandProvider.generateStyleSheetForCurrentDocument();
             }
+        ),
 
-            let className = bemHelper.getPrecedingClassName(
-                textEditor.document.getText(
-                    new vscode.Range(
-                        0,
-                        0,
-                        textEditor.selection.active.line,
-                        textEditor.selection.active.character
-                    )
-                ),
-                false
-            );
-            if (className === null) {
-                vscode.window.showErrorMessage(
-                    "Could not find any classes in current file."
-                );
-                return;
+        vscode.commands.registerCommand(
+            "extension.bemHelper.convertSelectionToCase",
+            () => {
+                bemCommandProvider.convertSelectionToCase();
             }
-            let classProperty = getClassPropertyWord();
-            let tagList = vscode.workspace
-                .getConfiguration()
-                .get("bemHelper.tagList");
-            textEditor.insertSnippet(
-                new vscode.SnippetString(
-                    `<\${2|${tagList}|} ${classProperty}="${className}__$1">$0</$2>`
-                )
-            );
-        }),
-        vscode.commands.registerCommand("extension.generateStyleSheet", () => {
-            let textEditor = vscode.window.activeTextEditor;
-
-            if (!textEditor) {
-                vscode.window.showErrorMessage(
-                    "No active text editor. Please open a file"
-                );
-                return;
-            }
-
-            vscode.window
-                .showQuickPick(["scss", "less", "css"], {
-                    placeHolder: "Choose a type of stylesheet to generate"
-                })
-                .then(stylesheetLanguage => {
-                    if (!stylesheetLanguage) {
-                        vscode.window.showErrorMessage(
-                            "No stylesheet type selected."
-                        );
-                        return;
-                    }
-                    let infoMessage = vscode.window.setStatusBarMessage(
-                        `Generating ${stylesheetLanguage}...`
-                    );
-
-                    let documentText = textEditor!.document.getText();
-                    let classes = bemHelper.getClasses(documentText);
-                    if (!classes) {
-                        return;
-                    }
-                    let stylesheet = bemHelper.generateStyleSheet(
-                        classes,
-                        stylesheetLanguage === "css"
-                    );
-
-                    vscode.workspace
-                        .openTextDocument({
-                            language: stylesheetLanguage,
-                            content: stylesheet
-                        })
-                        .then(doc => {
-                            vscode.window
-                                .showTextDocument(doc)
-                                .then(e => {
-                                    vscode.commands.executeCommand(
-                                        "editor.action.formatDocument"
-                                    );
-                                })
-                                .then(infoMessage.dispose());
-                        });
-                });
-        }),
-
-        vscode.commands.registerCommand("extension.convertClassToCase", () => {
-            convertClassToCaseCommand();
-        })
+        )
     );
 }
 
