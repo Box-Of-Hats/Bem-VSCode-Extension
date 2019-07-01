@@ -147,11 +147,11 @@ export class BemCommandProvider {
                 )
             );
         } else {
+            textEditor.insertSnippet(
+                new vscode.SnippetString(
+                    `<\${2|${tagList}|} ${classProperty}="${className}__$1">$0</$2>`
+                )
+            );
         }
-        textEditor.insertSnippet(
-            new vscode.SnippetString(
-                `<\${2|${tagList}|} ${classProperty}="${className}__$1">$0</$2>`
-            )
-        );
     }
 }
