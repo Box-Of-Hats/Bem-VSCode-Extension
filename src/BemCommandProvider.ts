@@ -125,7 +125,8 @@ export class BemCommandProvider {
                     textEditor.selection.active.character
                 )
             ),
-            false
+            //If generating modified class, include elements
+            isModified
         );
         if (className === null) {
             vscode.window.showErrorMessage(
