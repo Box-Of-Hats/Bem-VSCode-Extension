@@ -362,7 +362,7 @@ suite("BemHelper Tests", () => {
         let bemHelper = new BemHelper();
         let actual = bemHelper.convertClass(
             inputClassName,
-            ClassNameCases.CamelCase
+            ClassNameCases.Camel
         );
         assert.equal(actual, expected);
     });
@@ -398,7 +398,7 @@ suite("BemHelper Tests", () => {
         let actual = bemHelper.convertClass(
             inputClassName,
 
-            ClassNameCases.CamelCase
+            ClassNameCases.Camel
         );
         assert.equal(actual, expected);
     });
@@ -458,7 +458,7 @@ suite("BemHelper Tests", () => {
         let actual = bemHelper.convertClass(
             inputClassName,
 
-            ClassNameCases.CamelCase
+            ClassNameCases.Camel
         );
         assert.equal(actual, expected);
     });
@@ -484,7 +484,7 @@ suite("BemHelper Tests", () => {
         let snakeCase = ClassNameCases.Snake;
         let kebabCase = ClassNameCases.Kebab;
         let pascalCase = ClassNameCases.Pascal;
-        let camelCase = ClassNameCases.CamelCase;
+        let camelCase = ClassNameCases.Camel;
 
         assert.equal(bemHelper.isCaseMatch(camelClass, camelCase), true);
         assert.equal(bemHelper.isCaseMatch(camelClass, kebabCase), false);

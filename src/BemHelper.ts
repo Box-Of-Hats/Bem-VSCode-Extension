@@ -2,7 +2,7 @@ export enum ClassNameCases {
     Any = "any",
     Kebab = "kebab",
     Snake = "snake",
-    CamelCase = "camel",
+    Camel = "camel",
     Pascal = "pascal"
 }
 
@@ -154,7 +154,7 @@ export class BemHelper {
         } else if (className.match(/^[A-Z]{1}[a-zA-Z0-9]+$/)) {
             return ClassNameCases.Pascal;
         } else if (className.match(/^[a-z]{1}[a-zA-Z0-9]+$/)) {
-            return ClassNameCases.CamelCase;
+            return ClassNameCases.Camel;
         }
         return ClassNameCases.Any;
     }
@@ -213,7 +213,7 @@ export class BemHelper {
             case ClassNameCases.Snake:
                 outputClass = classNameWords.join("_");
                 break;
-            case ClassNameCases.CamelCase:
+            case ClassNameCases.Camel:
                 outputClass = classNameWords
                     .map((word, index) => {
                         if (index === 0) {
@@ -286,7 +286,7 @@ export class BemHelper {
             case ClassNameCases.Pascal:
                 allowedClassNamePattern = /^[A-Z]{1}[a-zA-Z0-9]+$/;
                 break;
-            case ClassNameCases.CamelCase:
+            case ClassNameCases.Camel:
                 allowedClassNamePattern = /^[a-z]{1}[a-zA-Z0-9]+$/;
                 break;
             default:

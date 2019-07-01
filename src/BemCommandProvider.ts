@@ -23,7 +23,7 @@ export class BemCommandProvider {
                     ClassNameCases.Kebab.valueOf(),
                     ClassNameCases.Snake.valueOf(),
                     ClassNameCases.Pascal.valueOf(),
-                    ClassNameCases.CamelCase.valueOf()
+                    ClassNameCases.Camel.valueOf()
                 ],
                 {
                     placeHolder: "Choose a class case"
