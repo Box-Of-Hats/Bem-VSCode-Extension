@@ -721,7 +721,10 @@ export class BemHelperCodeActionsProvider implements vscode.CodeActionProvider {
             .getConfiguration()
             .get("bemHelper.classNameCase");
 
-        if (!acceptedClassNameCase) {
+        if (
+            !acceptedClassNameCase ||
+            acceptedClassNameCase === ClassNameCases.Any
+        ) {
             // No case is set so provide all quick fixes
             fixes = [
                 ClassNameCases.Kebab,
