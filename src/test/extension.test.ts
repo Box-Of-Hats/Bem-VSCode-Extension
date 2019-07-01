@@ -1,7 +1,7 @@
 import * as assert from "assert";
 import { BemHelper, ClassNameCases } from "../BemHelper";
 
-suite("Extension Tests", () => {
+suite("BemHelper Tests", () => {
     test("CSS Class extraction - Camel Case", () => {
         const html = `
             <body>
@@ -480,85 +480,27 @@ suite("Extension Tests", () => {
         let kebabClass = "kebab-class__elem--mod-ifier";
         let snakeClass = "snake_class__elem__mod_ifier";
         let bemHelper = new BemHelper();
-        assert.equal(
-            bemHelper.isCaseMatch(
-                camelClass,
 
-                ClassNameCases.CamelCase
-            ),
-            true
-        );
-        assert.equal(
-            bemHelper.isCaseMatch(camelClass, ClassNameCases.Kebab),
-            false
-        );
-        assert.equal(
-            bemHelper.isCaseMatch(camelClass, ClassNameCases.Pascal),
-            false
-        );
-        assert.equal(
-            bemHelper.isCaseMatch(camelClass, ClassNameCases.Snake),
-            false
-        );
-        assert.equal(
-            bemHelper.isCaseMatch(
-                kebabClass,
+        let snakeCase = ClassNameCases.Snake;
+        let kebabCase = ClassNameCases.Kebab;
+        let pascalCase = ClassNameCases.Pascal;
+        let camelCase = ClassNameCases.CamelCase;
 
-                ClassNameCases.CamelCase
-            ),
-            false
-        );
-        assert.equal(
-            bemHelper.isCaseMatch(kebabClass, ClassNameCases.Kebab),
-            true
-        );
-        assert.equal(
-            bemHelper.isCaseMatch(kebabClass, ClassNameCases.Pascal),
-            false
-        );
-        assert.equal(
-            bemHelper.isCaseMatch(kebabClass, ClassNameCases.Snake),
-            false
-        );
-        assert.equal(
-            bemHelper.isCaseMatch(
-                pascalClass,
-
-                ClassNameCases.CamelCase
-            ),
-            false
-        );
-        assert.equal(
-            bemHelper.isCaseMatch(pascalClass, ClassNameCases.Kebab),
-            false
-        );
-        assert.equal(
-            bemHelper.isCaseMatch(pascalClass, ClassNameCases.Pascal),
-            true
-        );
-        assert.equal(
-            bemHelper.isCaseMatch(pascalClass, ClassNameCases.Snake),
-            false
-        );
-        assert.equal(
-            bemHelper.isCaseMatch(
-                snakeClass,
-
-                ClassNameCases.CamelCase
-            ),
-            false
-        );
-        assert.equal(
-            bemHelper.isCaseMatch(snakeClass, ClassNameCases.Kebab),
-            false
-        );
-        assert.equal(
-            bemHelper.isCaseMatch(snakeClass, ClassNameCases.Pascal),
-            false
-        );
-        assert.equal(
-            bemHelper.isCaseMatch(snakeClass, ClassNameCases.Snake),
-            true
-        );
+        assert.equal(bemHelper.isCaseMatch(camelClass, camelCase), true);
+        assert.equal(bemHelper.isCaseMatch(camelClass, kebabCase), false);
+        assert.equal(bemHelper.isCaseMatch(camelClass, pascalCase), false);
+        assert.equal(bemHelper.isCaseMatch(camelClass, snakeCase), false);
+        assert.equal(bemHelper.isCaseMatch(kebabClass, camelCase), false);
+        assert.equal(bemHelper.isCaseMatch(kebabClass, kebabCase), true);
+        assert.equal(bemHelper.isCaseMatch(kebabClass, pascalCase), false);
+        assert.equal(bemHelper.isCaseMatch(kebabClass, snakeCase), false);
+        assert.equal(bemHelper.isCaseMatch(pascalClass, camelCase), false);
+        assert.equal(bemHelper.isCaseMatch(pascalClass, kebabCase), false);
+        assert.equal(bemHelper.isCaseMatch(pascalClass, pascalCase), true);
+        assert.equal(bemHelper.isCaseMatch(pascalClass, snakeCase), false);
+        assert.equal(bemHelper.isCaseMatch(snakeClass, camelCase), false);
+        assert.equal(bemHelper.isCaseMatch(snakeClass, kebabCase), false);
+        assert.equal(bemHelper.isCaseMatch(snakeClass, pascalCase), false);
+        assert.equal(bemHelper.isCaseMatch(snakeClass, snakeCase), true);
     });
 });
