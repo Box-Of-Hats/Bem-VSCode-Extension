@@ -4,6 +4,8 @@ import { BemCommandProvider } from "./BemCommandProvider";
 import { BemHelperCodeActionsProvider } from "./BemCodeActionsProvider";
 import { BemDiagnosticProvider } from "./BemDiagnosticProvider";
 
+const codeActionsProvider = new BemHelperCodeActionsProvider();
+
 export function activate(context: vscode.ExtensionContext) {
     registerCommands(context);
     registerDiagnostics(context);
@@ -23,18 +25,29 @@ function registerDiagnostics(context: vscode.ExtensionContext) {
             vscode.window.activeTextEditor.document,
             collection
         );
+        // Update code actions provider so that quick fixes can be generated
+        BemHelperCodeActionsProvider.diagnostics = bemDiagnosticProvider.errors;
     }
     context.subscriptions.push(
         vscode.workspace.onDidSaveTextDocument(e => {
             bemDiagnosticProvider.updateDiagnostics(e, collection);
+            // Update code actions provider so that quick fixes can be generated
+            BemHelperCodeActionsProvider.diagnostics =
+                bemDiagnosticProvider.errors;
         }),
         vscode.workspace.onDidOpenTextDocument(e => {
             bemDiagnosticProvider.updateDiagnostics(e, collection);
+            // Update code actions provider so that quick fixes can be generated
+            BemHelperCodeActionsProvider.diagnostics =
+                bemDiagnosticProvider.errors;
         }),
         vscode.window.onDidChangeActiveTextEditor(e => {
             if (e) {
                 bemDiagnosticProvider.updateDiagnostics(e.document, collection);
             }
+            // Update code actions provider so that quick fixes can be generated
+            BemHelperCodeActionsProvider.diagnostics =
+                bemDiagnosticProvider.errors;
         })
     );
     if (
@@ -47,6 +60,9 @@ function registerDiagnostics(context: vscode.ExtensionContext) {
                         e.document,
                         collection
                     );
+                    // Update code actions provider so that quick fixes can be generated
+                    BemHelperCodeActionsProvider.diagnostics =
+                        bemDiagnosticProvider.errors;
                 }
             })
         );
@@ -87,14 +103,10 @@ function registerCommands(context: vscode.ExtensionContext) {
 
 function registerCodeActions(context: vscode.ExtensionContext) {
     context.subscriptions.push(
-        vscode.languages.registerCodeActionsProvider(
-            "*",
-            new BemHelperCodeActionsProvider(),
-            {
-                providedCodeActionKinds:
-                    BemHelperCodeActionsProvider.providedCodeActionKinds
-            }
-        )
+        vscode.languages.registerCodeActionsProvider("*", codeActionsProvider, {
+            providedCodeActionKinds:
+                BemHelperCodeActionsProvider.providedCodeActionKinds
+        })
     );
 }
 

@@ -30,7 +30,7 @@ export class BemDiagnosticProvider {
                         i + className.length
                     );
                     errors.push({
-                        code: "",
+                        code: "depth",
                         message:
                             "BEM - classes must only consist of block and element.",
                         range: new vscode.Range(startPos, endPos),
@@ -86,7 +86,7 @@ export class BemDiagnosticProvider {
                         i + className.length
                     );
                     errors.push({
-                        code: "",
+                        code: "case",
                         message: `BEM - Class names must be in ${casing} case `,
                         range: new vscode.Range(startPos, endPos),
                         severity: vscode.DiagnosticSeverity.Warning,
