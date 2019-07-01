@@ -133,7 +133,7 @@ export class BemDiagnosticProvider {
         if (
             vscode.workspace
                 .getConfiguration()
-                .get("this.bemHelper.showDepthWarnings")
+                .get("bemHelper.showDepthWarnings")
         ) {
             editorHighlights = editorHighlights.concat(
                 this.getClassNameDepthProblems(docText, activeEditor)
@@ -145,7 +145,7 @@ export class BemDiagnosticProvider {
             | ClassNameCases
             | undefined = vscode.workspace
             .getConfiguration()
-            .get("this.bemHelper.classNameCase");
+            .get("bemHelper.classNameCase");
 
         if (acceptedClassNameCase) {
             editorHighlights = editorHighlights.concat(
