@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.6.0
+
+-   Add class name case refactor quick Fix
+
 ## 0.5.0
 
 -   Add Pascal and Camel case options for classnames

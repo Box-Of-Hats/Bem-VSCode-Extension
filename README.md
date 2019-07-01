@@ -18,7 +18,15 @@ Got any feedback, issues or feature requests? Send them my way via [GitHub Issue
 
 BEM helper provides warnings when class names are in violation of BEM naming standards.
 
+### Classes not following BEM standards
+
 ![Class name warnings](images/diagnostics_example.png)
+
+### Classes not following the specified case
+
+A quick fix is included to make fixing case name issues quicker.
+
+![Code quick fix for incorrect class name casing](images/quickfix.png)
 
 ## Inserting Elements
 
