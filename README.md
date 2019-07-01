@@ -8,11 +8,12 @@ Got any feedback, issues or feature requests? Send them my way via [GitHub Issue
 
 ## Commands
 
-| Command name                 | Description                                                                             | Shortcut  |
-| ---------------------------- | --------------------------------------------------------------------------------------- | --------- |
-| bemHelper.insertBemElement   | Insert a new BEM element under the current block                                        | alt + b e |
-| bemHelper.insertBemModifier  | Insert a new BEM modified element, copying the classname prefix of the previous element | alt + b m |
-| bemHelper.generateStyleSheet | Generate a new file containing CSS/LESS/SCSS for the current HTML file                  | alt + b s |
+| Command name                     | Description                                                                             | Shortcut  |
+| -------------------------------- | --------------------------------------------------------------------------------------- | --------- |
+| bemHelper.insertBemElement       | Insert a new BEM element under the current block                                        | alt + b e |
+| bemHelper.insertBemModifier      | Insert a new BEM modified element, copying the classname prefix of the previous element | alt + b m |
+| bemHelper.generateStyleSheet     | Generate a new file containing CSS/LESS/SCSS for the current HTML file                  | alt + b s |
+| bemHelper.convertSelectionToCase | Convert the current text selection to a given case                                      |           |
 
 ## Diagnostic Help
 

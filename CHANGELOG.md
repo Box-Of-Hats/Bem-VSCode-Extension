@@ -6,6 +6,7 @@
 
 ## 0.6.2
 
+-   Add extension.bemHelper.convertSelectionToCase command to convert any text selection to a given case
 -   Fix bug with empty classnames potentially causing extension crashing
 -   Fix bug where only the first class of a set of classes could be quick fixed
 -   Huge refactor of code base
