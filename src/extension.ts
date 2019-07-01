@@ -19,7 +19,6 @@ function registerDiagnostics(context: vscode.ExtensionContext) {
     const collection = vscode.languages.createDiagnosticCollection(
         bemDiagnosticProvider.diagnosticCollectionName
     );
-
     if (vscode.window.activeTextEditor) {
         bemDiagnosticProvider.updateDiagnostics(
             vscode.window.activeTextEditor.document,
@@ -35,6 +34,7 @@ function registerDiagnostics(context: vscode.ExtensionContext) {
             BemHelperCodeActionsProvider.diagnostics =
                 bemDiagnosticProvider.errors;
         }),
+
         vscode.workspace.onDidOpenTextDocument(e => {
             bemDiagnosticProvider.updateDiagnostics(e, collection);
             // Update code actions provider so that quick fixes can be generated
@@ -53,6 +53,7 @@ function registerDiagnostics(context: vscode.ExtensionContext) {
     if (
         vscode.workspace.getConfiguration().get("bemHelper.responsiveLinting")
     ) {
+        // Update on character press if specified in settings
         context.subscriptions.push(
             vscode.workspace.onDidChangeTextDocument(e => {
                 if (e) {

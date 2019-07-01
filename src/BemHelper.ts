@@ -98,6 +98,9 @@ export class BemHelper {
                 return classNames;
             }
             classes[1].split(" ").forEach(className => {
+                if (className === "") {
+                    return;
+                }
                 if (classNames.indexOf(className) === -1) {
                     classNames.push(className);
                 }

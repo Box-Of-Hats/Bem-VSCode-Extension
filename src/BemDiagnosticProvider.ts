@@ -24,7 +24,14 @@ export class BemDiagnosticProvider {
         classes.forEach(className => {
             if (!this.bemHelper.isBemClass(className)) {
                 let i = -1;
-                while ((i = html.indexOf(className, i + 1)) !== -1) {
+                if (className === "") {
+                    //Dont process empty class names as they can cause issues with indexOf
+                    return;
+                }
+                while (
+                    (i = html.indexOf(className, i + 1)) !== -1 &&
+                    html.length >= i
+                ) {
                     const startPos = activeEditor.document.positionAt(i);
                     const endPos = activeEditor.document.positionAt(
                         i + className.length
@@ -80,7 +87,14 @@ export class BemDiagnosticProvider {
         classes.forEach(className => {
             if (!this.bemHelper.isCaseMatch(className, casing)) {
                 let i = -1;
-                while ((i = html.indexOf(className, i + 1)) !== -1) {
+                if (className === "") {
+                    //Dont process empty class names as they can cause issues with indexOf
+                    return;
+                }
+                while (
+                    (i = html.indexOf(className, i + 1)) !== -1 &&
+                    html.length >= i
+                ) {
                     const startPos = activeEditor.document.positionAt(i);
                     const endPos = activeEditor.document.positionAt(
                         i + className.length
