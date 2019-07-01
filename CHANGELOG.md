@@ -4,6 +4,12 @@
 
 -   Add class name case refactor quick Fix
 
+## 0.6.2
+
+-   Fix bug with empty classnames potentially causing extension crashing
+-   Fix bug where only the first class of a set of classes could be quick fixed
+-   Huge refactor of code base
+
 ## 0.5.0
 
 -   Add Pascal and Camel case options for classnames
