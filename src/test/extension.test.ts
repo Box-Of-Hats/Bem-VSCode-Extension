@@ -1,5 +1,5 @@
 import * as assert from "assert";
-import * as bemHelper from "../extension";
+import { BemHelper, ClassNameCases } from "../BemHelper";
 
 suite("Extension Tests", () => {
     test("CSS Class extraction - Camel Case", () => {
@@ -20,6 +20,7 @@ suite("Extension Tests", () => {
             "navBody__listItem--wide",
             "navFooter"
         ];
+        let bemHelper = new BemHelper();
         let actual = bemHelper.getClasses(html);
         assert.deepEqual(actual, expected);
     });
@@ -42,6 +43,7 @@ suite("Extension Tests", () => {
             "NavBody__ListItem--Wide",
             "NavFooter"
         ];
+        let bemHelper = new BemHelper();
         let actual = bemHelper.getClasses(html);
         assert.deepEqual(actual, expected);
     });
@@ -64,6 +66,7 @@ suite("Extension Tests", () => {
             "nav_body__list_item--wide",
             "nav_footer"
         ];
+        let bemHelper = new BemHelper();
         let actual = bemHelper.getClasses(html);
         assert.deepEqual(actual, expected);
     });
@@ -94,6 +97,7 @@ suite("Extension Tests", () => {
             "nav-two__item--two",
             "menu__item"
         ];
+        let bemHelper = new BemHelper();
         let actual = bemHelper.getClasses(html);
         assert.deepEqual(actual.sort(), expected.sort());
     });
@@ -111,6 +115,7 @@ suite("Extension Tests", () => {
             </body>
         `;
         const expected = ["nav", "nav__item", "nav-two"];
+        let bemHelper = new BemHelper();
         let actual = bemHelper.getClasses(html);
         assert.deepEqual(actual.sort(), expected.sort());
     });
@@ -128,6 +133,7 @@ suite("Extension Tests", () => {
             </body>
         `;
         const expected = ["nav", "nav__item", "nav-two"];
+        let bemHelper = new BemHelper();
         let actual = bemHelper.getClasses(html);
         assert.deepEqual(actual.sort(), expected.sort());
     });
@@ -135,6 +141,7 @@ suite("Extension Tests", () => {
     test("CSS Class extraction - No Classes", () => {
         const html = ``;
         const expected: string[] = [];
+        let bemHelper = new BemHelper();
         let actual = bemHelper.getClasses(html);
         assert.deepEqual(actual.sort(), expected.sort());
     });
@@ -142,17 +149,20 @@ suite("Extension Tests", () => {
     test("CSS Class extraction - React", () => {
         const html = `<div className="parent-class"><div className="parent-class__child"></div></div>`;
         const expected = ["parent-class", "parent-class__child"];
+        let bemHelper = new BemHelper();
         let actual = bemHelper.getClasses(html);
         assert.deepEqual(actual.sort(), expected.sort());
     });
 
     test("CSS Generation - Single Flat", () => {
+        let bemHelper = new BemHelper();
         let actual = bemHelper.generateStyleSheet(["test-class"], true);
         let expected = ".test-class{}";
         assert.equal(actual, expected);
     });
 
     test("CSS Generation - Multiple Flat", () => {
+        let bemHelper = new BemHelper();
         let actual = bemHelper.generateStyleSheet(
             ["test-class", "test-class-two", "class-test"],
             true
@@ -162,12 +172,14 @@ suite("Extension Tests", () => {
     });
 
     test("CSS Generation - Single Nested", () => {
+        let bemHelper = new BemHelper();
         let actual = bemHelper.generateStyleSheet(["test-class"], false);
         let expected = ".test-class{}";
         assert.equal(actual, expected);
     });
 
     test("CSS Generation - Multiple Nested", () => {
+        let bemHelper = new BemHelper();
         let actual = bemHelper.generateStyleSheet(
             [
                 "test-class",
@@ -183,6 +195,7 @@ suite("Extension Tests", () => {
     });
 
     test("CSS Generation - Modified Blocks Nested", () => {
+        let bemHelper = new BemHelper();
         let actual = bemHelper.generateStyleSheet(
             ["test-block", "test-block--mod", "test-block--mod-2"],
             false
@@ -201,6 +214,7 @@ suite("Extension Tests", () => {
             <div class="body-class-2">
                 <div class="body-class-2__child-1"></div>
         `;
+        let bemHelper = new BemHelper();
         let actual = bemHelper.getPrecedingClassName(html, false);
         let expected = "body-class-2";
         assert.equal(actual, expected);
@@ -216,6 +230,7 @@ suite("Extension Tests", () => {
             <div class="bodyClass-2">
                 <div class="bodyClass-2__child-1"></div>
         `;
+        let bemHelper = new BemHelper();
         let actual = bemHelper.getPrecedingClassName(html, false);
         let expected = "bodyClass-2";
         assert.equal(actual, expected);
@@ -230,6 +245,7 @@ suite("Extension Tests", () => {
             <div class="BodyClass-2">
                     <div class="BodyClass-2__Child-1"></div>
             `;
+        let bemHelper = new BemHelper();
         let actual = bemHelper.getPrecedingClassName(html, false);
         let expected = "BodyClass-2";
         assert.equal(actual, expected);
@@ -247,6 +263,7 @@ suite("Extension Tests", () => {
             <div class="body_class_2">
                 <div class="body_class_2__child_1"></div>
         `;
+        let bemHelper = new BemHelper();
         let actual = bemHelper.getPrecedingClassName(html, false);
         let expected = "body_class_2";
         assert.equal(actual, expected);
@@ -262,6 +279,7 @@ suite("Extension Tests", () => {
             <div class="body-class-2">
                 <div class="body-class-2__child-1"></div>
         `;
+        let bemHelper = new BemHelper();
         let actual = bemHelper.getPrecedingClassName(html, true);
         let expected = "body-class-2__child-1";
         assert.equal(actual, expected);
@@ -277,6 +295,7 @@ suite("Extension Tests", () => {
             <div class="bodyClass-2">
                 <div class="bodyClass-2__child-1"></div>
         `;
+        let bemHelper = new BemHelper();
         let actual = bemHelper.getPrecedingClassName(html, true);
         let expected = "bodyClass-2__child-1";
         assert.equal(actual, expected);
@@ -291,6 +310,7 @@ suite("Extension Tests", () => {
             <div class="BodyClass-2">
                     <div class="BodyClass-2__Child-1"></div>
             `;
+        let bemHelper = new BemHelper();
         let actual = bemHelper.getPrecedingClassName(html, true);
         let expected = "BodyClass-2__Child-1";
         assert.equal(actual, expected);
@@ -308,6 +328,7 @@ suite("Extension Tests", () => {
             <div class="body_class_2">
                 <div class="body_class_2__child_1"></div>
         `;
+        let bemHelper = new BemHelper();
         let actual = bemHelper.getPrecedingClassName(html, true);
         let expected = "body_class_2__child_1";
         assert.equal(actual, expected);
@@ -316,9 +337,10 @@ suite("Extension Tests", () => {
     test("Convert Class - Block Element Modifier - Kebab => Snake", () => {
         let inputClassName = "test-class__test-child--modi-fier";
         let expected = "test_class__test_child--modi_fier";
+        let bemHelper = new BemHelper();
         let actual = bemHelper.convertClass(
             inputClassName,
-            bemHelper.ClassNameCases.Snake
+            ClassNameCases.Snake
         );
         assert.equal(actual, expected);
     });
@@ -326,9 +348,10 @@ suite("Extension Tests", () => {
     test("Convert Class - Block Element Modifier - Kebab => Pascal", () => {
         let inputClassName = "test-class__test-child--modi-fier";
         let expected = "TestClass__TestChild--ModiFier";
+        let bemHelper = new BemHelper();
         let actual = bemHelper.convertClass(
             inputClassName,
-            bemHelper.ClassNameCases.Pascal
+            ClassNameCases.Pascal
         );
         assert.equal(actual, expected);
     });
@@ -336,9 +359,10 @@ suite("Extension Tests", () => {
     test("Convert Class - Block Element Modifier - Kebab => Camel", () => {
         let inputClassName = "test-class__test-child--modi-fier";
         let expected = "testClass__testChild--modiFier";
+        let bemHelper = new BemHelper();
         let actual = bemHelper.convertClass(
             inputClassName,
-            bemHelper.ClassNameCases.CamelCase
+            ClassNameCases.CamelCase
         );
         assert.equal(actual, expected);
     });
@@ -346,9 +370,11 @@ suite("Extension Tests", () => {
     test("Convert Class - Block Element Modifier - Snake => Kebab", () => {
         let inputClassName = "test_class__test_child--modi_fier";
         let expected = "test-class__test-child--modi-fier";
+        let bemHelper = new BemHelper();
         let actual = bemHelper.convertClass(
             inputClassName,
-            bemHelper.ClassNameCases.Kebab
+
+            ClassNameCases.Kebab
         );
         assert.equal(actual, expected);
     });
@@ -356,9 +382,11 @@ suite("Extension Tests", () => {
     test("Convert Class - Block Element Modifier - Snake => Pascal", () => {
         let inputClassName = "test_class__test_child--modi_fier";
         let expected = "TestClass__TestChild--ModiFier";
+        let bemHelper = new BemHelper();
         let actual = bemHelper.convertClass(
             inputClassName,
-            bemHelper.ClassNameCases.Pascal
+
+            ClassNameCases.Pascal
         );
         assert.equal(actual, expected);
     });
@@ -366,9 +394,11 @@ suite("Extension Tests", () => {
     test("Convert Class - Block Element Modifier - Snake => Camel", () => {
         let inputClassName = "test_class__test_child--modi_fier";
         let expected = "testClass__testChild--modiFier";
+        let bemHelper = new BemHelper();
         let actual = bemHelper.convertClass(
             inputClassName,
-            bemHelper.ClassNameCases.CamelCase
+
+            ClassNameCases.CamelCase
         );
         assert.equal(actual, expected);
     });
@@ -376,9 +406,11 @@ suite("Extension Tests", () => {
     test("Convert Class - Block Element Modifier - Camel => Kebab", () => {
         let inputClassName = "testClass__testChild--modiFier";
         let expected = "test-class__test-child--modi-fier";
+        let bemHelper = new BemHelper();
         let actual = bemHelper.convertClass(
             inputClassName,
-            bemHelper.ClassNameCases.Kebab
+
+            ClassNameCases.Kebab
         );
         assert.equal(actual, expected);
     });
@@ -386,9 +418,11 @@ suite("Extension Tests", () => {
     test("Convert Class - Block Element Modifier - Camel => Snake", () => {
         let inputClassName = "testClass__testChild--modiFier";
         let expected = "test_class__test_child--modi_fier";
+        let bemHelper = new BemHelper();
         let actual = bemHelper.convertClass(
             inputClassName,
-            bemHelper.ClassNameCases.Snake
+
+            ClassNameCases.Snake
         );
         assert.equal(actual, expected);
     });
@@ -396,9 +430,11 @@ suite("Extension Tests", () => {
     test("Convert Class - Block Element Modifier - Camel => Pascal", () => {
         let inputClassName = "testClass__testChild--modiFier";
         let expected = "TestClass__TestChild--ModiFier";
+        let bemHelper = new BemHelper();
         let actual = bemHelper.convertClass(
             inputClassName,
-            bemHelper.ClassNameCases.Pascal
+
+            ClassNameCases.Pascal
         );
         assert.equal(actual, expected);
     });
@@ -406,9 +442,11 @@ suite("Extension Tests", () => {
     test("Convert Class - Block Element Modifier - Pascal => Kebab", () => {
         let inputClassName = "TestClass__TestChild--ModiFier";
         let expected = "test-class__test-child--modi-fier";
+        let bemHelper = new BemHelper();
         let actual = bemHelper.convertClass(
             inputClassName,
-            bemHelper.ClassNameCases.Kebab
+
+            ClassNameCases.Kebab
         );
         assert.equal(actual, expected);
     });
@@ -416,9 +454,11 @@ suite("Extension Tests", () => {
     test("Convert Class - Block Element Modifier - Pascal => Camel", () => {
         let inputClassName = "TestClass__TestChild--ModiFier";
         let expected = "testClass__testChild--modiFier";
+        let bemHelper = new BemHelper();
         let actual = bemHelper.convertClass(
             inputClassName,
-            bemHelper.ClassNameCases.CamelCase
+
+            ClassNameCases.CamelCase
         );
         assert.equal(actual, expected);
     });
@@ -426,9 +466,10 @@ suite("Extension Tests", () => {
     test("Convert Class - Block Element Modifier - Pascal => Snake", () => {
         let inputClassName = "TestClass__testChild--modiFier";
         let expected = "test_class__test_child--modi_fier";
+        let bemHelper = new BemHelper();
         let actual = bemHelper.convertClass(
             inputClassName,
-            bemHelper.ClassNameCases.Snake
+            ClassNameCases.Snake
         );
         assert.equal(actual, expected);
     });
@@ -438,80 +479,85 @@ suite("Extension Tests", () => {
         let camelClass = "camelClass__elem--modIfier";
         let kebabClass = "kebab-class__elem--mod-ifier";
         let snakeClass = "snake_class__elem__mod_ifier";
+        let bemHelper = new BemHelper();
         assert.equal(
             bemHelper.isCaseMatch(
                 camelClass,
-                bemHelper.ClassNameCases.CamelCase
+
+                ClassNameCases.CamelCase
             ),
             true
         );
         assert.equal(
-            bemHelper.isCaseMatch(camelClass, bemHelper.ClassNameCases.Kebab),
+            bemHelper.isCaseMatch(camelClass, ClassNameCases.Kebab),
             false
         );
         assert.equal(
-            bemHelper.isCaseMatch(camelClass, bemHelper.ClassNameCases.Pascal),
+            bemHelper.isCaseMatch(camelClass, ClassNameCases.Pascal),
             false
         );
         assert.equal(
-            bemHelper.isCaseMatch(camelClass, bemHelper.ClassNameCases.Snake),
+            bemHelper.isCaseMatch(camelClass, ClassNameCases.Snake),
             false
         );
         assert.equal(
             bemHelper.isCaseMatch(
                 kebabClass,
-                bemHelper.ClassNameCases.CamelCase
+
+                ClassNameCases.CamelCase
             ),
             false
         );
         assert.equal(
-            bemHelper.isCaseMatch(kebabClass, bemHelper.ClassNameCases.Kebab),
+            bemHelper.isCaseMatch(kebabClass, ClassNameCases.Kebab),
             true
         );
         assert.equal(
-            bemHelper.isCaseMatch(kebabClass, bemHelper.ClassNameCases.Pascal),
+            bemHelper.isCaseMatch(kebabClass, ClassNameCases.Pascal),
             false
         );
         assert.equal(
-            bemHelper.isCaseMatch(kebabClass, bemHelper.ClassNameCases.Snake),
+            bemHelper.isCaseMatch(kebabClass, ClassNameCases.Snake),
             false
         );
         assert.equal(
             bemHelper.isCaseMatch(
                 pascalClass,
-                bemHelper.ClassNameCases.CamelCase
+
+                ClassNameCases.CamelCase
             ),
             false
         );
         assert.equal(
-            bemHelper.isCaseMatch(pascalClass, bemHelper.ClassNameCases.Kebab),
+            bemHelper.isCaseMatch(pascalClass, ClassNameCases.Kebab),
             false
         );
         assert.equal(
-            bemHelper.isCaseMatch(pascalClass, bemHelper.ClassNameCases.Pascal),
+            bemHelper.isCaseMatch(pascalClass, ClassNameCases.Pascal),
             true
         );
         assert.equal(
-            bemHelper.isCaseMatch(pascalClass, bemHelper.ClassNameCases.Snake),
+            bemHelper.isCaseMatch(pascalClass, ClassNameCases.Snake),
             false
         );
         assert.equal(
             bemHelper.isCaseMatch(
                 snakeClass,
-                bemHelper.ClassNameCases.CamelCase
+
+                ClassNameCases.CamelCase
             ),
             false
         );
         assert.equal(
-            bemHelper.isCaseMatch(snakeClass, bemHelper.ClassNameCases.Kebab),
+            bemHelper.isCaseMatch(snakeClass, ClassNameCases.Kebab),
             false
         );
         assert.equal(
-            bemHelper.isCaseMatch(snakeClass, bemHelper.ClassNameCases.Pascal),
+            bemHelper.isCaseMatch(snakeClass, ClassNameCases.Pascal),
             false
         );
         assert.equal(
-            bemHelper.isCaseMatch(snakeClass, bemHelper.ClassNameCases.Snake),
+            bemHelper.isCaseMatch(snakeClass, ClassNameCases.Snake),
             true
         );
     });

@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 
-import { BemHelper, ClassNameCases, BemClass } from "./BemHelper";
+import { BemHelper, ClassNameCases } from "./BemHelper";
 
 let bemHelper = new BemHelper();
 
@@ -19,7 +19,7 @@ function getClassNameDepthProblems(
     }
 
     classes.forEach(className => {
-        if (!isBemClass(className)) {
+        if (!bemHelper.isBemClass(className)) {
             let i = -1;
             while ((i = html.indexOf(className, i + 1)) !== -1) {
                 const startPos = activeEditor.document.positionAt(i);
@@ -73,7 +73,7 @@ function getClassNameCaseProblems(
     }
 
     classes.forEach(className => {
-        if (!isCaseMatch(className, casing)) {
+        if (!bemHelper.isCaseMatch(className, casing)) {
             let i = -1;
             while ((i = html.indexOf(className, i + 1)) !== -1) {
                 const startPos = activeEditor.document.positionAt(i);
@@ -112,7 +112,7 @@ function getClassNameCaseProblems(
     return errors;
 }
 
-function getClassPropertyTitle(): string {
+function getClassPropertyWord(): string {
     let textEditor = vscode.window.activeTextEditor;
     if (!textEditor) {
         return "class";
@@ -208,9 +208,9 @@ export function convertClassToCaseCommand() {
                 textEditor.selection
             );
 
-            let newClassname = convertClass(selectionText, <ClassNameCases>(
-                caseType
-            ));
+            let newClassname = bemHelper.convertClass(selectionText, <
+                ClassNameCases
+            >caseType);
             textEditor.insertSnippet(
                 new vscode.SnippetString(`${newClassname}`)
             );
@@ -278,7 +278,7 @@ function registerCommands(context: vscode.ExtensionContext) {
                 return;
             }
 
-            let className = getPrecedingClassName(
+            let className = bemHelper.getPrecedingClassName(
                 textEditor.document.getText(
                     new vscode.Range(
                         0,
@@ -295,7 +295,7 @@ function registerCommands(context: vscode.ExtensionContext) {
                 );
                 return;
             }
-            let classProperty = getClassPropertyTitle();
+            let classProperty = getClassPropertyWord();
             let tagList = vscode.workspace
                 .getConfiguration()
                 .get("bemHelper.tagList");
@@ -315,7 +315,7 @@ function registerCommands(context: vscode.ExtensionContext) {
                 return;
             }
 
-            let className = getPrecedingClassName(
+            let className = bemHelper.getPrecedingClassName(
                 textEditor.document.getText(
                     new vscode.Range(
                         0,
@@ -332,7 +332,7 @@ function registerCommands(context: vscode.ExtensionContext) {
                 );
                 return;
             }
-            let classProperty = getClassPropertyTitle();
+            let classProperty = getClassPropertyWord();
             let tagList = vscode.workspace
                 .getConfiguration()
                 .get("bemHelper.tagList");
@@ -457,7 +457,10 @@ export class BemHelperCodeActionsProvider implements vscode.CodeActionProvider {
                 if (!oldClassName) {
                     oldClassName = "";
                 }
-                let convertedClassName = convertClass(oldClassName, textCase);
+                let convertedClassName = bemHelper.convertClass(
+                    oldClassName,
+                    textCase
+                );
                 const classStringStart = 'class="';
                 let classNameRange = new vscode.Range(
                     new vscode.Position(
@@ -488,7 +491,7 @@ export class BemHelperCodeActionsProvider implements vscode.CodeActionProvider {
             if (!oldClassName) {
                 oldClassName = "";
             }
-            let convertedClassName = convertClass(
+            let convertedClassName = bemHelper.convertClass(
                 oldClassName,
                 acceptedClassNameCase
             );

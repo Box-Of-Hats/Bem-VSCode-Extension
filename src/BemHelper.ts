@@ -127,7 +127,7 @@ export class BemHelper {
         let classNameMatches = lastMatch.match(/"(.*)"/);
 
         if (classNameMatches === null) {
-            return null;
+            return "";
         }
         return classNameMatches[classNameMatches.length - 1]
             .split("--")[0]
@@ -242,12 +242,12 @@ export class BemHelper {
         let block = sourceClass.split("__")[0];
 
         let classElements: BemClass = {
-            block: convertStringToCase(block, toClassType),
-            element: convertStringToCase(element, toClassType),
-            modifier: convertStringToCase(modifier, toClassType)
+            block: this.convertStringToCase(block, toClassType),
+            element: this.convertStringToCase(element, toClassType),
+            modifier: this.convertStringToCase(modifier, toClassType)
         };
 
-        return createClass(classElements);
+        return this.createClass(classElements);
     }
     /*Is a class name following BEM conventions?
      */
@@ -284,9 +284,9 @@ export class BemHelper {
         }
         return true;
     }
-    public getClassNameDepthProblems() {}
-    public getClassNameCaseProblems() {}
-    public getClassPropertyTitle() {}
-    public updateDiagnostics() {}
-    public convertClassToCaseCommand() {}
+    // public getClassNameDepthProblems() {}
+    // public getClassNameCaseProblems() {}
+    // public getClassPropertyTitle() {}
+    // public updateDiagnostics() {}
+    // public convertClassToCaseCommand() {}
 }
