@@ -4,6 +4,7 @@ import { BemHelper, ClassNameCases } from "./BemHelper";
 export class BemDiagnosticProvider {
     public diagnosticCollectionName = "BemHelper";
     public bemHelper: BemHelper = new BemHelper();
+    public errors: vscode.Diagnostic[] = [];
 
     /*
      * Get a list of errors with class depth problems (e.g 'one__two__three')
@@ -12,7 +13,7 @@ export class BemDiagnosticProvider {
         html: string,
         activeEditor: vscode.TextEditor
     ) {
-        let errors = new Array();
+        let errors: vscode.Diagnostic[] = [];
 
         let classes = this.bemHelper.getClasses(html);
 
@@ -52,8 +53,7 @@ export class BemDiagnosticProvider {
                                 ),
                                 `${className}`
                             )
-                        ],
-                        className: className
+                        ]
                     });
                 }
             }
@@ -70,7 +70,7 @@ export class BemDiagnosticProvider {
         activeEditor: vscode.TextEditor,
         casing: ClassNameCases
     ) {
-        let errors = new Array();
+        let errors: vscode.Diagnostic[] = [];
         let classes = this.bemHelper.getClasses(html);
 
         if (!classes) {
@@ -108,8 +108,7 @@ export class BemDiagnosticProvider {
                                 ),
                                 `${className}`
                             )
-                        ],
-                        className: className
+                        ]
                     });
                 }
             }
@@ -117,7 +116,10 @@ export class BemDiagnosticProvider {
         return errors;
     }
 
-    // Draw errors to the VScode window
+    /*
+     * Get all diagnostic errors in the current document
+     * and draw them to the VScode window
+     */
     public updateDiagnostics(
         document: vscode.TextDocument,
         collection: vscode.DiagnosticCollection
@@ -162,5 +164,6 @@ export class BemDiagnosticProvider {
         } else {
             collection.clear();
         }
+        this.errors = editorHighlights;
     }
 }
