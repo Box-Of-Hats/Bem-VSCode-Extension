@@ -13,6 +13,16 @@ export interface BemClass {
 }
 
 export class BemHelper {
+    //Regex to extract a class property value from a block of html text
+    readonly classPropertyValueRegex = /class(Name)?=["']{1}([a-zA-Z0-9-_ ]+)["']{1}/g;
+    //Regex to extract actual class names as groups from a class property string
+    readonly classNameRegex = /["']{1}(.*)["']{1}/;
+    // Case regex
+    private readonly kebabCaseRegex = /^[a-z0-9-]+$/;
+    private readonly snakeCaseRegex = /^[a-z0-9_]+$/;
+    private readonly pascalCaseRegex = /^[A-Z]{1}[a-zA-Z0-9]+$/;
+    private readonly camelCaseRegex = /^[a-z]{1}[a-zA-Z0-9]+$/;
+
     /*
      * Generate a stylesheet from a list of BEM class names
      */
@@ -86,14 +96,13 @@ export class BemHelper {
     //Get all classes from a block of html
     public getClasses(html: string): string[] {
         let classNames: string[] = [];
-        const regex = /class(Name)?=["']{1}([a-zA-Z0-9-_ ]+)["']{1}/g;
-        const classNameRegex = /["']{1}(.*)["']{1}/;
-        if (classNameRegex === null) {
+
+        if (this.classPropertyValueRegex === null) {
             return classNames;
         }
         let match;
-        while ((match = regex.exec(html))) {
-            let classes = classNameRegex.exec(match[0]);
+        while ((match = this.classPropertyValueRegex.exec(html))) {
+            let classes = this.classNameRegex.exec(match[0]);
             if (classes === null || classes.length < 2) {
                 return classNames;
             }
@@ -117,9 +126,7 @@ export class BemHelper {
         html: string,
         includeElements: boolean
     ): string {
-        const classNameRegex = /class(Name)?="([a-zA-Z0-9-_]+ ?)+"/g;
-
-        let matches = html.match(classNameRegex);
+        let matches = html.match(this.classPropertyValueRegex);
 
         if (matches === null) {
             return "";
@@ -134,7 +141,7 @@ export class BemHelper {
 
         let lastMatch = matches[matches.length - 1];
 
-        let classNameMatches = lastMatch.match(/"(.*)"/);
+        let classNameMatches = lastMatch.match(this.classNameRegex);
 
         if (classNameMatches === null) {
             return "";
@@ -150,13 +157,13 @@ export class BemHelper {
     public getClassCaseType(className: string): ClassNameCases {
         className = className.replace(/__/g, "").replace(/--/g, "");
 
-        if (className.match(/^[a-z0-9-]+$/)) {
+        if (className.match(this.kebabCaseRegex)) {
             return ClassNameCases.Kebab;
-        } else if (className.match(/^[a-z0-9_]+$/)) {
+        } else if (className.match(this.snakeCaseRegex)) {
             return ClassNameCases.Snake;
-        } else if (className.match(/^[A-Z]{1}[a-zA-Z0-9]+$/)) {
+        } else if (className.match(this.pascalCaseRegex)) {
             return ClassNameCases.Pascal;
-        } else if (className.match(/^[a-z]{1}[a-zA-Z0-9]+$/)) {
+        } else if (className.match(this.camelCaseRegex)) {
             return ClassNameCases.Camel;
         }
         return ClassNameCases.Any;
@@ -281,16 +288,16 @@ export class BemHelper {
             case ClassNameCases.Any:
                 return true;
             case ClassNameCases.Kebab:
-                allowedClassNamePattern = /^[a-z0-9-]+$/;
+                allowedClassNamePattern = this.kebabCaseRegex;
                 break;
             case ClassNameCases.Snake:
-                allowedClassNamePattern = /^[a-z0-9_]+$/;
+                allowedClassNamePattern = this.snakeCaseRegex;
                 break;
             case ClassNameCases.Pascal:
-                allowedClassNamePattern = /^[A-Z]{1}[a-zA-Z0-9]+$/;
+                allowedClassNamePattern = this.pascalCaseRegex;
                 break;
             case ClassNameCases.Camel:
-                allowedClassNamePattern = /^[a-z]{1}[a-zA-Z0-9]+$/;
+                allowedClassNamePattern = this.camelCaseRegex;
                 break;
             default:
                 return false;

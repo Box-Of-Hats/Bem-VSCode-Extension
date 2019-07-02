@@ -334,6 +334,36 @@ suite("BemHelper Tests", () => {
         assert.equal(actual, expected);
     });
 
+    test("Get Preceding Class - Block - Single Quote", () => {
+        const html = `
+            <div class='block'>
+                <div class='block__element'>
+                </div>
+                <div class="block__element block__element--modded">
+                </div>
+            </div>
+        `;
+        const bemHelper = new BemHelper();
+        let expected = "block";
+        let actual = bemHelper.getPrecedingClassName(html, false);
+        assert.equal(actual, expected);
+    });
+
+    test("Get Preceding Class - Element - Single Quote", () => {
+        const html = `
+            <div class='block'>
+                <div class='block__element'>
+                </div>
+                <div class="block__element block__element--modded">
+                </div>
+            </div>
+        `;
+        const bemHelper = new BemHelper();
+        let expected = "block__element";
+        let actual = bemHelper.getPrecedingClassName(html, true);
+        assert.equal(actual, expected);
+    });
+
     test("Convert Class - Block Element Modifier - Kebab => Snake", () => {
         let inputClassName = "test-class__test-child--modi-fier";
         let expected = "test_class__test_child--modi_fier";
@@ -474,7 +504,7 @@ suite("BemHelper Tests", () => {
         assert.equal(actual, expected);
     });
 
-    test("Class Name Case Matching", () => {
+    test("Is Case Match - All Cases", () => {
         let pascalClass = "PascalClass__Elem--ModIfier";
         let camelClass = "camelClass__elem--modIfier";
         let kebabClass = "kebab-class__elem--mod-ifier";
