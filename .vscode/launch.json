@@ -23,6 +23,7 @@
             "request": "launch",
             "runtimeExecutable": "${execPath}",
             "preLaunchTask": "npm: compile",
+            "internalConsoleOptions": "neverOpen",
             "args": [
                 "--disable-extensions",
                 "--extensionDevelopmentPath=${workspaceFolder}",

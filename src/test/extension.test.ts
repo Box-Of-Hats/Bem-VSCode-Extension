@@ -138,6 +138,24 @@ suite("BemHelper Tests", () => {
         assert.deepEqual(actual.sort(), expected.sort());
     });
 
+    test("CSS Class extraction - Backtick", () => {
+        const html = `
+            <body>
+                <div class=\`nav\`>
+                    <div class=\`nav__item\`>One</div>
+                    <div class=\`nav__item\`>Two</div>
+                    <div class=\`nav__item\`>Three</div>
+                    <div class=\`nav__item\`>Four</div>
+                </div>
+                <div class=\`nav-two\`></div>
+            </body>
+        `;
+        const expected = ["nav", "nav__item", "nav-two"];
+        let bemHelper = new BemHelper();
+        let actual = bemHelper.getClasses(html);
+        assert.deepEqual(actual.sort(), expected.sort());
+    });
+
     test("CSS Class extraction - No Classes", () => {
         const html = ``;
         const expected: string[] = [];
@@ -361,6 +379,36 @@ suite("BemHelper Tests", () => {
         const bemHelper = new BemHelper();
         let expected = "block__element";
         let actual = bemHelper.getPrecedingClassName(html, true);
+        assert.equal(actual, expected);
+    });
+
+    test("Get Preceding Class - Element - Backtick", () => {
+        const html = `
+            <div class=\`block\`>
+                <div class=\`block__element\`>
+                </div>
+                <div class=\`block__element block__element--modded\`>
+                </div>
+            </div>
+        `;
+        const bemHelper = new BemHelper();
+        let expected = "block__element";
+        let actual = bemHelper.getPrecedingClassName(html, true);
+        assert.equal(actual, expected);
+    });
+
+    test("Get Preceding Class - Block - Backtick", () => {
+        const html = `
+            <div class=\`block\`>
+                <div class=\`block__element\`>
+                </div>
+                <div class=\`block__element block__element--modded\`>
+                </div>
+            </div>
+        `;
+        const bemHelper = new BemHelper();
+        let expected = "block";
+        let actual = bemHelper.getPrecedingClassName(html, false);
         assert.equal(actual, expected);
     });
 

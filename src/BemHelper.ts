@@ -14,9 +14,9 @@ export interface BemClass {
 
 export class BemHelper {
     //Regex to extract a class property value from a block of html text
-    readonly classPropertyValueRegex = /class(Name)?=["']{1}([a-zA-Z0-9-_ ]+)["']{1}/g;
+    readonly classPropertyValueRegex = /class(Name)?=["'`]{1}([a-zA-Z0-9-_ ]+)["'`]{1}/g;
     //Regex to extract actual class names as groups from a class property string
-    readonly classNameRegex = /["']{1}(.*)["']{1}/;
+    readonly classNameRegex = /["'`]{1}(.*)["'`]{1}/;
     // Case regex
     private readonly kebabCaseRegex = /^[a-z0-9-]+$/;
     private readonly snakeCaseRegex = /^[a-z0-9_]+$/;
