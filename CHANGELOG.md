@@ -11,6 +11,10 @@
 -   Fix bug where only the first class of a set of classes could be quick fixed
 -   Huge refactor of code base
 
+## 0.6.3
+
+-   Fix bugs with using single quotes and backticks surrounding class names
+
 ## 0.5.0
 
 -   Add Pascal and Camel case options for classnames
