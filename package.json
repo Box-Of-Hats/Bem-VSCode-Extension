@@ -16,10 +16,16 @@
         "onLanguage:html",
         "onLanguage:aspnetcorerazor",
         "onLanguage:javascriptreact",
+        "onLanguage:typescriptreact",
+        "onLanguage:typescript",
         "onLanguage:php",
         "onLanguage:razor",
         "workspaceContains:*.jsx",
-        "workspaceContains:*.html"
+        "workspaceContains:*.html",
+        "onCommand:extension.bemHelper.insertElement",
+        "onCommand:extension.bemHelper.insertModifiedElement",
+        "onCommand:extension.bemHelper.generateStyleSheet",
+        "onCommand:extension.bemHelper.convertSelectionToCase"
     ],
     "main": "./out/extension.js",
     "contributes": {
