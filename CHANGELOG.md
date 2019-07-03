@@ -15,6 +15,10 @@
 
 -   Fix bugs with using single quotes and backticks surrounding class names
 
+## 0.6.4
+
+-   Add more activation events so that commands should always be found, regardless of the current file language
+
 ## 0.5.0
 
 -   Add Pascal and Camel case options for classnames
