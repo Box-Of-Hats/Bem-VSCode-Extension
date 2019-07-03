@@ -125,8 +125,7 @@ export class BemCommandProvider {
                     textEditor.selection.active.character
                 )
             ),
-            //If generating modified class, include elements
-            isModified
+            false
         );
         if (className === null) {
             vscode.window.showErrorMessage(
@@ -144,7 +143,7 @@ export class BemCommandProvider {
         if (isModified) {
             textEditor.insertSnippet(
                 new vscode.SnippetString(
-                    `<\${2|${tagList}|} ${classProperty}="${className} ${className}--$1">$0</$2>`
+                    `<\${3|${tagList}|} ${classProperty}="${className}__$1 ${className}__$1--$2">$0</$3>`
                 )
             );
         } else {
