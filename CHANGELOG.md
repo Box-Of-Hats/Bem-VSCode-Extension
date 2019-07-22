@@ -19,6 +19,10 @@
 
 -   Add more activation events so that commands should always be found, regardless of the current file language
 
+## 0.6.5
+
+-   Improve modified element insert behaviour
+
 ## 0.5.0
 
 -   Add Pascal and Camel case options for classnames
