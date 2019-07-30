@@ -23,6 +23,10 @@
 
 -   Improve modified element insert behaviour
 
+## 0.6.5.1
+
+-   Restructure ReadMe
+
 ## 0.5.0
 
 -   Add Pascal and Camel case options for classnames
