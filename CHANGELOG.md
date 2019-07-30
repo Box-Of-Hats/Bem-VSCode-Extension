@@ -23,7 +23,7 @@
 
 -   Improve modified element insert behaviour
 
-## 0.6.5.1
+## 0.6.6
 
 -   Restructure ReadMe
 
