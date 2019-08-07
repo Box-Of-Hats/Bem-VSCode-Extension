@@ -106,6 +106,18 @@
                         ],
                         "description": "The list of HTML tags to use for BEM element snippet suggestions.",
                         "scope": "window"
+                    },
+                    "bemHelper.elementSeparator": {
+                        "type": "string",
+                        "default": "__",
+                        "description": "The string to use as a separator for elements. By default is set to '__' ",
+                        "scope": "window"
+                    },
+                    "bemHelper.modifierSeparator": {
+                        "type": "string",
+                        "default": "--",
+                        "description": "The string to use as a separator for modifiers. By default is set to '--' ",
+                        "scope": "window"
                     }
                 }
             }

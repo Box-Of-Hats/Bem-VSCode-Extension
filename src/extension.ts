@@ -71,8 +71,27 @@ function registerDiagnostics(context: vscode.ExtensionContext) {
 }
 
 function registerCommands(context: vscode.ExtensionContext) {
+    //Initialise BemCommandProvider with any settings found
     const bemCommandProvider = new BemCommandProvider();
 
+    let elementSeparator:
+        | string
+        | undefined = vscode.workspace
+        .getConfiguration()
+        .get("bemHelper.elementSeparator");
+
+    let modifierSeparator:
+        | string
+        | undefined = vscode.workspace
+        .getConfiguration()
+        .get("bemHelper.modifierSeparator");
+
+    elementSeparator = elementSeparator ? elementSeparator : "__";
+    modifierSeparator = modifierSeparator ? modifierSeparator : "--";
+
+    bemCommandProvider.setBemSeparators(elementSeparator, modifierSeparator);
+
+    //Register commands
     context.subscriptions.push(
         vscode.commands.registerCommand(
             "extension.bemHelper.insertModifiedElement",
