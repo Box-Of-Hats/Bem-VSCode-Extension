@@ -2,7 +2,7 @@
     "name": "bemhelper",
     "displayName": "BEM Helper",
     "description": "Improve writing html using BEM naming conventions.",
-    "version": "0.6.6",
+    "version": "0.7.0",
     "author": "Box-Of-Hats",
     "publisher": "Box-Of-Hats",
     "engines": {
@@ -110,13 +110,13 @@
                     "bemHelper.elementSeparator": {
                         "type": "string",
                         "default": "__",
-                        "description": "The string to use as a separator for elements. By default is set to '__' ",
+                        "description": "The string to use as a separator for elements. By default is set to '__'",
                         "scope": "window"
                     },
                     "bemHelper.modifierSeparator": {
                         "type": "string",
                         "default": "--",
-                        "description": "The string to use as a separator for modifiers. By default is set to '--' ",
+                        "description": "The string to use as a separator for modifiers. By default is set to '--'",
                         "scope": "window"
                     }
                 }

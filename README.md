@@ -32,6 +32,8 @@ Got any feedback, issues or feature requests? Send them my way via [GitHub Issue
 | bemHelper.responsiveLinting | Enable/disable linting checks whenever a file contents changes. Disable for increased performace. Reload window to take effect | true, false                      |
 | bemHelper.showDepthWarnings | Enable/disable depth warnings. e.g block\_\_block2\_\_element                                                                  | true, false                      |
 | bemHelper.tagList           | The list of tags used for insert element snippets                                                                              | a list of any html elements      |
+| bemHelper.elementSeparator  | The string to use as a separator for elements. By default is set to `'__'`                                                     | any string                       |
+| bemHelper.modifierSeparator | The string to use as a separator for modifiers. By default is set to `'--'`                                                    | any string                       |
 
 ## Generating LESS / SCSS / CSS
 

@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.7.0
+
+-   Add support for custom separators
+    -   Dont like the standard BEM separators of '\_\_' and '--'? You can now set your own custom separators to be pretty much anything you like!
+    -   You can change them in your settings file using `bemHelper.modifierSeparator` and `bemHelper.elementSeparator`
+
 ## 0.6.0
 
 -   Add class name case refactor quick Fix
