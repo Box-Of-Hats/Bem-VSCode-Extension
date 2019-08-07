@@ -2,7 +2,7 @@ import * as assert from "assert";
 import { BemHelper, ClassNameCases } from "../BemHelper";
 
 suite("BemHelper Tests", () => {
-    test("CSS Class extraction - Camel Case", () => {
+    test("Class extraction - Camel Case", () => {
         const html = `
             <body>
                 <div class="navBody">
@@ -25,7 +25,7 @@ suite("BemHelper Tests", () => {
         assert.deepEqual(actual, expected);
     });
 
-    test("CSS Class extraction - Pascal Case", () => {
+    test("Class extraction - Pascal Case", () => {
         const html = `
             <body>
                 <div class="NavBody">
@@ -48,7 +48,7 @@ suite("BemHelper Tests", () => {
         assert.deepEqual(actual, expected);
     });
 
-    test("CSS Class extraction - Snake Case", () => {
+    test("Class extraction - Snake Case", () => {
         const html = `
             <body>
                 <div class="nav_body">
@@ -71,7 +71,7 @@ suite("BemHelper Tests", () => {
         assert.deepEqual(actual, expected);
     });
 
-    test("CSS Class extraction - Kebab Case", () => {
+    test("Class extraction - Kebab Case", () => {
         const html = `
             <body>
                 <div class="nav">
@@ -102,7 +102,7 @@ suite("BemHelper Tests", () => {
         assert.deepEqual(actual.sort(), expected.sort());
     });
 
-    test("CSS Class extraction - Basic", () => {
+    test("Class extraction - Basic", () => {
         const html = `
             <body>
                 <div class="nav">
@@ -120,7 +120,7 @@ suite("BemHelper Tests", () => {
         assert.deepEqual(actual.sort(), expected.sort());
     });
 
-    test("CSS Class extraction - Single Quotes", () => {
+    test("Class extraction - Single Quotes", () => {
         const html = `
             <body>
                 <div class='nav'>
@@ -138,7 +138,7 @@ suite("BemHelper Tests", () => {
         assert.deepEqual(actual.sort(), expected.sort());
     });
 
-    test("CSS Class extraction - Backtick", () => {
+    test("Class extraction - Backtick", () => {
         const html = `
             <body>
                 <div class=\`nav\`>
@@ -156,7 +156,7 @@ suite("BemHelper Tests", () => {
         assert.deepEqual(actual.sort(), expected.sort());
     });
 
-    test("CSS Class extraction - No Classes", () => {
+    test("Class extraction - No Classes", () => {
         const html = ``;
         const expected: string[] = [];
         let bemHelper = new BemHelper();
@@ -164,10 +164,40 @@ suite("BemHelper Tests", () => {
         assert.deepEqual(actual.sort(), expected.sort());
     });
 
-    test("CSS Class extraction - React", () => {
+    test("Class extraction - React", () => {
         const html = `<div className="parent-class"><div className="parent-class__child"></div></div>`;
         const expected = ["parent-class", "parent-class__child"];
         let bemHelper = new BemHelper();
+        let actual = bemHelper.getClasses(html);
+        assert.deepEqual(actual.sort(), expected.sort());
+    });
+
+    test("Class extraction - Custom Separators", () => {
+        const html = `
+            <body>
+                <div class="nav">
+                    <div class="nav~~item">One</div>
+                    <div class="nav~~item">Two</div>
+                    <div class="nav~~item">Three</div>
+                    <div class="nav~~item">Four</div>
+                    <div class="nav~~item nav~~item++mod1">Four</div>
+                    <div class="nav~~item nav~~item++mod2">Four</div>
+                </div>
+                <div class="nav-two"></div>
+                <div class="nav-two nav-two++modified"></div>
+            </body>
+        `;
+        const expected = [
+            "nav",
+            "nav~~item",
+            "nav-two",
+            "nav~~item++mod2",
+            "nav~~item++mod1",
+            "nav-two++modified"
+        ];
+        let bemHelper = new BemHelper();
+        bemHelper.elementSeparator = "~~";
+        bemHelper.modifierSeparator = "++";
         let actual = bemHelper.getClasses(html);
         assert.deepEqual(actual.sort(), expected.sort());
     });
