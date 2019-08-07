@@ -2,7 +2,12 @@ import { BemHelper, ClassNameCases } from "./BemHelper";
 import * as vscode from "vscode";
 
 export class BemCommandProvider {
-    bemHelper = new BemHelper();
+    private bemHelper = new BemHelper();
+
+    public setBemSeparators(elementSeparator: string, modifierSeparator) {
+        this.bemHelper.elementSeparator = elementSeparator;
+        this.bemHelper.modifierSeparator = modifierSeparator;
+    }
 
     /*
      * Convert the selected text to a given case, selected via a prompt
@@ -143,13 +148,19 @@ export class BemCommandProvider {
         if (isModified) {
             textEditor.insertSnippet(
                 new vscode.SnippetString(
-                    `<\${3|${tagList}|} ${classProperty}="${className}__$1 ${className}__$1--$2">$0</$3>`
+                    `<\${3|${tagList}|} ${classProperty}="${className}${
+                        this.bemHelper.elementSeparator
+                    }$1 ${className}${this.bemHelper.elementSeparator}$1${
+                        this.bemHelper.modifierSeparator
+                    }$2">$0</$3>`
                 )
             );
         } else {
             textEditor.insertSnippet(
                 new vscode.SnippetString(
-                    `<\${2|${tagList}|} ${classProperty}="${className}__$1">$0</$2>`
+                    `<\${2|${tagList}|} ${classProperty}="${className}${
+                        this.bemHelper.elementSeparator
+                    }$1">$0</$2>`
                 )
             );
         }

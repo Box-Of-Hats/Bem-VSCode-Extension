@@ -13,8 +13,11 @@ export interface BemClass {
 }
 
 export class BemHelper {
+    //BEM separators
+    public elementSeparator = "__";
+    public modifierSeparator = "--";
     //Regex to extract a class property value from a block of html text
-    readonly classPropertyValueRegex = /class(Name)?=["'`]{1}([a-zA-Z0-9-_ ]+)["'`]{1}/g;
+    readonly classPropertyValueRegex = /class(Name)?=["'`]{1}([^"'`])+["'`]{1}/g;
     //Regex to extract actual class names as groups from a class property string
     readonly classNameRegex = /["'`]{1}(.*)["'`]{1}/;
     // Case regex
@@ -35,11 +38,15 @@ export class BemHelper {
             if (flat) {
                 styleSheet = `${styleSheet}.${className}{}`;
             } else {
-                let block = className.split("__")[0].split("--")[0];
-                let element = className.split("__")[1]
-                    ? className.split("__")[1].split("--")[0]
+                let block = className
+                    .split(this.elementSeparator)[0]
+                    .split(this.modifierSeparator)[0];
+                let element = className.split(this.elementSeparator)[1]
+                    ? className
+                          .split(this.elementSeparator)[1]
+                          .split(this.modifierSeparator)[0]
                     : null;
-                let modifier = className.split("--")[1];
+                let modifier = className.split(this.modifierSeparator)[1];
 
                 if (block) {
                     //Blocks
@@ -76,15 +83,21 @@ export class BemHelper {
                         return element !== _blockModifierName;
                     })
                     .forEach(element => {
-                        styleSheet = `${styleSheet}&__${element}{`;
+                        styleSheet = `${styleSheet}&${
+                            this.elementSeparator
+                        }${element}{`;
                         styles[block][element].forEach(modifier => {
-                            styleSheet = `${styleSheet}&--${modifier}{}`;
+                            styleSheet = `${styleSheet}&${
+                                this.modifierSeparator
+                            }${modifier}{}`;
                         });
                         styleSheet = `${styleSheet}}`;
                     });
 
                 styles[block][_blockModifierName].forEach(blockModifier => {
-                    styleSheet = `${styleSheet}&--${blockModifier}{}`;
+                    styleSheet = `${styleSheet}&${
+                        this.modifierSeparator
+                    }${blockModifier}{}`;
                 });
 
                 styleSheet = `${styleSheet}}`;
@@ -136,7 +149,7 @@ export class BemHelper {
         matches = includeElements
             ? matches
             : matches.filter(match => {
-                  return !match.includes("__");
+                  return !match.includes(this.elementSeparator);
               });
 
         let lastMatch = matches[matches.length - 1];
@@ -147,7 +160,7 @@ export class BemHelper {
             return "";
         }
         return classNameMatches[classNameMatches.length - 1]
-            .split("--")[0]
+            .split(this.modifierSeparator)[0]
             .split(" ")[0];
     }
 
@@ -155,7 +168,9 @@ export class BemHelper {
      * Get the case type of a classname
      */
     public getClassCaseType(className: string): ClassNameCases {
-        className = className.replace(/__/g, "").replace(/--/g, "");
+        className = className
+            .replace(this.elementSeparator, "")
+            .replace(this.modifierSeparator, "");
 
         if (className.match(this.kebabCaseRegex)) {
             return ClassNameCases.Kebab;
@@ -176,15 +191,19 @@ export class BemHelper {
 
         if (bemClass.element && bemClass.modifier) {
             //block__element--modifier
-            classString = `${bemClass.block}__${bemClass.element}--${
-                bemClass.modifier
-            }`;
+            classString = `${bemClass.block}${this.elementSeparator}${
+                bemClass.element
+            }${this.modifierSeparator}${bemClass.modifier}`;
         } else if (!bemClass.element && bemClass.modifier) {
             //block--modifier
-            classString = `${bemClass.block}--${bemClass.modifier}`;
+            classString = `${bemClass.block}${this.modifierSeparator}${
+                bemClass.modifier
+            }`;
         } else if (bemClass.element && !bemClass.modifier) {
             //block__element
-            classString = `${bemClass.block}__${bemClass.element}`;
+            classString = `${bemClass.block}${this.elementSeparator}${
+                bemClass.element
+            }`;
         } else {
             //block
             classString = bemClass.block;
@@ -252,15 +271,19 @@ export class BemHelper {
         sourceClass: string,
         toClassType: ClassNameCases
     ): string {
-        let modifier = sourceClass.includes("--")
-            ? sourceClass.split("--")[sourceClass.split("--").length - 1]
+        let modifier = sourceClass.includes(this.modifierSeparator)
+            ? sourceClass.split(this.modifierSeparator)[
+                  sourceClass.split(this.modifierSeparator).length - 1
+              ]
             : "";
-        let element = sourceClass.includes("__")
+        let element = sourceClass.includes(this.elementSeparator)
             ? sourceClass
-                  .split("__")
-                  [sourceClass.split("__").length - 1].split("--")[0]
+                  .split(this.elementSeparator)
+                  [sourceClass.split(this.elementSeparator).length - 1].split(
+                      this.modifierSeparator
+                  )[0]
             : "";
-        let block = sourceClass.split("__")[0];
+        let block = sourceClass.split(this.elementSeparator)[0];
 
         let classElements: BemClass = {
             block: this.convertStringToCase(block, toClassType),
@@ -275,7 +298,8 @@ export class BemHelper {
      */
     public isBemClass(className: string): boolean {
         return !(
-            className.split("__").length > 2 || className.split("--").length > 2
+            className.split(this.elementSeparator).length > 2 ||
+            className.split(this.modifierSeparator).length > 2
         );
     }
     /*
