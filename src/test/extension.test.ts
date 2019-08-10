@@ -472,6 +472,26 @@ suite("BemHelper Tests", () => {
         assert.equal(actual, expected);
     });
 
+    test("Get Preceding Class - Block - Vue class after css class", () => {
+        let html = `
+            <div class="nav-bar" :class="{'is-hidden':isHidden}"></div>
+        `;
+        let bemHelper = new BemHelper();
+        let actual = bemHelper.getPrecedingClassName(html, false);
+        let expected = "nav-bar";
+        assert.equal(actual, expected);
+    });
+
+    test("Get Preceding Class - Block - Vue class before css class", () => {
+        let html = `
+            <div :class="{'is-hidden':isHidden}" class="nav-bar" ></div>
+        `;
+        let bemHelper = new BemHelper();
+        let actual = bemHelper.getPrecedingClassName(html, false);
+        let expected = "nav-bar";
+        assert.equal(actual, expected);
+    });
+
     test("Convert Class - Block Element Modifier - Kebab => Snake", () => {
         let inputClassName = "test-class__test-child--modi-fier";
         let expected = "test_class__test_child--modi_fier";

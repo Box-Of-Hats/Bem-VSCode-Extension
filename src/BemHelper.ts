@@ -17,7 +17,7 @@ export class BemHelper {
     public elementSeparator = "__";
     public modifierSeparator = "--";
     //Regex to extract a class property value from a block of html text
-    readonly classPropertyValueRegex = /class(Name)?=["'`]{1}([^"'`])+["'`]{1}/g;
+    readonly classPropertyValueRegex = /[\s]+class(Name)?=["'`]{1}([^"'`])+["'`]{1}/g;
     //Regex to extract actual class names as groups from a class property string
     readonly classNameRegex = /["'`]{1}(.*)["'`]{1}/;
     // Case regex

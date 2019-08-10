@@ -6,30 +6,35 @@
     -   Dont like the standard BEM separators of '\_\_' and '--'? You can now set your own custom separators to be pretty much anything you like!
     -   You can change them in your settings file using `bemHelper.modifierSeparator` and `bemHelper.elementSeparator`
 
+### 0.7.1
+
+-   Fix vue classes interfering with found class names
+    -   e.g: `<div class="nav-bar" :class="{'is-hidden':isHidden}">` was giving unexpected classnames when inserting elements
+
 ## 0.6.0
 
 -   Add class name case refactor quick Fix
 
-## 0.6.2
+### 0.6.2
 
 -   Add extension.bemHelper.convertSelectionToCase command to convert any text selection to a given case
 -   Fix bug with empty classnames potentially causing extension crashing
 -   Fix bug where only the first class of a set of classes could be quick fixed
 -   Huge refactor of code base
 
-## 0.6.3
+### 0.6.3
 
 -   Fix bugs with using single quotes and backticks surrounding class names
 
-## 0.6.4
+### 0.6.4
 
 -   Add more activation events so that commands should always be found, regardless of the current file language
 
-## 0.6.5
+### 0.6.5
 
 -   Improve modified element insert behaviour
 
-## 0.6.6
+### 0.6.6
 
 -   Restructure ReadMe
 
