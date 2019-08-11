@@ -11,6 +11,11 @@
 -   Fix vue classes interfering with found class names
     -   e.g: `<div class="nav-bar" :class="{'is-hidden':isHidden}">` was giving unexpected classnames when inserting elements
 
+### 0.7.2
+
+-   New command: `Bem Helper: Generate Stylesheet From Selection`
+    -   Generate a stylesheet only for specific elements that are currently selcted
+
 ## 0.6.0
 
 -   Add class name case refactor quick Fix

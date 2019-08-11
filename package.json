@@ -2,7 +2,7 @@
     "name": "bemhelper",
     "displayName": "BEM Helper",
     "description": "Improve writing html using BEM naming conventions.",
-    "version": "0.7.1",
+    "version": "0.7.2",
     "author": "Box-Of-Hats",
     "publisher": "Box-Of-Hats",
     "engines": {
@@ -134,6 +134,10 @@
             {
                 "command": "extension.bemHelper.generateStyleSheet",
                 "title": "BEM Helper: Generate Stylesheet"
+            },
+            {
+                "command": "extension.bemHelper.generateStyleSheetFromSelection",
+                "title": "BEM Helper: Generate Stylesheet From Selection"
             },
             {
                 "command": "extension.bemHelper.convertSelectionToCase",

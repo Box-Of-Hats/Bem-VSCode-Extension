@@ -111,6 +111,61 @@ export class BemCommandProvider {
             });
     }
 
+    public generateStyleSheetForSelection(): void {
+        let textEditor = vscode.window.activeTextEditor;
+
+        if (!textEditor) {
+            vscode.window.showErrorMessage(
+                "No active text editor. Please open a file"
+            );
+            return;
+        }
+
+        vscode.window
+            .showQuickPick(["scss", "less", "css"], {
+                placeHolder: "Choose a type of stylesheet to generate"
+            })
+            .then(stylesheetLanguage => {
+                if (!stylesheetLanguage) {
+                    vscode.window.showErrorMessage(
+                        "No stylesheet type selected."
+                    );
+                    return;
+                }
+                let infoMessage = vscode.window.setStatusBarMessage(
+                    `Generating ${stylesheetLanguage}...`
+                );
+
+                let documentText = textEditor!.document.getText(
+                    textEditor!.selection
+                );
+                let classes = this.bemHelper.getClasses(documentText);
+                if (!classes) {
+                    return;
+                }
+                let stylesheet = this.bemHelper.generateStyleSheet(
+                    classes,
+                    stylesheetLanguage === "css"
+                );
+
+                vscode.workspace
+                    .openTextDocument({
+                        language: stylesheetLanguage,
+                        content: stylesheet
+                    })
+                    .then(doc => {
+                        vscode.window
+                            .showTextDocument(doc)
+                            .then(e => {
+                                vscode.commands.executeCommand(
+                                    "editor.action.formatDocument"
+                                );
+                            })
+                            .then(infoMessage.dispose());
+                    });
+            });
+    }
+
     public insertElementAtCursor(isModified: boolean): void {
         let textEditor = vscode.window.activeTextEditor;
 

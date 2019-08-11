@@ -111,7 +111,12 @@ function registerCommands(context: vscode.ExtensionContext) {
                 bemCommandProvider.generateStyleSheetForCurrentDocument();
             }
         ),
-
+        vscode.commands.registerCommand(
+            "extension.bemHelper.generateStyleSheetFromSelection",
+            () => {
+                bemCommandProvider.generateStyleSheetForSelection();
+            }
+        ),
         vscode.commands.registerCommand(
             "extension.bemHelper.convertSelectionToCase",
             () => {
