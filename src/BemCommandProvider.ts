@@ -68,51 +68,15 @@ export class BemCommandProvider {
             return;
         }
 
-        vscode.window
-            .showQuickPick(["scss", "less", "css"], {
-                placeHolder: "Choose a type of stylesheet to generate"
-            })
-            .then(stylesheetLanguage => {
-                if (!stylesheetLanguage) {
-                    vscode.window.showErrorMessage(
-                        "No stylesheet type selected."
-                    );
-                    return;
-                }
-                let infoMessage = vscode.window.setStatusBarMessage(
-                    `Generating ${stylesheetLanguage}...`
-                );
+        let documentText = textEditor.document.getText();
 
-                let documentText = textEditor!.document.getText();
-                let classes = this.bemHelper.getClasses(documentText);
-                if (!classes) {
-                    return;
-                }
-                let stylesheet = this.bemHelper.generateStyleSheet(
-                    classes,
-                    stylesheetLanguage === "css"
-                );
-
-                vscode.workspace
-                    .openTextDocument({
-                        language: stylesheetLanguage,
-                        content: stylesheet
-                    })
-                    .then(doc => {
-                        vscode.window
-                            .showTextDocument(doc)
-                            .then(e => {
-                                vscode.commands.executeCommand(
-                                    "editor.action.formatDocument"
-                                );
-                            })
-                            .then(infoMessage.dispose());
-                    });
-            });
+        this.generateStyleSheetForText(documentText);
     }
 
     public generateStyleSheetForSelection(): void {
         let textEditor = vscode.window.activeTextEditor;
+
+        let documentText = textEditor!.document.getText(textEditor!.selection);
 
         if (!textEditor) {
             vscode.window.showErrorMessage(
@@ -121,6 +85,10 @@ export class BemCommandProvider {
             return;
         }
 
+        this.generateStyleSheetForText(documentText);
+    }
+
+    private generateStyleSheetForText(html: string) {
         vscode.window
             .showQuickPick(["scss", "less", "css"], {
                 placeHolder: "Choose a type of stylesheet to generate"
@@ -136,10 +104,7 @@ export class BemCommandProvider {
                     `Generating ${stylesheetLanguage}...`
                 );
 
-                let documentText = textEditor!.document.getText(
-                    textEditor!.selection
-                );
-                let classes = this.bemHelper.getClasses(documentText);
+                let classes = this.bemHelper.getClasses(html);
                 if (!classes) {
                     return;
                 }
