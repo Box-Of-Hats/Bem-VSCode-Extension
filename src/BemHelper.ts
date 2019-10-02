@@ -30,6 +30,7 @@ export class BemHelper {
      * Generate a stylesheet from a list of BEM class names
      */
     public generateStyleSheet(classNames: string[], flat: boolean): string {
+        this.resetRegex();
         let styleSheet = ``;
         let styles = {};
         const _blockModifierName = "__BLOCK__MODIFIER__";
@@ -83,21 +84,15 @@ export class BemHelper {
                         return element !== _blockModifierName;
                     })
                     .forEach(element => {
-                        styleSheet = `${styleSheet}&${
-                            this.elementSeparator
-                        }${element}{`;
+                        styleSheet = `${styleSheet}&${this.elementSeparator}${element}{`;
                         styles[block][element].forEach(modifier => {
-                            styleSheet = `${styleSheet}&${
-                                this.modifierSeparator
-                            }${modifier}{}`;
+                            styleSheet = `${styleSheet}&${this.modifierSeparator}${modifier}{}`;
                         });
                         styleSheet = `${styleSheet}}`;
                     });
 
                 styles[block][_blockModifierName].forEach(blockModifier => {
-                    styleSheet = `${styleSheet}&${
-                        this.modifierSeparator
-                    }${blockModifier}{}`;
+                    styleSheet = `${styleSheet}&${this.modifierSeparator}${blockModifier}{}`;
                 });
 
                 styleSheet = `${styleSheet}}`;
@@ -109,6 +104,7 @@ export class BemHelper {
     //Get all classes from a block of html
     public getClasses(html: string): string[] {
         let classNames: string[] = [];
+        this.resetRegex();
 
         if (this.classPropertyValueRegex === null) {
             return classNames;
@@ -139,6 +135,7 @@ export class BemHelper {
         html: string,
         includeElements: boolean
     ): string {
+        this.resetRegex();
         let matches = html.match(this.classPropertyValueRegex);
 
         if (matches === null) {
@@ -168,6 +165,7 @@ export class BemHelper {
      * Get the case type of a classname
      */
     public getClassCaseType(className: string): ClassNameCases {
+        this.resetRegex();
         className = className
             .replace(this.elementSeparator, "")
             .replace(this.modifierSeparator, "");
@@ -191,19 +189,13 @@ export class BemHelper {
 
         if (bemClass.element && bemClass.modifier) {
             //block__element--modifier
-            classString = `${bemClass.block}${this.elementSeparator}${
-                bemClass.element
-            }${this.modifierSeparator}${bemClass.modifier}`;
+            classString = `${bemClass.block}${this.elementSeparator}${bemClass.element}${this.modifierSeparator}${bemClass.modifier}`;
         } else if (!bemClass.element && bemClass.modifier) {
             //block--modifier
-            classString = `${bemClass.block}${this.modifierSeparator}${
-                bemClass.modifier
-            }`;
+            classString = `${bemClass.block}${this.modifierSeparator}${bemClass.modifier}`;
         } else if (bemClass.element && !bemClass.modifier) {
             //block__element
-            classString = `${bemClass.block}${this.elementSeparator}${
-                bemClass.element
-            }`;
+            classString = `${bemClass.block}${this.elementSeparator}${bemClass.element}`;
         } else {
             //block
             classString = bemClass.block;
@@ -214,6 +206,7 @@ export class BemHelper {
      * Convert a string to a case
      */
     public convertStringToCase(word: string, toClassType: ClassNameCases) {
+        this.resetRegex();
         let outputClass = word;
 
         let classNameWords = word
@@ -271,6 +264,7 @@ export class BemHelper {
         sourceClass: string,
         toClassType: ClassNameCases
     ): string {
+        this.resetRegex();
         let modifier = sourceClass.includes(this.modifierSeparator)
             ? sourceClass.split(this.modifierSeparator)[
                   sourceClass.split(this.modifierSeparator).length - 1
@@ -306,6 +300,7 @@ export class BemHelper {
      * Check if a className is in a given case
      */
     public isCaseMatch(className: string, caseType: ClassNameCases): boolean {
+        this.resetRegex();
         className = className.replace(/__/g, "").replace(/--/g, "");
         let allowedClassNamePattern;
         switch (caseType) {
@@ -342,5 +337,14 @@ export class BemHelper {
         }
 
         return "class";
+    }
+
+    private resetRegex(): void {
+        this.classPropertyValueRegex.lastIndex = 0;
+        this.classNameRegex.lastIndex = 0;
+        this.kebabCaseRegex.lastIndex = 0;
+        this.snakeCaseRegex.lastIndex = 0;
+        this.pascalCaseRegex.lastIndex = 0;
+        this.camelCaseRegex.lastIndex = 0;
     }
 }
