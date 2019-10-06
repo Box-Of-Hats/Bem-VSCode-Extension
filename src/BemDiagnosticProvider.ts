@@ -42,7 +42,7 @@ export class BemDiagnosticProvider {
                             "BEM - classes must only consist of block and element.",
                         range: new vscode.Range(startPos, endPos),
                         severity: vscode.DiagnosticSeverity.Warning,
-                        source: "",
+                        source: "bem helper",
                         relatedInformation: [
                             new vscode.DiagnosticRelatedInformation(
                                 new vscode.Location(
@@ -99,12 +99,26 @@ export class BemDiagnosticProvider {
                     const endPos = activeEditor.document.positionAt(
                         i + className.length
                     );
+
+                    // Check that the matched line is a class name definition
+                    let lineRange = new vscode.Range(
+                        new vscode.Position(startPos.line, 0),
+                        new vscode.Position(startPos.line, 1000)
+                    );
+
+                    let lineText = activeEditor.document.getText(lineRange);
+
+                    if (!lineText.match(this.bemHelper.classNameRegex)) {
+                        // Skip match if it is not a class name definition
+                        continue;
+                    }
+
                     errors.push({
                         code: "case",
                         message: `BEM - Class names must be in ${casing} case `,
                         range: new vscode.Range(startPos, endPos),
                         severity: vscode.DiagnosticSeverity.Warning,
-                        source: "",
+                        source: "bem helper",
                         relatedInformation: [
                             new vscode.DiagnosticRelatedInformation(
                                 new vscode.Location(
