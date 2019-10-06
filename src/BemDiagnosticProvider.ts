@@ -108,7 +108,7 @@ export class BemDiagnosticProvider {
 
                     let lineText = activeEditor.document.getText(lineRange);
 
-                    if (!lineText.match(this.bemHelper.classNameRegex)) {
+                    if (!lineText.match(this.bemHelper.classPropertyValueRegex)) {
                         // Skip match if it is not a class name definition
                         continue;
                     }
