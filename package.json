@@ -83,6 +83,12 @@
                         "default": "--",
                         "description": "The string to use as a separator for modifiers. By default is set to '--'. Reload window to take effect",
                         "scope": "window"
+                    },
+                    "bemHelper.maxWarningsCount": {
+                        "type": "integer",
+                        "default": 100,
+                        "description": "The maximum number of diagnostic warnings to show",
+                        "scope": "window"
                     }
                 }
             }
