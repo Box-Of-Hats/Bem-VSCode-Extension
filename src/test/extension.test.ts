@@ -472,36 +472,6 @@ suite("BemHelper Tests", () => {
         assert.equal(actual, expected);
     });
 
-    test("Get Preceding Class - Element - Interpolated String", () => {
-        const html = `
-            <div class=\`block\`>
-                <div class=\`block__element ${true ? "one" : "two"}\`>
-                </div>
-                <div class=\`block__element block__element--modded ${2}\`>
-                </div>
-            </div>
-        `;
-        const bemHelper = new BemHelper();
-        let expected = "block__element";
-        let actual = bemHelper.getPrecedingClassName(html, true);
-        assert.equal(actual, expected);
-    });
-
-    test("Get Preceding Class - Block - Interpolated String", () => {
-        const html = `
-            <div class=\`block\`>
-                <div class=\`block__element ${true ? "one" : "two"}\`>
-                </div>
-                <div class=\`block__element block__element--modded ${2}\`>
-                </div>
-            </div>
-        `;
-        const bemHelper = new BemHelper();
-        let expected = "block";
-        let actual = bemHelper.getPrecedingClassName(html, false);
-        assert.equal(actual, expected);
-    });
-
     test("Get Preceding Class - Block - Vue class after css class", () => {
         let html = `
             <div class="nav-bar" :class="{'is-hidden':isHidden}"></div>
