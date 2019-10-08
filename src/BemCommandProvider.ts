@@ -169,20 +169,17 @@ export class BemCommandProvider {
         let classProperty = this.bemHelper.getClassPropertyWord(
             textEditor.document.languageId
         );
-        let tagList = vscode.workspace
-            .getConfiguration()
-            .get("bemHelper.tagList");
 
         if (isModified) {
             textEditor.insertSnippet(
                 new vscode.SnippetString(
-                    `<\${3|${tagList}|} ${classProperty}="${className}${this.bemHelper.elementSeparator}$1 ${className}${this.bemHelper.elementSeparator}$1${this.bemHelper.modifierSeparator}$2">$0</$3>`
+                    `<\${3:div} ${classProperty}="${className}${this.bemHelper.elementSeparator}$1 ${className}${this.bemHelper.elementSeparator}$1${this.bemHelper.modifierSeparator}$2">$4</$3>\n$0`
                 )
             );
         } else {
             textEditor.insertSnippet(
                 new vscode.SnippetString(
-                    `<\${2|${tagList}|} ${classProperty}="${className}${this.bemHelper.elementSeparator}$1">$0</$2>`
+                    `<\${2:div} ${classProperty}="${className}${this.bemHelper.elementSeparator}$1">$3</$2>\n$0`
                 )
             );
         }
