@@ -103,8 +103,16 @@ export class BemHelper {
 
     //Get all classes from a block of html
     public getClasses(html: string): string[] {
-        let classNames: string[] = [];
         this.resetRegex();
+        let classNames: string[] = [];
+        const ignoreStrings = [
+            /<\?php\s+.*\?>/, //PHP
+            /\${.*}/ //Javascript
+        ];
+
+        ignoreStrings.forEach(regex => {
+            html = html.replace(regex, " ");
+        });
 
         if (this.classPropertyValueRegex === null) {
             return classNames;
@@ -133,32 +141,31 @@ export class BemHelper {
      */
     public getPrecedingClassName(
         html: string,
-        includeElements: boolean
+        includeElements: boolean,
+        includeModified?: boolean
     ): string {
-        this.resetRegex();
-        let matches = html.match(this.classPropertyValueRegex);
-
-        if (matches === null) {
-            return "";
-        }
+        let classes = this.getClasses(html);
 
         //If only including blocks, remove element classes
-        matches = includeElements
+        let matches = includeElements
+            ? classes
+            : classes.filter(match => {
+                  return !match.includes(this.elementSeparator);
+              });
+
+        matches = includeModified
             ? matches
             : matches.filter(match => {
-                  return !match.includes(this.elementSeparator);
+                  return !match.includes(this.modifierSeparator);
               });
 
         let lastMatch = matches[matches.length - 1];
 
-        let classNameMatches = lastMatch.match(this.classNameRegex);
-
-        if (classNameMatches === null) {
+        if (!lastMatch) {
             return "";
         }
-        return classNameMatches[classNameMatches.length - 1]
-            .split(this.modifierSeparator)[0]
-            .split(" ")[0];
+
+        return lastMatch;
     }
 
     /*
