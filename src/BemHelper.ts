@@ -35,7 +35,7 @@ export class BemHelper {
         let styles = {};
         const _blockModifierName = "__BLOCK__MODIFIER__";
 
-        classNames.sort().forEach(className => {
+        classNames.forEach(className => {
             if (flat) {
                 styleSheet = `${styleSheet}.${className}{}`;
             } else {

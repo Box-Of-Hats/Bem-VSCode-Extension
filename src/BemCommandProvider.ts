@@ -108,6 +108,14 @@ export class BemCommandProvider {
                 if (!classes) {
                     return;
                 }
+
+                if (
+                    vscode.workspace
+                        .getConfiguration()
+                        .get("bemHelper.sortGeneratedStylesheets")
+                ) {
+                    classes = classes.sort();
+                }
                 let stylesheet = this.bemHelper.generateStyleSheet(
                     classes,
                     stylesheetLanguage === "css"
@@ -168,19 +176,13 @@ export class BemCommandProvider {
         if (isModified) {
             textEditor.insertSnippet(
                 new vscode.SnippetString(
-                    `<\${3|${tagList}|} ${classProperty}="${className}${
-                        this.bemHelper.elementSeparator
-                    }$1 ${className}${this.bemHelper.elementSeparator}$1${
-                        this.bemHelper.modifierSeparator
-                    }$2">$0</$3>`
+                    `<\${3|${tagList}|} ${classProperty}="${className}${this.bemHelper.elementSeparator}$1 ${className}${this.bemHelper.elementSeparator}$1${this.bemHelper.modifierSeparator}$2">$0</$3>`
                 )
             );
         } else {
             textEditor.insertSnippet(
                 new vscode.SnippetString(
-                    `<\${2|${tagList}|} ${classProperty}="${className}${
-                        this.bemHelper.elementSeparator
-                    }$1">$0</$2>`
+                    `<\${2|${tagList}|} ${classProperty}="${className}${this.bemHelper.elementSeparator}$1">$0</$2>`
                 )
             );
         }

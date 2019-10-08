@@ -215,7 +215,7 @@ suite("BemHelper Tests", () => {
             ["test-class", "test-class-two", "class-test"],
             true
         );
-        let expected = ".class-test{}.test-class{}.test-class-two{}";
+        let expected = ".test-class{}.test-class-two{}.class-test{}";
         assert.equal(actual, expected);
     });
 
@@ -238,7 +238,7 @@ suite("BemHelper Tests", () => {
             ],
             false
         );
-        let expected = ".class-test{&__element{&--one{}&--two{}}}.test-class{}";
+        let expected = ".test-class{}.class-test{&__element{&--one{}&--two{}}}";
         assert.equal(actual, expected);
     });
 
