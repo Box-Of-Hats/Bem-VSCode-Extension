@@ -172,7 +172,7 @@ suite("BemHelper Tests", () => {
         assert.deepEqual(actual.sort(), expected.sort());
     });
 
-    test("Class extraction - Custom Separators", () => {
+    test("Class extraction - Custom Separators - '~~' separator | '++' modifier", () => {
         const html = `
             <body>
                 <div class="nav">
@@ -198,6 +198,36 @@ suite("BemHelper Tests", () => {
         let bemHelper = new BemHelper();
         bemHelper.elementSeparator = "~~";
         bemHelper.modifierSeparator = "++";
+        let actual = bemHelper.getClasses(html);
+        assert.deepEqual(actual.sort(), expected.sort());
+    });
+
+    test("Class extraction - Custom Separators - '__' separator | '_' modifier", () => {
+        const html = `
+            <body>
+                <div class="nav">
+                    <div class="nav__item">One</div>
+                    <div class="nav__item">Two</div>
+                    <div class="nav__item">Three</div>
+                    <div class="nav__item">Four</div>
+                    <div class="nav__item nav__item_mod1">Four</div>
+                    <div class="nav__item nav__item_mod2">Four</div>
+                </div>
+                <div class="nav-two"></div>
+                <div class="nav-two nav-two_modified"></div>
+            </body>
+        `;
+        const expected = [
+            "nav",
+            "nav__item",
+            "nav-two",
+            "nav__item_mod2",
+            "nav__item_mod1",
+            "nav-two_modified"
+        ];
+        let bemHelper = new BemHelper();
+        bemHelper.elementSeparator = "__";
+        bemHelper.modifierSeparator = "_";
         let actual = bemHelper.getClasses(html);
         assert.deepEqual(actual.sort(), expected.sort());
     });
@@ -660,5 +690,18 @@ suite("BemHelper Tests", () => {
         assert.equal(bemHelper.isCaseMatch(snakeClass, kebabCase), false);
         assert.equal(bemHelper.isCaseMatch(snakeClass, pascalCase), false);
         assert.equal(bemHelper.isCaseMatch(snakeClass, snakeCase), true);
+    });
+
+    test("Is Case Match - Custom Separater", () => {
+        let bemHelper = new BemHelper();
+        bemHelper.modifierSeparator = "_";
+        bemHelper.elementSeparator = "__";
+
+        const kebabClass = "myclass__element_modifier";
+
+        assert.equal(
+            bemHelper.isCaseMatch(kebabClass, ClassNameCases.Kebab),
+            true
+        );
     });
 });

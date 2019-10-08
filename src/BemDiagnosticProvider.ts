@@ -6,6 +6,25 @@ export class BemDiagnosticProvider {
     public bemHelper: BemHelper = new BemHelper();
     public errors: vscode.Diagnostic[] = [];
 
+    constructor() {
+        let elementSeparator:
+            | string
+            | undefined = vscode.workspace
+            .getConfiguration()
+            .get("bemHelper.elementSeparator");
+
+        let modifierSeparator:
+            | string
+            | undefined = vscode.workspace
+            .getConfiguration()
+            .get("bemHelper.modifierSeparator");
+
+        elementSeparator = elementSeparator ? elementSeparator : "__";
+        modifierSeparator = modifierSeparator ? modifierSeparator : "--";
+        this.bemHelper.elementSeparator = elementSeparator;
+        this.bemHelper.modifierSeparator = modifierSeparator;
+    }
+
     /*
      * Get a list of errors with class depth problems (e.g 'one__two__three')
      */
@@ -108,7 +127,9 @@ export class BemDiagnosticProvider {
 
                     let lineText = activeEditor.document.getText(lineRange);
 
-                    if (!lineText.match(this.bemHelper.classPropertyValueRegex)) {
+                    if (
+                        !lineText.match(this.bemHelper.classPropertyValueRegex)
+                    ) {
                         // Skip match if it is not a class name definition
                         continue;
                     }

@@ -291,6 +291,14 @@ export class BemHelper {
      * Is a class name following BEM conventions?
      */
     public isBemClass(className: string): boolean {
+        // Workaround for when the either separator is contained in the other
+        if (
+            this.modifierSeparator.includes(this.elementSeparator) ||
+            this.elementSeparator.includes(this.modifierSeparator)
+        ) {
+            return true;
+        }
+
         return !(
             className.split(this.elementSeparator).length > 2 ||
             className.split(this.modifierSeparator).length > 2
@@ -301,7 +309,17 @@ export class BemHelper {
      */
     public isCaseMatch(className: string, caseType: ClassNameCases): boolean {
         this.resetRegex();
-        className = className.replace(/__/g, "").replace(/--/g, "");
+        if (this.elementSeparator.length > this.modifierSeparator.length) {
+            //Need to replace the longer separator first to prevent accidental replacing
+            className = className
+                .replace(this.elementSeparator, "")
+                .replace(this.modifierSeparator, "");
+        } else {
+            className = className
+                .replace(this.modifierSeparator, "")
+                .replace(this.elementSeparator, "");
+        }
+
         let allowedClassNamePattern;
         switch (caseType) {
             case ClassNameCases.Any:
