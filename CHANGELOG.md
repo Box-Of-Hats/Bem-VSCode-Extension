@@ -1,5 +1,18 @@
 # Change Log
 
+## 0.8.0
+
+-   Add optional alphabetisation of generated CSS class names
+    -   Use setting `bemHelper.sortGeneratedStylesheets` to toggle this on or off. By default set to `true`
+-   Improve snippet inserting experience.
+    -   Tags no longer use a preset tag list so you're able to type anything you like
+    -   Removed `bemHelper.tagList` setting
+    -   Insert newline after any inserted elements
+-   Fix bug where using custom separators caused class case diagnostics to be incorrect
+-   Fix bug where including PHP code in classnames would cause false diagnostics issues
+-   Under the hood refactoring
+-   Add setting for max number of diagnostic issues to show `bemHelper.maxWarningsCount`. This defaults to 100
+
 ## 0.7.0
 
 -   Add support for custom separators

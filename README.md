@@ -35,6 +35,7 @@ Got any feedback, issues or feature requests? Send them my way via [GitHub Issue
 | bemHelper.elementSeparator         | The string to use as a separator for elements. By default is set to `__`. Reload window to take effect                         | any string                       |
 | bemHelper.modifierSeparator        | The string to use as a separator for modifiers. By default is set to `--`. Reload window to take effect                        | any string                       |
 | bemHelper.sortGeneratedStylesheets | Controls whether generated stylesheets should be sorted alphabetically                                                         | true, false                      |
+| bemHelper.maxWarningsCount         | The maximum number of diagnostic warnings to show. Defaults to 100.                                                            | number                           |
 
 ## Generating LESS / SCSS / CSS
 
