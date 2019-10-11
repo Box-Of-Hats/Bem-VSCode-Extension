@@ -1,5 +1,6 @@
 import { BemHelper, ClassNameCases } from "./BemHelper";
 import * as vscode from "vscode";
+import { getConfigValue } from "./ez-vscode";
 
 export class BemCommandProvider {
     private bemHelper = new BemHelper();
@@ -110,9 +111,7 @@ export class BemCommandProvider {
                 }
 
                 if (
-                    vscode.workspace
-                        .getConfiguration()
-                        .get("bemHelper.sortGeneratedStylesheets")
+                    getConfigValue("bemHelper.sortGeneratedStylesheets", false)
                 ) {
                     classes = classes.sort();
                 }

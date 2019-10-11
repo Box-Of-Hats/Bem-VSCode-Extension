@@ -1,5 +1,6 @@
 import * as vscode from "vscode";
 import { BemHelper, ClassNameCases } from "./BemHelper";
+import { getConfigValue } from "./ez-vscode";
 
 export class BemDiagnosticProvider {
     public diagnosticCollectionName = "BemHelper";
@@ -7,20 +8,15 @@ export class BemDiagnosticProvider {
     public errors: vscode.Diagnostic[] = [];
 
     constructor() {
-        let elementSeparator:
-            | string
-            | undefined = vscode.workspace
-            .getConfiguration()
-            .get("bemHelper.elementSeparator");
+        let elementSeparator = getConfigValue(
+            "bemHelper.elementSeparator",
+            "__"
+        );
+        let modifierSeparator = getConfigValue(
+            "bemHelper.modifierSeparator",
+            "--"
+        );
 
-        let modifierSeparator:
-            | string
-            | undefined = vscode.workspace
-            .getConfiguration()
-            .get("bemHelper.modifierSeparator");
-
-        elementSeparator = elementSeparator ? elementSeparator : "__";
-        modifierSeparator = modifierSeparator ? modifierSeparator : "--";
         this.bemHelper.elementSeparator = elementSeparator;
         this.bemHelper.modifierSeparator = modifierSeparator;
     }
@@ -184,36 +180,25 @@ export class BemDiagnosticProvider {
             return;
         }
 
-        let maxWarningCount:
-            | number
-            | undefined = vscode.workspace
-            .getConfiguration()
-            .get("bemHelper.maxWarningsCount");
-
-        maxWarningCount = maxWarningCount ? maxWarningCount : 100;
+        let maxWarningCount = getConfigValue("bemHelper.maxWarningsCount", 100);
 
         const docText = document.getText();
         let editorHighlights = new Array();
 
         //Verify class name depth
-        if (
-            vscode.workspace
-                .getConfiguration()
-                .get("bemHelper.showDepthWarnings")
-        ) {
+        if (getConfigValue("bemHelper.showDepthWarnings", false)) {
             editorHighlights = editorHighlights.concat(
                 this.getClassNameDepthProblems(docText, activeEditor)
             );
         }
 
         //Verify class name cases
-        let acceptedClassNameCase:
-            | ClassNameCases
-            | undefined = vscode.workspace
-            .getConfiguration()
-            .get("bemHelper.classNameCase");
+        let acceptedClassNameCase = getConfigValue(
+            "bemHelper.classNameCase",
+            ClassNameCases.Any
+        );
 
-        if (acceptedClassNameCase) {
+        if (acceptedClassNameCase !== ClassNameCases.Any) {
             editorHighlights = editorHighlights.concat(
                 this.getClassNameCaseProblems(
                     docText,

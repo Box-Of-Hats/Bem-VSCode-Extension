@@ -1,5 +1,6 @@
 import * as vscode from "vscode";
 import { ClassNameCases, BemHelper } from "./BemHelper";
+import { getConfigValue } from "./ez-vscode";
 
 export class BemHelperCodeActionsProvider implements vscode.CodeActionProvider {
     public static readonly providedCodeActionKinds = [
@@ -27,13 +28,12 @@ export class BemHelperCodeActionsProvider implements vscode.CodeActionProvider {
             return fixes;
         }
         if (diagnostic.code === "case") {
-            let acceptedClassNameCase:
-                | ClassNameCases
-                | undefined = vscode.workspace
-                .getConfiguration()
-                .get("bemHelper.classNameCase");
+            let acceptedClassNameCase = getConfigValue(
+                "bemHelper.classNameCase",
+                ClassNameCases.Any
+            );
 
-            if (!acceptedClassNameCase) {
+            if (acceptedClassNameCase === ClassNameCases.Any) {
                 return fixes;
             }
 

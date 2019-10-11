@@ -3,6 +3,7 @@ import { BemCommandProvider } from "./BemCommandProvider";
 
 import { BemHelperCodeActionsProvider } from "./BemCodeActionsProvider";
 import { BemDiagnosticProvider } from "./BemDiagnosticProvider";
+import { getConfigValue } from "./ez-vscode";
 
 const codeActionsProvider = new BemHelperCodeActionsProvider();
 
@@ -50,9 +51,7 @@ function registerDiagnostics(context: vscode.ExtensionContext) {
                 bemDiagnosticProvider.errors;
         })
     );
-    if (
-        vscode.workspace.getConfiguration().get("bemHelper.responsiveLinting")
-    ) {
+    if (getConfigValue("bemHelper.responsiveLinting", false)) {
         // Update on character press if specified in settings
         context.subscriptions.push(
             vscode.workspace.onDidChangeTextDocument(e => {
@@ -74,20 +73,8 @@ function registerCommands(context: vscode.ExtensionContext) {
     //Initialise BemCommandProvider with any settings found
     const bemCommandProvider = new BemCommandProvider();
 
-    let elementSeparator:
-        | string
-        | undefined = vscode.workspace
-        .getConfiguration()
-        .get("bemHelper.elementSeparator");
-
-    let modifierSeparator:
-        | string
-        | undefined = vscode.workspace
-        .getConfiguration()
-        .get("bemHelper.modifierSeparator");
-
-    elementSeparator = elementSeparator ? elementSeparator : "__";
-    modifierSeparator = modifierSeparator ? modifierSeparator : "--";
+    let elementSeparator = getConfigValue("bemHelper.elementSeparator", "__");
+    let modifierSeparator = getConfigValue("bemHelper.modifierSeparator", "--");
 
     bemCommandProvider.setBemSeparators(elementSeparator, modifierSeparator);
 
