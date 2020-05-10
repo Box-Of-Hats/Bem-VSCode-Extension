@@ -3,11 +3,15 @@ import { BemHelper, ClassNameCases } from "./BemHelper";
 import { getConfigValue } from "./ez-vscode";
 
 export class BemDiagnosticProvider {
+    bemHelper: BemHelper;
+
     public diagnosticCollectionName = "BemHelper";
-    public bemHelper: BemHelper = new BemHelper();
+
     public errors: vscode.Diagnostic[] = [];
 
-    constructor() {
+    constructor(bemHelper: BemHelper) {
+        this.bemHelper = bemHelper;
+
         let elementSeparator = getConfigValue(
             "bemHelper.elementSeparator",
             "__"

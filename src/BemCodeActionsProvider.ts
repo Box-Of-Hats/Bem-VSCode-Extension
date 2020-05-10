@@ -3,11 +3,16 @@ import { ClassNameCases, BemHelper } from "./BemHelper";
 import { getConfigValue } from "./ez-vscode";
 
 export class BemHelperCodeActionsProvider implements vscode.CodeActionProvider {
+    bemHelper: BemHelper;
+
+    constructor(bemHelper: BemHelper) {
+        this.bemHelper = bemHelper;
+    }
+
     public static readonly providedCodeActionKinds = [
         vscode.CodeActionKind.QuickFix,
     ];
     public static diagnostics: vscode.Diagnostic[] = [];
-    public bemHelper = new BemHelper();
 
     /*
      * Check if a diagnostic is fixable and provide quick fixes if so

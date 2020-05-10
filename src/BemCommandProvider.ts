@@ -3,7 +3,10 @@ import { BemHelper, ClassNameCases } from "./BemHelper";
 import { getConfigValue } from "./ez-vscode";
 
 export class BemCommandProvider {
-    private bemHelper = new BemHelper();
+    bemHelper: BemHelper;
+    constructor(bemHelper: BemHelper) {
+        this.bemHelper = bemHelper;
+    }
 
     public setBemSeparators(elementSeparator: string, modifierSeparator) {
         this.bemHelper.elementSeparator = elementSeparator;

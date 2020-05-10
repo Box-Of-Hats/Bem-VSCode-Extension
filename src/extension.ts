@@ -3,8 +3,17 @@ import { BemCommandProvider } from "./BemCommandProvider";
 import { BemHelperCodeActionsProvider } from "./BemCodeActionsProvider";
 import { BemDiagnosticProvider } from "./BemDiagnosticProvider";
 import { getConfigValue } from "./ez-vscode";
+import { BemHelper } from "./BemHelper";
+import {
+    TypescriptReactLanguageProvider,
+    JavascriptReactLanguageProvider,
+} from "./languageProviders/LanguageProviders";
 
-const codeActionsProvider = new BemHelperCodeActionsProvider();
+const bemHelper = new BemHelper();
+bemHelper.registerLanguageProvider(new TypescriptReactLanguageProvider());
+bemHelper.registerLanguageProvider(new JavascriptReactLanguageProvider());
+
+const codeActionsProvider = new BemHelperCodeActionsProvider(bemHelper);
 
 export function activate(context: vscode.ExtensionContext) {
     registerCommands(context);
@@ -15,7 +24,7 @@ export function activate(context: vscode.ExtensionContext) {
 export function deactivate() {}
 
 function registerDiagnostics(context: vscode.ExtensionContext) {
-    const bemDiagnosticProvider = new BemDiagnosticProvider();
+    const bemDiagnosticProvider = new BemDiagnosticProvider(bemHelper);
     const collection = vscode.languages.createDiagnosticCollection(
         bemDiagnosticProvider.diagnosticCollectionName
     );
@@ -70,7 +79,7 @@ function registerDiagnostics(context: vscode.ExtensionContext) {
 
 function registerCommands(context: vscode.ExtensionContext) {
     //Initialise BemCommandProvider with any settings found
-    const bemCommandProvider = new BemCommandProvider();
+    const bemCommandProvider = new BemCommandProvider(bemHelper);
 
     let elementSeparator = getConfigValue("bemHelper.elementSeparator", "__");
     let modifierSeparator = getConfigValue("bemHelper.modifierSeparator", "--");

@@ -1,9 +1,11 @@
+import { LanguageProvider } from "./languageProviders/LanguageProvider";
+
 export enum ClassNameCases {
     Any = "any",
     Kebab = "kebab",
     Snake = "snake",
     Camel = "camel",
-    Pascal = "pascal"
+    Pascal = "pascal",
 }
 
 export interface BemClass {
@@ -26,6 +28,8 @@ export class BemHelper {
     private readonly pascalCaseRegex = /^[A-Z]{1}[a-zA-Z0-9]+$/;
     private readonly camelCaseRegex = /^[a-z]{1}[a-zA-Z0-9]+$/;
 
+    private languageProviders: LanguageProvider[] = [];
+
     /*
      * Generate a stylesheet from a list of BEM class names
      */
@@ -35,7 +39,7 @@ export class BemHelper {
         let styles = {};
         const _blockModifierName = "__BLOCK__MODIFIER__";
 
-        classNames.forEach(className => {
+        classNames.forEach((className) => {
             if (flat) {
                 styleSheet = `${styleSheet}.${className}{}`;
             } else {
@@ -77,21 +81,21 @@ export class BemHelper {
         });
 
         if (!flat) {
-            Object.keys(styles).forEach(block => {
+            Object.keys(styles).forEach((block) => {
                 styleSheet = `${styleSheet}.${block}{`;
                 Object.keys(styles[block])
-                    .filter(element => {
+                    .filter((element) => {
                         return element !== _blockModifierName;
                     })
-                    .forEach(element => {
+                    .forEach((element) => {
                         styleSheet = `${styleSheet}&${this.elementSeparator}${element}{`;
-                        styles[block][element].forEach(modifier => {
+                        styles[block][element].forEach((modifier) => {
                             styleSheet = `${styleSheet}&${this.modifierSeparator}${modifier}{}`;
                         });
                         styleSheet = `${styleSheet}}`;
                     });
 
-                styles[block][_blockModifierName].forEach(blockModifier => {
+                styles[block][_blockModifierName].forEach((blockModifier) => {
                     styleSheet = `${styleSheet}&${this.modifierSeparator}${blockModifier}{}`;
                 });
 
@@ -107,10 +111,10 @@ export class BemHelper {
         let classNames: string[] = [];
         const ignoreStrings = [
             /<\?php\s+.*\?>/, //PHP
-            /\${.*}/ //Javascript
+            /\${.*}/, //Javascript
         ];
 
-        ignoreStrings.forEach(regex => {
+        ignoreStrings.forEach((regex) => {
             html = html.replace(regex, " ");
         });
 
@@ -123,7 +127,7 @@ export class BemHelper {
             if (classes === null || classes.length < 2) {
                 return classNames;
             }
-            classes[1].split(" ").forEach(className => {
+            classes[1].split(" ").forEach((className) => {
                 if (className === "") {
                     return;
                 }
@@ -149,13 +153,13 @@ export class BemHelper {
         //If only including blocks, remove element classes
         let matches = includeElements
             ? classes
-            : classes.filter(match => {
+            : classes.filter((match) => {
                   return !match.includes(this.elementSeparator);
               });
 
         matches = includeModified
             ? matches
-            : matches.filter(match => {
+            : matches.filter((match) => {
                   return !match.includes(this.modifierSeparator);
               });
 
@@ -220,7 +224,7 @@ export class BemHelper {
             .replace("-", " ")
             .replace("_", " ")
             .split("")
-            .map(char => {
+            .map((char) => {
                 if (char.match(/^[A-Z]$/)) {
                     return ` ${char}`;
                 } else {
@@ -231,7 +235,7 @@ export class BemHelper {
             .toLowerCase()
             .trim()
             .split(" ")
-            .filter(word => {
+            .filter((word) => {
                 return word;
             });
 
@@ -254,7 +258,7 @@ export class BemHelper {
                 break;
             case ClassNameCases.Pascal:
                 outputClass = classNameWords
-                    .map(word => {
+                    .map((word) => {
                         return `${word[0].toUpperCase()}${word.slice(1)}`;
                     })
                     .join("");
@@ -289,7 +293,7 @@ export class BemHelper {
         let classElements: BemClass = {
             block: this.convertStringToCase(block, toClassType),
             element: this.convertStringToCase(element, toClassType),
-            modifier: this.convertStringToCase(modifier, toClassType)
+            modifier: this.convertStringToCase(modifier, toClassType),
         };
 
         return this.createClass(classElements);
@@ -357,11 +361,37 @@ export class BemHelper {
      * Get the appropriate class property word for a given language
      */
     public getClassPropertyWord(language: string): string {
-        if (["javascriptreact", "typescriptreact"].indexOf(language) !== -1) {
-            return "className";
-        }
+        let classAttributeLabel = "class";
 
-        return "class";
+        this.languageProviders.forEach((langProvider) => {
+            if (langProvider.language === language) {
+                classAttributeLabel = langProvider.classAttributeLabel;
+            }
+        });
+        return classAttributeLabel;
+    }
+
+    /**
+     * Register a new language provider in BemHelper
+     *
+     * @param provider The language provider to be registered
+     * @param failOnDuplicate Should an error be thrown if a duplicate language provider is added?
+     */
+    public registerLanguageProvider(
+        provider: LanguageProvider,
+        failOnDuplicate?: Boolean
+    ): void {
+        const languageProviderExists =
+            this.languageProviders.filter(
+                (lp) => lp.language === provider.language
+            ).length !== 0;
+
+        if (languageProviderExists && failOnDuplicate) {
+            throw new Error(
+                `Cannot register duplicate language provider for language: ${provider.language}`
+            );
+        }
+        this.languageProviders.push(provider);
     }
 
     private resetRegex(): void {
