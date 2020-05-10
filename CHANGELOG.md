@@ -13,6 +13,13 @@
 -   Under the hood refactoring
 -   Add setting for max number of diagnostic issues to show `bemHelper.maxWarningsCount`. This defaults to 100
 
+### 0.8.1
+
+Security patches
+
+-   Switch deps from `vscode` to `vscode-test` + `@types/vscode` following [recent advice](https://code.visualstudio.com/updates/v1_36#_splitting-vscode-package-into-typesvscode-and-vscodetest)
+-   Update many packages
+
 ## 0.7.0
 
 -   Add support for custom separators
