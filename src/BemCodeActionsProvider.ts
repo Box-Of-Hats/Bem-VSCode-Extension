@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
-import { ClassNameCases, BemHelper } from "BemHelper";
-import { getConfigValue } from "ez-vscode";
+import { ClassNameCases, BemHelper } from "./BemHelper";
+import { getConfigValue } from "./ez-vscode";
 
 export class BemHelperCodeActionsProvider implements vscode.CodeActionProvider {
     public static readonly providedCodeActionKinds = [

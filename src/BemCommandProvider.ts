@@ -1,6 +1,6 @@
-import { BemHelper, ClassNameCases } from "BemHelper";
 import * as vscode from "vscode";
-import { getConfigValue } from "ez-vscode";
+import { BemHelper, ClassNameCases } from "./BemHelper";
+import { getConfigValue } from "./ez-vscode";
 
 export class BemCommandProvider {
     private bemHelper = new BemHelper();

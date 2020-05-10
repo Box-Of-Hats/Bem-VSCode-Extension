@@ -1,8 +1,8 @@
 import * as vscode from "vscode";
-import { BemCommandProvider } from "BemCommandProvider";
-import { BemHelperCodeActionsProvider } from "BemCodeActionsProvider";
-import { BemDiagnosticProvider } from "BemDiagnosticProvider";
-import { getConfigValue } from "ez-vscode";
+import { BemCommandProvider } from "./BemCommandProvider";
+import { BemHelperCodeActionsProvider } from "./BemCodeActionsProvider";
+import { BemDiagnosticProvider } from "./BemDiagnosticProvider";
+import { getConfigValue } from "./ez-vscode";
 
 const codeActionsProvider = new BemHelperCodeActionsProvider();
 

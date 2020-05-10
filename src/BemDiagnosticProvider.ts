@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
-import { BemHelper, ClassNameCases } from "BemHelper";
-import { getConfigValue } from "ez-vscode";
+import { BemHelper, ClassNameCases } from "./BemHelper";
+import { getConfigValue } from "./ez-vscode";
 
 export class BemDiagnosticProvider {
     public diagnosticCollectionName = "BemHelper";
