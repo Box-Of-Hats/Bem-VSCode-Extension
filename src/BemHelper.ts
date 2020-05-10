@@ -109,10 +109,9 @@ export class BemHelper {
     public getClasses(html: string): string[] {
         this.resetRegex();
         let classNames: string[] = [];
-        const ignoreStrings = [
-            /<\?php\s+.*\?>/, //PHP
-            /\${.*}/, //Javascript
-        ];
+        const ignoreStrings = this.languageProviders.flatMap(
+            (lp) => lp.htmlIgnorePatterns
+        );
 
         ignoreStrings.forEach((regex) => {
             html = html.replace(regex, " ");
