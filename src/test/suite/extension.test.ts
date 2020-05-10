@@ -1,5 +1,5 @@
 import * as assert from "assert";
-import { BemHelper, ClassNameCases } from "../BemHelper";
+import { BemHelper, ClassNameCases } from "../../BemHelper";
 
 suite("BemHelper Tests", () => {
     test("Class extraction - Camel Case", () => {
@@ -18,7 +18,7 @@ suite("BemHelper Tests", () => {
             "navBody",
             "navBody__listItem",
             "navBody__listItem--wide",
-            "navFooter"
+            "navFooter",
         ];
         let bemHelper = new BemHelper();
         let actual = bemHelper.getClasses(html);
@@ -41,7 +41,7 @@ suite("BemHelper Tests", () => {
             "NavBody",
             "NavBody__ListItem",
             "NavBody__ListItem--Wide",
-            "NavFooter"
+            "NavFooter",
         ];
         let bemHelper = new BemHelper();
         let actual = bemHelper.getClasses(html);
@@ -64,7 +64,7 @@ suite("BemHelper Tests", () => {
             "nav_body",
             "nav_body__list_item",
             "nav_body__list_item--wide",
-            "nav_footer"
+            "nav_footer",
         ];
         let bemHelper = new BemHelper();
         let actual = bemHelper.getClasses(html);
@@ -95,7 +95,7 @@ suite("BemHelper Tests", () => {
             "nav-two",
             "nav-two__item",
             "nav-two__item--two",
-            "menu__item"
+            "menu__item",
         ];
         let bemHelper = new BemHelper();
         let actual = bemHelper.getClasses(html);
@@ -193,7 +193,7 @@ suite("BemHelper Tests", () => {
             "nav-two",
             "nav~~item++mod2",
             "nav~~item++mod1",
-            "nav-two++modified"
+            "nav-two++modified",
         ];
         let bemHelper = new BemHelper();
         bemHelper.elementSeparator = "~~";
@@ -223,7 +223,7 @@ suite("BemHelper Tests", () => {
             "nav-two",
             "nav__item_mod2",
             "nav__item_mod1",
-            "nav-two_modified"
+            "nav-two_modified",
         ];
         let bemHelper = new BemHelper();
         bemHelper.elementSeparator = "__";
@@ -264,7 +264,7 @@ suite("BemHelper Tests", () => {
                 "class-test__element",
                 "class-test",
                 "class-test__element--one",
-                "class-test__element--two"
+                "class-test__element--two",
             ],
             false
         );

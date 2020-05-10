@@ -33,7 +33,7 @@
                 "echo": false,
                 "revealProblems": "never",
                 "reveal": "never",
-                "focus": false,
+                "focus": true,
                 "panel": "shared",
                 "showReuseMessage": false,
                 "clear": false
