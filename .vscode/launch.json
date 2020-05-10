@@ -20,7 +20,7 @@
             "request": "launch",
             "runtimeExecutable": "${execPath}",
             "preLaunchTask": "npm: compile",
-            "internalConsoleOptions": "neverOpen",
+            "internalConsoleOptions": "openOnSessionStart",
             "args": [
                 "--disable-extensions",
                 "--extensionDevelopmentPath=${workspaceFolder}",

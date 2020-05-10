@@ -1,9 +1,8 @@
 import * as vscode from "vscode";
-import { BemCommandProvider } from "./BemCommandProvider";
-
-import { BemHelperCodeActionsProvider } from "./BemCodeActionsProvider";
-import { BemDiagnosticProvider } from "./BemDiagnosticProvider";
-import { getConfigValue } from "./ez-vscode";
+import { BemCommandProvider } from "BemCommandProvider";
+import { BemHelperCodeActionsProvider } from "BemCodeActionsProvider";
+import { BemDiagnosticProvider } from "BemDiagnosticProvider";
+import { getConfigValue } from "ez-vscode";
 
 const codeActionsProvider = new BemHelperCodeActionsProvider();
 
@@ -29,20 +28,20 @@ function registerDiagnostics(context: vscode.ExtensionContext) {
         BemHelperCodeActionsProvider.diagnostics = bemDiagnosticProvider.errors;
     }
     context.subscriptions.push(
-        vscode.workspace.onDidSaveTextDocument(e => {
+        vscode.workspace.onDidSaveTextDocument((e) => {
             bemDiagnosticProvider.updateDiagnostics(e, collection);
             // Update code actions provider so that quick fixes can be generated
             BemHelperCodeActionsProvider.diagnostics =
                 bemDiagnosticProvider.errors;
         }),
 
-        vscode.workspace.onDidOpenTextDocument(e => {
+        vscode.workspace.onDidOpenTextDocument((e) => {
             bemDiagnosticProvider.updateDiagnostics(e, collection);
             // Update code actions provider so that quick fixes can be generated
             BemHelperCodeActionsProvider.diagnostics =
                 bemDiagnosticProvider.errors;
         }),
-        vscode.window.onDidChangeActiveTextEditor(e => {
+        vscode.window.onDidChangeActiveTextEditor((e) => {
             if (e) {
                 bemDiagnosticProvider.updateDiagnostics(e.document, collection);
             }
@@ -54,7 +53,7 @@ function registerDiagnostics(context: vscode.ExtensionContext) {
     if (getConfigValue("bemHelper.responsiveLinting", false)) {
         // Update on character press if specified in settings
         context.subscriptions.push(
-            vscode.workspace.onDidChangeTextDocument(e => {
+            vscode.workspace.onDidChangeTextDocument((e) => {
                 if (e) {
                     bemDiagnosticProvider.updateDiagnostics(
                         e.document,
@@ -117,7 +116,7 @@ function registerCodeActions(context: vscode.ExtensionContext) {
     context.subscriptions.push(
         vscode.languages.registerCodeActionsProvider("*", codeActionsProvider, {
             providedCodeActionKinds:
-                BemHelperCodeActionsProvider.providedCodeActionKinds
+                BemHelperCodeActionsProvider.providedCodeActionKinds,
         })
     );
 }

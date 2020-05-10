@@ -1,10 +1,10 @@
 import * as vscode from "vscode";
-import { ClassNameCases, BemHelper } from "./BemHelper";
-import { getConfigValue } from "./ez-vscode";
+import { ClassNameCases, BemHelper } from "BemHelper";
+import { getConfigValue } from "ez-vscode";
 
 export class BemHelperCodeActionsProvider implements vscode.CodeActionProvider {
     public static readonly providedCodeActionKinds = [
-        vscode.CodeActionKind.QuickFix
+        vscode.CodeActionKind.QuickFix,
     ];
     public static diagnostics: vscode.Diagnostic[] = [];
     public bemHelper = new BemHelper();
@@ -65,7 +65,7 @@ export class BemHelperCodeActionsProvider implements vscode.CodeActionProvider {
         range: vscode.Range
     ): vscode.CodeAction[] | undefined {
         let fixes: vscode.CodeAction[] = [];
-        BemHelperCodeActionsProvider.diagnostics.forEach(diagnostic => {
+        BemHelperCodeActionsProvider.diagnostics.forEach((diagnostic) => {
             if (range.contains(diagnostic.range)) {
                 //Check that the diagnostic falls within the current cursor range
                 // Otherwise, all diagnostic quickfixes are shown

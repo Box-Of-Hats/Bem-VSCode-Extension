@@ -1,6 +1,6 @@
-import { BemHelper, ClassNameCases } from "./BemHelper";
+import { BemHelper, ClassNameCases } from "BemHelper";
 import * as vscode from "vscode";
-import { getConfigValue } from "./ez-vscode";
+import { getConfigValue } from "ez-vscode";
 
 export class BemCommandProvider {
     private bemHelper = new BemHelper();
@@ -29,13 +29,13 @@ export class BemCommandProvider {
                     ClassNameCases.Kebab.valueOf(),
                     ClassNameCases.Snake.valueOf(),
                     ClassNameCases.Pascal.valueOf(),
-                    ClassNameCases.Camel.valueOf()
+                    ClassNameCases.Camel.valueOf(),
                 ],
                 {
-                    placeHolder: "Choose a class case"
+                    placeHolder: "Choose a class case",
                 }
             )
-            .then(caseType => {
+            .then((caseType) => {
                 if (!caseType) {
                     vscode.window.showErrorMessage("No class case selected.");
                     return;
@@ -47,9 +47,10 @@ export class BemCommandProvider {
                     textEditor.selection
                 );
 
-                let newClassname = this.bemHelper.convertClass(selectionText, <
-                    ClassNameCases
-                >caseType);
+                let newClassname = this.bemHelper.convertClass(
+                    selectionText,
+                    <ClassNameCases>caseType
+                );
                 textEditor.insertSnippet(
                     new vscode.SnippetString(`${newClassname}`)
                 );
@@ -92,9 +93,9 @@ export class BemCommandProvider {
     private generateStyleSheetForText(html: string) {
         vscode.window
             .showQuickPick(["scss", "less", "css"], {
-                placeHolder: "Choose a type of stylesheet to generate"
+                placeHolder: "Choose a type of stylesheet to generate",
             })
-            .then(stylesheetLanguage => {
+            .then((stylesheetLanguage) => {
                 if (!stylesheetLanguage) {
                     vscode.window.showErrorMessage(
                         "No stylesheet type selected."
@@ -123,12 +124,12 @@ export class BemCommandProvider {
                 vscode.workspace
                     .openTextDocument({
                         language: stylesheetLanguage,
-                        content: stylesheet
+                        content: stylesheet,
                     })
-                    .then(doc => {
+                    .then((doc) => {
                         vscode.window
                             .showTextDocument(doc)
-                            .then(e => {
+                            .then(() => {
                                 vscode.commands.executeCommand(
                                     "editor.action.formatDocument"
                                 );

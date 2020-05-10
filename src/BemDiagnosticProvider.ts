@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
-import { BemHelper, ClassNameCases } from "./BemHelper";
-import { getConfigValue } from "./ez-vscode";
+import { BemHelper, ClassNameCases } from "BemHelper";
+import { getConfigValue } from "ez-vscode";
 
 export class BemDiagnosticProvider {
     public diagnosticCollectionName = "BemHelper";
@@ -36,7 +36,7 @@ export class BemDiagnosticProvider {
             return errors;
         }
 
-        classes.forEach(className => {
+        classes.forEach((className) => {
             if (!this.bemHelper.isBemClass(className)) {
                 let i = -1;
                 if (className === "") {
@@ -74,8 +74,8 @@ export class BemDiagnosticProvider {
                                     )
                                 ),
                                 `${className}`
-                            )
-                        ]
+                            ),
+                        ],
                     });
                 }
             }
@@ -100,7 +100,7 @@ export class BemDiagnosticProvider {
             return errors;
         }
 
-        classes.forEach(className => {
+        classes.forEach((className) => {
             if (errors.length <= maxCount) {
                 if (!this.bemHelper.isCaseMatch(className, casing)) {
                     let i = -1;
@@ -156,8 +156,8 @@ export class BemDiagnosticProvider {
                                         )
                                     ),
                                     `${className}`
-                                )
-                            ]
+                                ),
+                            ],
                         });
                     }
                 }

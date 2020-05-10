@@ -135,15 +135,18 @@
     },
     "scripts": {
         "vscode:prepublish": "npm run compile",
-        "compile": "tsc -p ./",
-        "watch": "tsc -watch -p ./",
+        "compile": "tsc",
+        "watch": "tsc -watch",
         "test": "npm run compile && node ./out/test/runTests.js"
     },
     "repository": {
         "type": "git",
         "url": "https://github.com/Box-Of-Hats/Bem-VSCode-Extension"
     },
-    "devDependencies": {
+    "bugs": {
+        "url": "https://github.com/Box-Of-Hats/Bem-VSCode-Extension/issues"
+    },
+    "dependencies": {
         "@types/mocha": "^2.2.42",
         "@types/node": "^8.10.60",
         "@types/vscode": "^1.45.0",
