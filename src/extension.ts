@@ -7,11 +7,15 @@ import { BemHelper } from "./BemHelper";
 import {
     TypescriptReactLanguageProvider,
     JavascriptReactLanguageProvider,
+    PhpLanguageProvider,
 } from "./languageProviders/LanguageProviders";
 
+// Initialise global BemHelper object
 const bemHelper = new BemHelper();
+// Register language providers
 bemHelper.registerLanguageProvider(new TypescriptReactLanguageProvider());
 bemHelper.registerLanguageProvider(new JavascriptReactLanguageProvider());
+bemHelper.registerLanguageProvider(new PhpLanguageProvider());
 
 const codeActionsProvider = new BemHelperCodeActionsProvider(bemHelper);
 
