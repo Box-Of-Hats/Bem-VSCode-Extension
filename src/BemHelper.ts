@@ -28,6 +28,8 @@ export class BemHelper {
     private readonly pascalCaseRegex = /^[A-Z]{1}[a-zA-Z0-9]+$/;
     private readonly camelCaseRegex = /^[a-z]{1}[a-zA-Z0-9]+$/;
 
+    public blacklistClasses = ["material-icons"];
+
     private languageProviders: LanguageProvider[] = [];
 
     /*
@@ -161,6 +163,8 @@ export class BemHelper {
             : matches.filter((match) => {
                   return !match.includes(this.modifierSeparator);
               });
+
+        matches = matches.filter((m) => !this.blacklistClasses.includes(m));
 
         let lastMatch = matches[matches.length - 1];
 
