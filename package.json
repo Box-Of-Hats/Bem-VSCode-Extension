@@ -2,7 +2,7 @@
     "name": "bemhelper",
     "displayName": "BEM Helper",
     "description": "Improve writing html using BEM naming conventions.",
-    "version": "0.8.1",
+    "version": "0.9.0",
     "author": "Box-Of-Hats",
     "publisher": "Box-Of-Hats",
     "engines": {
@@ -45,7 +45,7 @@
                         "default": [
                             "material-icons"
                         ],
-                        "description": "A list of classnames that should be ignored when inserting new elements.",
+                        "description": "A list of class names that should be ignored as parents (blocks) when inserting new elements",
                         "scope": "resource"
                     },
                     "bemHelper.classNameCase": {

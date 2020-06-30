@@ -1,5 +1,28 @@
 # Change Log
 
+## 1.0.0
+
+-   Add new setting `bemHelper.ignoreClassNames` that allows certain classnames to be ignored when inserting new elements.
+
+```json
+// settings.json
+{
+    "bemHelper.ignoreClassNames": ["material-icons"]
+}
+```
+
+This was added for situations where you have class names that you don't want to be used as block elements. E.g:
+
+```html
+<div class="actual-parent">
+    <i class="material-icons">arrow_right</i>
+
+    <!-- Trying to insert an element here should have a parent of `actual-parent` and not `material-icons` -->
+    <!-- GOOD: <div class="actual-parent__"></div> -->
+    <!-- BAD:  <div class="material-icons__"></div> -->
+</div>
+```
+
 ## 0.8.0
 
 -   Add optional alphabetisation of generated CSS class names

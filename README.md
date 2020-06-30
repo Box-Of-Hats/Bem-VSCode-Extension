@@ -36,7 +36,7 @@ Got any feedback, issues or feature requests? Send them my way via [GitHub Issue
 | bemHelper.modifierSeparator        | The string to use as a separator for modifiers. By default is set to `--`. Reload window to take effect                        | any string                       |
 | bemHelper.sortGeneratedStylesheets | Controls whether generated stylesheets should be sorted alphabetically                                                         | true, false                      |
 | bemHelper.maxWarningsCount         | The maximum number of diagnostic warnings to show. Defaults to 100.                                                            | number                           |
-| bemHelper.ignoreClassNames         | A list of class names that should be ignored when inserting new elements                                                       | A list of strings                |
+| bemHelper.ignoreClassNames         | A list of class names that should be ignored as parents (blocks) when inserting new elements                                   | A list of strings                |
 
 ## Generating LESS / SCSS / CSS
 
