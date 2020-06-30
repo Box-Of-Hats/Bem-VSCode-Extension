@@ -18,9 +18,9 @@ export class BemHelper {
     //BEM separators
     public elementSeparator = "__";
     public modifierSeparator = "--";
-    //Regex to extract a class property value from a block of html text
+    /** Regex to extract a class property value from a block of html text */
     readonly classPropertyValueRegex = /[\s]+class(Name)?=["'`]{1}([^"'`])+["'`]{1}/g;
-    //Regex to extract actual class names as groups from a class property string
+    /** Regex to extract actual class names as groups from a class property string */
     readonly classNameRegex = /["'`]{1}(.*)["'`]{1}/;
     // Case regex
     private readonly kebabCaseRegex = /^[a-z0-9-]+$/;
@@ -32,7 +32,7 @@ export class BemHelper {
 
     private languageProviders: LanguageProvider[] = [];
 
-    /*
+    /**
      * Generate a stylesheet from a list of BEM class names
      */
     public generateStyleSheet(classNames: string[], flat: boolean): string {
@@ -107,7 +107,7 @@ export class BemHelper {
         return styleSheet;
     }
 
-    //Get all classes from a block of html
+    /** Get all classes from a block of html */
     public getClasses(html: string): string[] {
         this.resetRegex();
         let classNames: string[] = [];
@@ -139,10 +139,11 @@ export class BemHelper {
         }
         return classNames;
     }
-    /*
+    /**
      * Get the last class name from a block of html
-     * html: The html string to extract from
-     * matchElements: Should the parent name include elements or just blocks?
+     * @param html The html string to extract from
+     * @param matchElements Should the parent name include elements or just blocks?
+     * @param includeModified Should the parent name include modified elements?
      */
     public getPrecedingClassName(
         html: string,
@@ -175,7 +176,7 @@ export class BemHelper {
         return lastMatch;
     }
 
-    /*
+    /**
      * Get the case type of a classname
      */
     public getClassCaseType(className: string): ClassNameCases {
@@ -195,7 +196,8 @@ export class BemHelper {
         }
         return ClassNameCases.Any;
     }
-    /*
+
+    /**
      *   Create a classstring from a BemClass object
      */
     public createClass(bemClass: BemClass): string {
@@ -216,7 +218,8 @@ export class BemHelper {
         }
         return classString;
     }
-    /*
+
+    /**
      * Convert a string to a case
      */
     public convertStringToCase(word: string, toClassType: ClassNameCases) {
@@ -271,7 +274,8 @@ export class BemHelper {
         }
         return outputClass;
     }
-    /*
+
+    /**
      *   Convert a class string to specified case
      */
     public convertClass(
@@ -301,7 +305,8 @@ export class BemHelper {
 
         return this.createClass(classElements);
     }
-    /*
+
+    /**
      * Is a class name following BEM conventions?
      */
     public isBemClass(className: string): boolean {
@@ -318,7 +323,8 @@ export class BemHelper {
             className.split(this.modifierSeparator).length > 2
         );
     }
-    /*
+
+    /**
      * Check if a className is in a given case
      */
     public isCaseMatch(className: string, caseType: ClassNameCases): boolean {
@@ -360,7 +366,7 @@ export class BemHelper {
         return true;
     }
 
-    /*
+    /**
      * Get the appropriate class property word for a given language
      */
     public getClassPropertyWord(language: string): string {

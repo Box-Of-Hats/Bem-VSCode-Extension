@@ -3,7 +3,7 @@ import { BemHelper, ClassNameCases } from "../../BemHelper";
 
 suite("BemHelper Tests", () => {
     test("Class extraction - Camel Case", () => {
-        const html = `
+        const html = /*html*/ `
             <body>
                 <div class="navBody">
                     <div class="navBody__listItem">One</div>
@@ -26,7 +26,7 @@ suite("BemHelper Tests", () => {
     });
 
     test("Class extraction - Pascal Case", () => {
-        const html = `
+        const html = /*html*/ `
             <body>
                 <div class="NavBody">
                     <div class="NavBody__ListItem">One</div>
@@ -49,7 +49,7 @@ suite("BemHelper Tests", () => {
     });
 
     test("Class extraction - Snake Case", () => {
-        const html = `
+        const html = /*html*/ `
             <body>
                 <div class="nav_body">
                     <div class="nav_body__list_item">One</div>
@@ -72,7 +72,7 @@ suite("BemHelper Tests", () => {
     });
 
     test("Class extraction - Kebab Case", () => {
-        const html = `
+        const html = /*html*/ `
             <body>
                 <div class="nav">
                     <div class="nav__item menu__item">One</div>
@@ -103,7 +103,7 @@ suite("BemHelper Tests", () => {
     });
 
     test("Class extraction - Basic", () => {
-        const html = `
+        const html = /*html*/ `
             <body>
                 <div class="nav">
                     <div class="nav__item">One</div>
@@ -121,7 +121,7 @@ suite("BemHelper Tests", () => {
     });
 
     test("Class extraction - Single Quotes", () => {
-        const html = `
+        const html = /*html*/ `
             <body>
                 <div class='nav'>
                     <div class='nav__item'>One</div>
@@ -139,7 +139,7 @@ suite("BemHelper Tests", () => {
     });
 
     test("Class extraction - Backtick", () => {
-        const html = `
+        const html = /*html*/ `
             <body>
                 <div class=\`nav\`>
                     <div class=\`nav__item\`>One</div>
@@ -157,7 +157,7 @@ suite("BemHelper Tests", () => {
     });
 
     test("Class extraction - No Classes", () => {
-        const html = ``;
+        const html = /*html*/ ``;
         const expected: string[] = [];
         let bemHelper = new BemHelper();
         let actual = bemHelper.getClasses(html);
@@ -176,7 +176,7 @@ suite("BemHelper Tests", () => {
     });
 
     test("Class extraction - React", () => {
-        const html = `<div className="parent-class"><div className="parent-class__child"></div></div>`;
+        const html = /*html*/ `<div className="parent-class"><div className="parent-class__child"></div></div>`;
         const expected = ["parent-class", "parent-class__child"];
         let bemHelper = new BemHelper();
         let actual = bemHelper.getClasses(html);
@@ -184,7 +184,7 @@ suite("BemHelper Tests", () => {
     });
 
     test("Class extraction - Custom Separators - '~~' separator | '++' modifier", () => {
-        const html = `
+        const html = /*html*/ `
             <body>
                 <div class="nav">
                     <div class="nav~~item">One</div>
@@ -214,7 +214,7 @@ suite("BemHelper Tests", () => {
     });
 
     test("Class extraction - Custom Separators - '__' separator | '_' modifier", () => {
-        const html = `
+        const html = /*html*/ `
             <body>
                 <div class="nav">
                     <div class="nav__item">One</div>
@@ -424,7 +424,7 @@ suite("BemHelper Tests", () => {
     });
 
     test("Get Preceding Class - Block - Single Quote", () => {
-        const html = `
+        const html = /*html*/ `
             <div class='block'>
                 <div class='block__element'>
                 </div>
@@ -439,7 +439,7 @@ suite("BemHelper Tests", () => {
     });
 
     test("Get Preceding Class - Element - Single Quote", () => {
-        const html = `
+        const html = /*html*/ `
             <div class='block'>
                 <div class='block__element'>
                 </div>
@@ -454,7 +454,7 @@ suite("BemHelper Tests", () => {
     });
 
     test("Get Preceding Class - Element - Backtick", () => {
-        const html = `
+        const html = /*html*/ `
             <div class=\`block\`>
                 <div class=\`block__element\`>
                 </div>
@@ -469,7 +469,7 @@ suite("BemHelper Tests", () => {
     });
 
     test("Get Preceding Class - Block - Backtick", () => {
-        const html = `
+        const html = /*html*/ `
             <div class=\`block\`>
                 <div class=\`block__element\`>
                 </div>
