@@ -17,10 +17,6 @@ bemHelper.registerLanguageProvider(new TypescriptReactLanguageProvider());
 bemHelper.registerLanguageProvider(new JavascriptReactLanguageProvider());
 bemHelper.registerLanguageProvider(new PhpLanguageProvider());
 
-bemHelper.ignoredParentClasses = getConfigValue("bemHelper.ignoreClassNames", [
-    "material-icons",
-]);
-
 const codeActionsProvider = new BemHelperCodeActionsProvider(bemHelper);
 
 export function activate(context: vscode.ExtensionContext) {

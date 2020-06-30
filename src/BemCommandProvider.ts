@@ -145,6 +145,11 @@ export class BemCommandProvider {
     public insertElementAtCursor(isModified: boolean): void {
         let textEditor = vscode.window.activeTextEditor;
 
+        this.bemHelper.ignoredParentClasses = getConfigValue(
+            "bemHelper.ignoreClassNames",
+            ["material-icons"]
+        );
+
         if (textEditor === undefined) {
             vscode.window.showErrorMessage(
                 "No active text editor. Please open a file"
