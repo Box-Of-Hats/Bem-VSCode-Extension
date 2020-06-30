@@ -164,17 +164,6 @@ suite("BemHelper Tests", () => {
         assert.deepEqual(actual.sort(), expected.sort());
     });
 
-    test("Class extraction - Ignoring special classes", () => {
-        const html = /*html*/ `
-            <div class="parent-class">
-                <i class="material-icons">account_balance</i>
-        `;
-        const bemHelper = new BemHelper();
-        const actual = bemHelper.getPrecedingClassName(html, false, false);
-        const expected = "parent-class";
-        assert.strictEqual(actual, expected);
-    });
-
     test("Class extraction - React", () => {
         const html = /*html*/ `<div className="parent-class"><div className="parent-class__child"></div></div>`;
         const expected = ["parent-class", "parent-class__child"];
@@ -501,6 +490,18 @@ suite("BemHelper Tests", () => {
         let actual = bemHelper.getPrecedingClassName(html, false);
         let expected = "nav-bar";
         assert.equal(actual, expected);
+    });
+
+    test("Get preceding class - With ignored parent classes", () => {
+        const html = /*html*/ `
+            <div class="parent-class">
+                <i class="material-icons">account_balance</i>
+        `;
+        const bemHelper = new BemHelper();
+        bemHelper.ignoredParentClasses = ["material-icons"];
+        const actual = bemHelper.getPrecedingClassName(html, false, false);
+        const expected = "parent-class";
+        assert.strictEqual(actual, expected);
     });
 
     test("Convert Class - Block Element Modifier - Kebab => Snake", () => {

@@ -40,6 +40,14 @@
                         "description": "Highlight classes that contain more than a block and element. e.g block__block2__element",
                         "scope": "window"
                     },
+                    "bemHelper.ignoreClassNames": {
+                        "type": "array",
+                        "default": [
+                            "material-icons"
+                        ],
+                        "description": "A list of classnames that should be ignored when inserting new elements.",
+                        "scope": "resource"
+                    },
                     "bemHelper.classNameCase": {
                         "type": "string",
                         "enum": [
@@ -137,7 +145,7 @@
         "vscode:prepublish": "npm run compile",
         "compile": "tsc",
         "watch": "tsc -watch",
-        "test": "npm run compile && node ./out/test/runTests.js"
+        "test": "npm run compile && node ./out/test/runTest.js"
     },
     "repository": {
         "type": "git",

@@ -27,8 +27,8 @@ export class BemHelper {
     private readonly snakeCaseRegex = /^[a-z0-9_]+$/;
     private readonly pascalCaseRegex = /^[A-Z]{1}[a-zA-Z0-9]+$/;
     private readonly camelCaseRegex = /^[a-z]{1}[a-zA-Z0-9]+$/;
-
-    public blacklistClasses = ["material-icons"];
+    /** Class names that should be ignored for parent classes */
+    public ignoredParentClasses: string[] = [];
 
     private languageProviders: LanguageProvider[] = [];
 
@@ -165,7 +165,7 @@ export class BemHelper {
                   return !match.includes(this.modifierSeparator);
               });
 
-        matches = matches.filter((m) => !this.blacklistClasses.includes(m));
+        matches = matches.filter((m) => !this.ignoredParentClasses.includes(m));
 
         let lastMatch = matches[matches.length - 1];
 
