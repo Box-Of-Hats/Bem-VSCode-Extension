@@ -150,7 +150,7 @@ export class BemHelper {
         includeElements: boolean,
         parentMode?: "explicit-only" | "prefer-explicit" | "first-parent",
         includeModified?: boolean
-    ): string | null {
+    ): string | undefined {
         let classes = this.getClasses(html);
         if (!parentMode) {
             parentMode = "explicit-only";
@@ -159,7 +159,7 @@ export class BemHelper {
         if (parentMode === "first-parent") {
             const lastClass = classes.pop();
             if (!lastClass) {
-                return null;
+                return undefined;
             }
             return lastClass.split(this.elementSeparator)[0];
         }
@@ -179,13 +179,7 @@ export class BemHelper {
 
         matches = matches.filter((m) => !this.ignoredParentClasses.includes(m));
 
-        let lastMatch = matches[matches.length - 1];
-
-        if (!lastMatch) {
-            return "";
-        }
-
-        return lastMatch;
+        return matches.pop();
     }
 
     /**

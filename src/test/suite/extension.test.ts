@@ -560,7 +560,7 @@ suite("BemHelper Tests", () => {
         const html = /*html*/ `<div class="parent-class__child-1">`;
         const bemHelper = new BemHelper();
 
-        const expected = null;
+        const expected = undefined;
 
         const actual = bemHelper.getPrecedingClassName(
             html,
