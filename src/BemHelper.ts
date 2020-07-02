@@ -150,10 +150,18 @@ export class BemHelper {
         includeElements: boolean,
         parentMode?: "explicit-only" | "prefer-explicit" | "first-parent",
         includeModified?: boolean
-    ): string {
+    ): string | null {
         let classes = this.getClasses(html);
         if (!parentMode) {
-            parentMode = "first-parent";
+            parentMode = "explicit-only";
+        }
+
+        if (parentMode === "first-parent") {
+            const lastClass = classes.pop();
+            if (!lastClass) {
+                return null;
+            }
+            return lastClass.split(this.elementSeparator)[0];
         }
 
         //If only including blocks, remove element classes
