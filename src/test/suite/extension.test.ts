@@ -499,8 +499,145 @@ suite("BemHelper Tests", () => {
         `;
         const bemHelper = new BemHelper();
         bemHelper.ignoredParentClasses = ["material-icons"];
-        const actual = bemHelper.getPrecedingClassName(html, false, false);
+        const actual = bemHelper.getPrecedingClassName(html, false);
         const expected = "parent-class";
+        assert.strictEqual(actual, expected);
+    });
+
+    test("Get preceding class - first-parent - Implicit block ", () => {
+        const html = /*html*/ `
+            <div class="parent-class__child-1">
+        `;
+        const bemHelper = new BemHelper();
+
+        const expected = "parent-class";
+
+        const actual = bemHelper.getPrecedingClassName(
+            html,
+            false,
+            "first-parent",
+            false
+        );
+        assert.strictEqual(actual, expected);
+    });
+
+    test("Get preceding class - first-parent - Explicit block ", () => {
+        const html = /*html*/ `
+            <div class="parent-class">
+        `;
+        const bemHelper = new BemHelper();
+
+        const expected = "parent-class";
+
+        const actual = bemHelper.getPrecedingClassName(
+            html,
+            false,
+            "first-parent",
+            false
+        );
+        assert.strictEqual(actual, expected);
+    });
+
+    test("Get preceding class - first-parent - Take first parent when given multiple parents ", () => {
+        const html = /*html*/ `
+        <div class="parent-class-1">
+            <div class="parent-class-2__child-1">
+        `;
+        const bemHelper = new BemHelper();
+
+        const expected = "parent-class-2";
+
+        const actual = bemHelper.getPrecedingClassName(
+            html,
+            false,
+            "first-parent",
+            false
+        );
+        assert.strictEqual(actual, expected);
+    });
+
+    test("Get preceding class - explicit-only - Ignore implicit block ", () => {
+        const html = /*html*/ `<div class="parent-class__child-1">`;
+        const bemHelper = new BemHelper();
+
+        const expected = null;
+
+        const actual = bemHelper.getPrecedingClassName(
+            html,
+            false,
+            "explicit-only",
+            false
+        );
+        assert.strictEqual(actual, expected);
+    });
+
+    test("Get preceding class - explicit-only - Explicit block ", () => {
+        const html = /*html*/ `
+            <div class="parent-class">
+                <div class="parent-class__child-1">
+        `;
+        const bemHelper = new BemHelper();
+
+        const expected = "parent-class";
+
+        const actual = bemHelper.getPrecedingClassName(
+            html,
+            false,
+            "explicit-only",
+            false
+        );
+        assert.strictEqual(actual, expected);
+    });
+
+    test("Get preceding class - prefer-explicit - With explicit block and implicit block", () => {
+        const html = /*html*/ `
+            <div class="parent-class-explicit">
+                <div class="parent-class-implicit__child-1">
+        `;
+        const bemHelper = new BemHelper();
+
+        const expected = "parent-class-explicit";
+
+        const actual = bemHelper.getPrecedingClassName(
+            html,
+            false,
+            "prefer-explicit",
+            false
+        );
+        assert.strictEqual(actual, expected);
+    });
+
+    test("Get preceding class - prefer-explicit - With implicit block only", () => {
+        const html = /*html*/ `
+            <div class="parent-class__child-1">
+        `;
+        const bemHelper = new BemHelper();
+
+        const expected = "parent-class";
+
+        const actual = bemHelper.getPrecedingClassName(
+            html,
+            false,
+            "prefer-explicit",
+            false
+        );
+        assert.strictEqual(actual, expected);
+    });
+
+    test("Get preceding class - prefer-explicit - With explicit only", () => {
+        const html = /*html*/ `
+            <div class="parent-class">
+        `;
+        const bemHelper = new BemHelper();
+
+        const expected = "parent-class";
+
+        const actual = bemHelper.getPrecedingClassName(
+            html,
+            false,
+            "prefer-explicit",
+            false
+        );
         assert.strictEqual(actual, expected);
     });
 

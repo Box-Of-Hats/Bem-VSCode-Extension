@@ -148,9 +148,13 @@ export class BemHelper {
     public getPrecedingClassName(
         html: string,
         includeElements: boolean,
+        parentMode?: "explicit-only" | "prefer-explicit" | "first-parent",
         includeModified?: boolean
     ): string {
         let classes = this.getClasses(html);
+        if (!parentMode) {
+            parentMode = "first-parent";
+        }
 
         //If only including blocks, remove element classes
         let matches = includeElements
