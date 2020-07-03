@@ -48,6 +48,22 @@
                         "description": "A list of class names that should be ignored as parents (blocks) when inserting new elements",
                         "scope": "resource"
                     },
+                    "bemHelper.blockSelectionMode": {
+                        "type": "string",
+                        "default": "prefer-explicit",
+                        "enum": [
+                            "prefer-explicit",
+                            "first-parent",
+                            "explicit-only"
+                        ],
+                        "enumDescriptions": [
+                            "Use the first explicit parent if found. Fall back to an implicit parent if not found.",
+                            "Use the first parent, explicit or implicit.",
+                            "Use only explicit parent blocks."
+                        ],
+                        "description": "The mode to use to select a parent block when inserting new elements.",
+                        "scope": "resource"
+                    },
                     "bemHelper.classNameCase": {
                         "type": "string",
                         "enum": [

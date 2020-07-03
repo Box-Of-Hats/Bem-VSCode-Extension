@@ -144,6 +144,10 @@ export class BemCommandProvider {
 
     public insertElementAtCursor(isModified: boolean): void {
         let textEditor = vscode.window.activeTextEditor;
+        const blockSelectionMode = getConfigValue(
+            "bemHelper.blockSelectionMode",
+            "prefer-explicit"
+        );
 
         this.bemHelper.ignoredParentClasses = getConfigValue(
             "bemHelper.ignoreClassNames",
@@ -166,7 +170,8 @@ export class BemCommandProvider {
                     textEditor.selection.active.character
                 )
             ),
-            false
+            false,
+            blockSelectionMode
         );
         if (className === null) {
             vscode.window.showErrorMessage(
