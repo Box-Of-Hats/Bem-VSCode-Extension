@@ -1,5 +1,7 @@
 {
-    "typeAcquisition": { "enable": true },
+    "typeAcquisition": {
+        "enable": true
+    },
     "compilerOptions": {
         "module": "CommonJS",
         "target": "ESNext",
@@ -10,7 +12,6 @@
         "strict": true,
         "strictNullChecks": true,
         "importHelpers": true,
-
         /* Additional Checks */
         "noUnusedLocals": false,
         "noImplicitAny": false,
@@ -18,6 +19,9 @@
         "noFallthroughCasesInSwitch": true,
         "noUnusedParameters": false
     },
-    "exclude": ["node_modules", ".vscode-test"],
+    "exclude": [
+        "node_modules",
+        ".vscode-test"
+    ],
     "compileOnSave": true
 }

@@ -164,6 +164,20 @@ export class BemHelper {
             return lastClass.split(this.elementSeparator)[0];
         }
 
+        if (parentMode === "prefer-explicit") {
+            const implicitParent = this.getPrecedingClassName(
+                html,
+                includeElements,
+                "first-parent"
+            );
+            const explicitParent = this.getPrecedingClassName(
+                html,
+                includeElements,
+                "explicit-only"
+            );
+            return explicitParent || implicitParent;
+        }
+
         //If only including blocks, remove element classes
         let matches = includeElements
             ? classes
