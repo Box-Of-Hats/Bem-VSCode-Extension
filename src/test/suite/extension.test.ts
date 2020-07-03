@@ -641,6 +641,23 @@ suite("BemHelper Tests", () => {
         assert.strictEqual(actual, expected);
     });
 
+    test("Get preceding class - first-parent - with ignore list", () => {
+        const html = /*html*/ `
+        <div class="parent-class">
+            <div class="ignored-class"></div>
+        `;
+        const bemHelper = new BemHelper();
+        bemHelper.ignoredParentClasses = ["ignored-class"];
+        const actual = bemHelper.getPrecedingClassName(
+            html,
+            false,
+            "first-parent"
+        );
+        const expected = "parent-class";
+
+        assert.strictEqual(actual, expected);
+    });
+
     test("Convert Class - Block Element Modifier - Kebab => Snake", () => {
         let inputClassName = "test-class__test-child--modi-fier";
         let expected = "test_class__test_child--modi_fier";

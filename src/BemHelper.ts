@@ -151,7 +151,10 @@ export class BemHelper {
         parentMode?: "explicit-only" | "prefer-explicit" | "first-parent",
         includeModified?: boolean
     ): string | undefined {
-        let classes = this.getClasses(html);
+        let classes = this.getClasses(html).filter(
+            (m) => !this.ignoredParentClasses.includes(m)
+        );
+
         if (!parentMode) {
             parentMode = "explicit-only";
         }
@@ -190,8 +193,6 @@ export class BemHelper {
             : matches.filter((match) => {
                   return !match.includes(this.modifierSeparator);
               });
-
-        matches = matches.filter((m) => !this.ignoredParentClasses.includes(m));
 
         return matches.pop();
     }
