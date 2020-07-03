@@ -1,5 +1,62 @@
 # Change Log
 
+## 1.1.0
+
+-   Add new setting `bemHelper.blockSelectionMode` which allows the changing of the parent block selection mode.
+
+Possible options:
+
+-   `prefer-explicit`
+    -   Use the first explicit parent if found. Fall back to an implicit parent if an explicit was not found.
+    -   _This is the default value_
+-   `first-parent`
+    -   Use the first parent, regardless whether it was explicit or implicit.
+-   `explicit-only`
+    -   Use only explicit parent blocks.
+    -   _Use this setting if you like the old behaviour of the extension_
+
+### Usage examples
+
+#### prefer-explicit
+
+```html
+<div class="explicit-parent">
+    <div class="implicit-parent__child"></div>
+
+    <!-- Insert Element: explicit-parent is used because it is an explicit block -->
+    <div class="explicit-parent__"></div>
+</div>
+```
+
+```html
+<div class="implicit-parent__child"></div>
+
+<!-- Insert Element: implicit-parent is used because no explicit parent was found -->
+<div class="implicit-parent__"></div>
+```
+
+#### first-parent
+
+```html
+<div class="explicit-parent">
+    <div class="implicit-parent__child"></div>
+
+    <!-- Insert Element: implicit-parent is used because it is the first parent-->
+    <div class="implicit-parent__"></div>
+</div>
+```
+
+#### explicit-only
+
+```html
+<div class="explicit-parent">
+    <div class="implicit-parent__child"></div>
+
+    <!-- Insert Element: explicit-parent is used -->
+    <div class="explicit-parent__"></div>
+</div>
+```
+
 ## 1.0.0
 
 -   Add new setting `bemHelper.ignoreClassNames` that allows certain classnames to be ignored when inserting new elements.
