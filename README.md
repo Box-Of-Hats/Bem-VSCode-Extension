@@ -38,6 +38,7 @@ Got any feedback, issues or feature requests? Send them my way via [GitHub Issue
 | bemHelper.maxWarningsCount         | The maximum number of diagnostic warnings to show. Defaults to 100.                                                            | number                                       |
 | bemHelper.ignoreClassNames         | A list of class names that should be ignored as parents (blocks) when inserting new elements                                   | A list of strings                            |
 | bemHelper.blockSelectionMode       | The method to use for selecting a parent block when inserting elements                                                         | prefer-explicit, first-parent, explicit-only |
+| bemHelper.newLineAfterInsert       | Should a newline be inserted after inserting an element?                                                                       | true, false                                  |
 
 ## Generating LESS / SCSS / CSS
 

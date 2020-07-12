@@ -183,18 +183,24 @@ export class BemCommandProvider {
             textEditor.document.languageId
         );
 
+        let snippet = "";
+        const insertNewline = getConfigValue(
+            "bemHelper.newLineAfterInsert",
+            true
+        );
+
         if (isModified) {
-            textEditor.insertSnippet(
-                new vscode.SnippetString(
-                    `<\${3:div} ${classProperty}="${className}${this.bemHelper.elementSeparator}$1 ${className}${this.bemHelper.elementSeparator}$1${this.bemHelper.modifierSeparator}$2">$4</$3>\n$0`
-                )
-            );
+            snippet = `<\${3:div} ${classProperty}="${className}${
+                this.bemHelper.elementSeparator
+            }$1 ${className}${this.bemHelper.elementSeparator}$1${
+                this.bemHelper.modifierSeparator
+            }$2">$4</$3>${insertNewline ? "\n" : ""}$0`;
         } else {
-            textEditor.insertSnippet(
-                new vscode.SnippetString(
-                    `<\${2:div} ${classProperty}="${className}${this.bemHelper.elementSeparator}$1">$3</$2>\n$0`
-                )
-            );
+            snippet = `<\${2:div} ${classProperty}="${className}${
+                this.bemHelper.elementSeparator
+            }$1">$3</$2>${insertNewline ? "\n" : ""}$0`;
         }
+
+        textEditor.insertSnippet(new vscode.SnippetString(snippet));
     }
 }
