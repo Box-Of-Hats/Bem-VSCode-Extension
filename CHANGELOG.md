@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.1.2
+
+-   Improve language support for PHP
+-   Bug fixes around language-specific ignore strings
+-   Bug fixes for boolean settings
+
 ## 1.1.0
 
 -   Add new setting `bemHelper.blockSelectionMode` which allows the changing of the parent block selection mode.
