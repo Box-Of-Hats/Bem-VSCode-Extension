@@ -148,6 +148,7 @@ export class BemCommandProvider {
             "bemHelper.blockSelectionMode",
             "prefer-explicit"
         );
+        const language = textEditor?.document.languageId;
 
         this.bemHelper.ignoredParentClasses = getConfigValue(
             "bemHelper.ignoreClassNames",
@@ -171,7 +172,9 @@ export class BemCommandProvider {
                 )
             ),
             false,
-            blockSelectionMode
+            blockSelectionMode,
+            false,
+            language
         );
         if (className === null) {
             vscode.window.showErrorMessage(

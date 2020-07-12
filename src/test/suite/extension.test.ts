@@ -1,5 +1,6 @@
 import * as assert from "assert";
 import { BemHelper, ClassNameCases } from "../../BemHelper";
+import { PhpLanguageProvider } from "../../languageProviders/LanguageProviders";
 
 suite("BemHelper Tests", () => {
     test("Class extraction - Camel Case", () => {
@@ -168,7 +169,7 @@ suite("BemHelper Tests", () => {
         const html = /*html*/ `<div className="parent-class"><div className="parent-class__child"></div></div>`;
         const expected = ["parent-class", "parent-class__child"];
         let bemHelper = new BemHelper();
-        let actual = bemHelper.getClasses(html);
+        let actual = bemHelper.getClasses(html, "javascriptreact");
         assert.deepEqual(actual.sort(), expected.sort());
     });
 
@@ -839,5 +840,22 @@ suite("BemHelper Tests", () => {
             bemHelper.isCaseMatch(kebabClass, ClassNameCases.Kebab),
             true
         );
+    });
+});
+
+suite("PHP language provider tests", () => {
+    test("ignore list", () => {
+        const bemHelper = new BemHelper();
+        bemHelper.registerLanguageProvider(new PhpLanguageProvider(), false);
+
+        const html = /*php*/ `
+            <a class="navbar-brand" href="<?php echo esc_url( home_url() ); ?>"></a>
+            <a class='second-class <?php echo "test" ?>'></a>
+        `;
+
+        const actual = bemHelper.getClasses(html, "php");
+        const expected = ["navbar-brand", "second-class"];
+
+        assert.deepStrictEqual(actual, expected);
     });
 });

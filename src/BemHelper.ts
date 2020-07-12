@@ -107,13 +107,18 @@ export class BemHelper {
         return styleSheet;
     }
 
-    /** Get all classes from a block of html */
-    public getClasses(html: string): string[] {
+    /**
+     * Get all classes from a block of html
+     *
+     * @param html
+     * @param language
+     */
+    public getClasses(html: string, language?: string): string[] {
         this.resetRegex();
         let classNames: string[] = [];
-        const ignoreStrings = this.languageProviders.flatMap(
-            (lp) => lp.htmlIgnorePatterns
-        );
+        const ignoreStrings = this.languageProviders
+            .filter((lp) => !language || lp.language === language)
+            .flatMap((lp) => lp.htmlIgnorePatterns);
 
         ignoreStrings.forEach((regex) => {
             html = html.replace(regex, " ");
@@ -149,9 +154,10 @@ export class BemHelper {
         html: string,
         includeElements: boolean,
         parentMode?: "explicit-only" | "prefer-explicit" | "first-parent",
-        includeModified?: boolean
+        includeModified?: boolean,
+        language?: string
     ): string | undefined {
-        let classes = this.getClasses(html).filter(
+        let classes = this.getClasses(html, language).filter(
             (m) => !this.ignoredParentClasses.includes(m)
         );
 
@@ -171,12 +177,16 @@ export class BemHelper {
             const implicitParent = this.getPrecedingClassName(
                 html,
                 includeElements,
-                "first-parent"
+                "first-parent",
+                false,
+                language
             );
             const explicitParent = this.getPrecedingClassName(
                 html,
                 includeElements,
-                "explicit-only"
+                "explicit-only",
+                false,
+                language
             );
             return explicitParent || implicitParent;
         }
