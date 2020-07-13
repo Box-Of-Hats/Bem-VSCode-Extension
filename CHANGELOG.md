@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.1.3
+
+-   Fix issue with extension activation introduced in 1.1.2
+
 ## 1.1.2
 
 -   Improve language support for PHP
