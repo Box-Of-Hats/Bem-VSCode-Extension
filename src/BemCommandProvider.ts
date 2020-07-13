@@ -148,7 +148,6 @@ export class BemCommandProvider {
             "bemHelper.blockSelectionMode",
             "prefer-explicit"
         );
-        const language = textEditor?.document.languageId;
 
         this.bemHelper.ignoredParentClasses = getConfigValue(
             "bemHelper.ignoreClassNames",
@@ -161,6 +160,8 @@ export class BemCommandProvider {
             );
             return;
         }
+
+        const language = textEditor.document.languageId;
 
         let className = this.bemHelper.getPrecedingClassName(
             textEditor.document.getText(
