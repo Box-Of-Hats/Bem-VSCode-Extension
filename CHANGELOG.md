@@ -1,5 +1,10 @@
 # Change Log
 
+
+## 1.1.4
+
+- Reduce minimum VSCode version to 1.32
+
 ## 1.1.3
 
 -   Fix issue with extension activation introduced in 1.1.2
