@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.1.6 - Docs improvements
+
+-   Improvements to the readme
+
 ## 1.1.5 - Bundle time
 
 -   Reduced distributed extension size from 14.8MB (3680 files) to just 1.78MB (14 files)
