@@ -28,7 +28,7 @@
         "onCommand:extension.bemHelper.generateStyleSheet",
         "onCommand:extension.bemHelper.convertSelectionToCase"
     ],
-    "main": "./out/extension.js",
+    "main": "./dist/extension.js",
     "contributes": {
         "configuration": [
             {
@@ -164,11 +164,12 @@
         ]
     },
     "scripts": {
-        "vscode:prepublish": "npm run compile",
-        "compile": "webpack --mode development",
-        "test-compile": "tsc",
+        "vscode:prepublish": "npm run compile-prod",
+        "compile-dev": "webpack --mode development",
+        "compile-prod": "webpack --mode production",
+        "compile-test": "tsc",
         "watch": "webpack --mode development --watch",
-        "test": "npm run test-compile && node ./out/test/runTest.js"
+        "test": "npm run compile-test && node ./testing/test/runTest.js"
     },
     "repository": {
         "type": "git",

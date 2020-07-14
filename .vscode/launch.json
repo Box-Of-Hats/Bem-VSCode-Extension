@@ -15,22 +15,26 @@
                 "--extensionDevelopmentPath=${workspaceFolder}"
             ],
             "internalConsoleOptions": "openOnSessionStart",
-            "outFiles": ["${workspaceFolder}/out/**/*.js"],
-            "preLaunchTask": "npm: compile"
+            "outFiles": [
+                "${workspaceFolder}/dist/**/*.js"
+            ],
+            "preLaunchTask": "npm: compile-dev"
         },
         {
             "name": "Extension Tests",
             "type": "extensionHost",
             "request": "launch",
             "runtimeExecutable": "${execPath}",
-            "preLaunchTask": "npm: compile",
+            "preLaunchTask": "npm: compile-test",
             "internalConsoleOptions": "openOnSessionStart",
             "args": [
                 "--disable-extensions",
                 "--extensionDevelopmentPath=${workspaceFolder}",
-                "--extensionTestsPath=${workspaceFolder}/out/test/suite"
+                "--extensionTestsPath=${workspaceFolder}/testing/test/suite"
             ],
-            "outFiles": ["${workspaceFolder}/out/test/**/*.js"]
+            "outFiles": [
+                "${workspaceFolder}/testing/test/**/*.js"
+            ]
         }
     ]
 }

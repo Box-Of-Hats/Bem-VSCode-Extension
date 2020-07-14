@@ -5,7 +5,7 @@
     "compilerOptions": {
         "module": "CommonJS",
         "target": "ESNext",
-        "outDir": "out",
+        "outDir": "testing",
         "sourceMap": true,
         "rootDir": "src",
         "baseUrl": "./src/",
