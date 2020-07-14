@@ -80,4 +80,6 @@ BEM helper provides warnings when class names are in violation of BEM naming sta
 
 A quick fix is included to make fixing case name issues quicker.
 
+You can specify your preferred casing in the extension settings using `bemHelper.classNameCase`.
+
 ![Code quick fix for incorrect class name casing](images/quickfix.gif)
