@@ -11,7 +11,7 @@
     "categories": [
         "Other"
     ],
-    "icon": "images/dist/bem.png",
+    "icon": "images/bem.png",
     "activationEvents": [
         "onLanguage:html",
         "onLanguage:aspnetcorerazor",

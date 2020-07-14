@@ -46,13 +46,13 @@ Generate stylesheets from your BEM markup using the `generateStylesheet` command
 
 If you don't like fancy pre-processors, you can also generate plain CSS.
 
-![Generating a stylesheet from HTML](images/docs/generate_stylesheet.gif)
+![Generating a stylesheet from HTML](images/generate_stylesheet.gif)
 
 ## Inserting Elements
 
 Both regular and modified element snippets can be inserted which already contain the parent class prefix. By default, these commands are bound to **`alt + b e`** (`insertBemElement`) and **`alt + b m`** (`insertBemModifier`), but they can be modified inside of the VSCode keyboard shortcuts menu.
 
-![Inserting a BEM child element](images/docs/add_child_element.gif)
+![Inserting a BEM child element](images/add_child_element.gif)
 
 ## Diagnostic Help
 
@@ -60,10 +60,10 @@ BEM helper provides warnings when class names are in violation of BEM naming sta
 
 ### Classes not following BEM standards
 
-![Class name warnings](images/docs/diagnostics_example.png)
+![Class name warnings](images/diagnostics_example.png)
 
 ### Classes not following the specified case
 
 A quick fix is included to make fixing case name issues quicker.
 
-![Code quick fix for incorrect class name casing](images/docs/quickfix.png)
+![Code quick fix for incorrect class name casing](images/quickfix.png)
