@@ -23,6 +23,7 @@ Currently, the languages that are officially supported are:
 -   HTML
 -   React (Jsx)
 -   React (Tsx)
+-   Razor (.net core / framework)
 -   Vue
 -   PHP
 
