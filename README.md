@@ -7,6 +7,7 @@ Get it on the [VSCode Marketplace](https://marketplace.visualstudio.com/items?it
 Got any feedback, issues or feature requests? Send them my way via [GitHub Issues](https://github.com/Box-Of-Hats/Bem-VSCode-Extension/issues/new).
 
 - [BEM Helper](#bem-helper)
+  - [Language Support](#language-support)
   - [Commands](#commands)
   - [Settings](#settings)
   - [Generating LESS / SCSS / CSS](#generating-less--scss--css)
@@ -14,6 +15,18 @@ Got any feedback, issues or feature requests? Send them my way via [GitHub Issue
   - [Diagnostic Help](#diagnostic-help)
     - [Classes not following BEM standards](#classes-not-following-bem-standards)
     - [Classes not following the specified case](#classes-not-following-the-specified-case)
+
+## Language Support
+
+Currently, the languages that are officially supported are:
+
+-   HTML
+-   React (Jsx)
+-   React (Tsx)
+-   Vue
+-   PHP
+
+If there are any languages that you want support added for then please open a [github issue](https://github.com/Box-Of-Hats/Bem-VSCode-Extension/issues/new)
 
 ## Commands
 
