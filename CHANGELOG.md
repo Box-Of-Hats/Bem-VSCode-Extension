@@ -1,9 +1,13 @@
 # Change Log
 
+## 1.1.5 - Bundle time
+
+-   Reduced distributed extension size from 14.8MB (3680 files) to just 1.78MB (14 files)
+    -   _who would have thought shipping all of your dev node_modules would be such a bad idea_
 
 ## 1.1.4
 
-- Reduce minimum VSCode version to 1.32
+-   Reduce minimum VSCode version to 1.32
 
 ## 1.1.3
 
