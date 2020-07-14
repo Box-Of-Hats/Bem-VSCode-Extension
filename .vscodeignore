@@ -5,3 +5,4 @@ test/**
 vsc-extension-quickstart.md
 **/jsconfig.json
 **/*.map
+images/docs
