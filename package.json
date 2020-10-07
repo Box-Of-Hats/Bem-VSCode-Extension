@@ -2,7 +2,7 @@
     "name": "bemhelper",
     "displayName": "BEM Helper",
     "description": "Improve writing html using BEM naming conventions.",
-    "version": "1.1.6",
+    "version": "1.2",
     "author": "Box-Of-Hats",
     "publisher": "Box-Of-Hats",
     "engines": {
@@ -66,22 +66,16 @@
                     },
                     "bemHelper.classNameCase": {
                         "type": "string",
-                        "enum": [
+                        "pattern": "^((any|kebab|snake|camel|pascal){1},?)+$",
+                        "examples": [
                             "any",
                             "kebab",
                             "snake",
                             "camel",
                             "pascal"
                         ],
-                        "enumDescriptions": [
-                            "Allow Any-Cased style of class names.",
-                            "Allow kebab-cased style of class names.",
-                            "Allow snake_cased style of class names.",
-                            "Allow camelCased style of class names.",
-                            "Allow PascalCased style of class names."
-                        ],
                         "default": "kebab",
-                        "description": "The allowed case styling of class names.",
+                        "description": "The allowed case styling of class names. Multiple allowed cases can be used with comma-separated values. E.g: 'kebab,pascal' ",
                         "scope": "window"
                     },
                     "bemHelper.responsiveLinting": {

@@ -203,17 +203,26 @@ export class BemDiagnosticProvider {
 		}
 
 		//Verify class name cases
-		let acceptedClassNameCase = getConfigValue(
-			"bemHelper.classNameCase",
-			ClassNameCases.Any
-		);
 
-		if (acceptedClassNameCase !== ClassNameCases.Any) {
+		const classNameCaseSetting:
+			| string
+			| undefined = vscode.workspace
+			.getConfiguration()
+			.get("bemHelper.classNameCase");
+
+		const acceptedClassNameCases: ClassNameCases[] = classNameCaseSetting
+			?.split(",")
+			.map((v) => {
+				return v as ClassNameCases;
+			})
+			.filter((classCase) => classCase) ?? [ClassNameCases.Any];
+
+		if (!acceptedClassNameCases.includes(ClassNameCases.Any)) {
 			editorHighlights = editorHighlights.concat(
 				this.getClassNameCaseProblems(
 					docText,
 					activeEditor,
-					[acceptedClassNameCase],
+					acceptedClassNameCases,
 					maxWarningCount
 				)
 			);
