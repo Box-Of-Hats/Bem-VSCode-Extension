@@ -94,7 +94,7 @@ export class BemDiagnosticProvider {
 	public getClassNameCaseProblems(
 		html: string,
 		activeEditor: vscode.TextEditor,
-		casing: ClassNameCases,
+		allowedCasings: ClassNameCases[],
 		maxCount: number
 	) {
 		let errors: vscode.Diagnostic[] = [];
@@ -104,69 +104,75 @@ export class BemDiagnosticProvider {
 			return errors;
 		}
 
-		classes.forEach((className) => {
-			if (errors.length <= maxCount) {
-				if (!this.bemHelper.isCaseMatch(className, casing)) {
-					let i = -1;
-					if (className === "") {
-						//Dont process empty class names as they can cause issues with indexOf
-						return;
-					}
-					while (
-						(i = html.indexOf(className, i + 1)) !== -1 &&
-						html.length >= i
-					) {
-						const startPos = activeEditor.document.positionAt(i);
-						const endPos = activeEditor.document.positionAt(
-							i + className.length
-						);
-
-						// Check that the matched line is a class name definition
-						let lineRange = new vscode.Range(
-							new vscode.Position(startPos.line, 0),
-							new vscode.Position(startPos.line, 1000)
-						);
-
-						let lineText = activeEditor.document.getText(lineRange);
-
-						if (
-							!lineText.match(
-								this.bemHelper.classPropertyValueRegex
-							)
-						) {
-							// Skip match if it is not a class name definition
-							continue;
-						}
-
-						errors.push({
-							code: "case",
-							message: `BEM - Class names must be in ${casing} case `,
-							range: new vscode.Range(startPos, endPos),
-							severity: vscode.DiagnosticSeverity.Warning,
-							source: "bem helper",
-							relatedInformation: [
-								new vscode.DiagnosticRelatedInformation(
-									new vscode.Location(
-										activeEditor.document.uri,
-										new vscode.Range(
-											new vscode.Position(
-												startPos.line,
-												startPos.character
-											),
-											new vscode.Position(
-												endPos.line,
-												endPos.character
-											)
-										)
-									),
-									`${className}`
-								),
-							],
-						});
-					}
-				}
+		for (const className of classes) {
+			if (errors.length >= maxCount) {
+				break;
 			}
-		});
+
+			const matchesAnyCase = allowedCasings.find((casing) =>
+				this.bemHelper.isCaseMatch(className, casing)
+			);
+
+			if (matchesAnyCase) {
+				continue;
+			}
+
+			let i = -1;
+			if (className === "") {
+				//Dont process empty class names as they can cause issues with indexOf
+				return;
+			}
+			while (
+				(i = html.indexOf(className, i + 1)) !== -1 &&
+				html.length >= i
+			) {
+				const startPos = activeEditor.document.positionAt(i);
+				const endPos = activeEditor.document.positionAt(
+					i + className.length
+				);
+
+				// Check that the matched line is a class name definition
+				let lineRange = new vscode.Range(
+					new vscode.Position(startPos.line, 0),
+					new vscode.Position(startPos.line, 1000)
+				);
+
+				let lineText = activeEditor.document.getText(lineRange);
+
+				if (!lineText.match(this.bemHelper.classPropertyValueRegex)) {
+					// Skip match if it is not a class name definition
+					continue;
+				}
+
+				errors.push({
+					code: "case",
+					message: `BEM - Class names must be in ${allowedCasings.join(
+						" or "
+					)} case `,
+					range: new vscode.Range(startPos, endPos),
+					severity: vscode.DiagnosticSeverity.Warning,
+					source: "bem helper",
+					relatedInformation: [
+						new vscode.DiagnosticRelatedInformation(
+							new vscode.Location(
+								activeEditor.document.uri,
+								new vscode.Range(
+									new vscode.Position(
+										startPos.line,
+										startPos.character
+									),
+									new vscode.Position(
+										endPos.line,
+										endPos.character
+									)
+								)
+							),
+							`${className}`
+						),
+					],
+				});
+			}
+		}
 
 		return errors.slice(0, maxCount);
 	}
@@ -207,7 +213,7 @@ export class BemDiagnosticProvider {
 				this.getClassNameCaseProblems(
 					docText,
 					activeEditor,
-					acceptedClassNameCase,
+					[acceptedClassNameCase],
 					maxWarningCount
 				)
 			);
