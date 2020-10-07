@@ -1,189 +1,189 @@
 {
-    "name": "bemhelper",
-    "displayName": "BEM Helper",
-    "description": "Improve writing html using BEM naming conventions.",
-    "version": "1.2",
-    "author": "Box-Of-Hats",
-    "publisher": "Box-Of-Hats",
-    "engines": {
-        "vscode": "^1.32.0"
-    },
-    "categories": [
-        "Other"
-    ],
-    "icon": "images/bem.png",
-    "activationEvents": [
-        "onLanguage:html",
-        "onLanguage:aspnetcorerazor",
-        "onLanguage:javascriptreact",
-        "onLanguage:typescriptreact",
-        "onLanguage:javascript",
-        "onLanguage:typescript",
-        "onLanguage:php",
-        "onLanguage:razor",
-        "workspaceContains:*.jsx",
-        "workspaceContains:*.html",
-        "onCommand:extension.bemHelper.insertElement",
-        "onCommand:extension.bemHelper.insertModifiedElement",
-        "onCommand:extension.bemHelper.generateStyleSheet",
-        "onCommand:extension.bemHelper.convertSelectionToCase"
-    ],
-    "main": "./dist/extension.js",
-    "contributes": {
-        "configuration": [
-            {
-                "title": "BEM linting options",
-                "properties": {
-                    "bemHelper.showDepthWarnings": {
-                        "type": "boolean",
-                        "default": true,
-                        "description": "Highlight classes that contain more than a block and element. e.g block__block2__element",
-                        "scope": "window"
-                    },
-                    "bemHelper.ignoreClassNames": {
-                        "type": "array",
-                        "default": [
-                            "material-icons"
-                        ],
-                        "description": "A list of class names that should be ignored as parents (blocks) when inserting new elements",
-                        "scope": "resource"
-                    },
-                    "bemHelper.blockSelectionMode": {
-                        "type": "string",
-                        "default": "prefer-explicit",
-                        "enum": [
-                            "prefer-explicit",
-                            "first-parent",
-                            "explicit-only"
-                        ],
-                        "enumDescriptions": [
-                            "Use the first explicit parent if found. Fall back to an implicit parent if not found.",
-                            "Use the first parent, explicit or implicit.",
-                            "Use only explicit parent blocks."
-                        ],
-                        "description": "The mode to use to select a parent block when inserting new elements.",
-                        "scope": "resource"
-                    },
-                    "bemHelper.classNameCase": {
-                        "type": "string",
-                        "pattern": "^((any|kebab|snake|camel|pascal){1},?)+$",
-                        "examples": [
-                            "any",
-                            "kebab",
-                            "snake",
-                            "camel",
-                            "pascal"
-                        ],
-                        "default": "kebab",
-                        "description": "The allowed case styling of class names. Multiple allowed cases can be used with comma-separated values. E.g: 'kebab,pascal' ",
-                        "scope": "window"
-                    },
-                    "bemHelper.responsiveLinting": {
-                        "type": "boolean",
-                        "default": true,
-                        "description": "Enable/disable linting checks whenever a file contents changes. Disable for increased performace. Reload window to take effect",
-                        "scope": "window"
-                    },
-                    "bemHelper.newLineAfterInsert": {
-                        "type": "boolean",
-                        "default": true,
-                        "description": "Should a newline be inserted after inserting an element?",
-                        "scope": "resource"
-                    },
-                    "bemHelper.sortGeneratedStylesheets": {
-                        "type": "boolean",
-                        "default": true,
-                        "description": "Controls whether generated stylesheets should be sorted alphabetically",
-                        "scope": "resource"
-                    },
-                    "bemHelper.elementSeparator": {
-                        "type": "string",
-                        "default": "__",
-                        "description": "The string to use as a separator for elements. By default is set to '__'. Reload window to take effect",
-                        "scope": "window"
-                    },
-                    "bemHelper.modifierSeparator": {
-                        "type": "string",
-                        "default": "--",
-                        "description": "The string to use as a separator for modifiers. By default is set to '--'. Reload window to take effect",
-                        "scope": "window"
-                    },
-                    "bemHelper.maxWarningsCount": {
-                        "type": "integer",
-                        "default": 100,
-                        "description": "The maximum number of diagnostic warnings to show",
-                        "scope": "window"
-                    }
-                }
-            }
-        ],
-        "commands": [
-            {
-                "command": "extension.bemHelper.insertElement",
-                "title": "BEM Helper: Insert Element"
-            },
-            {
-                "command": "extension.bemHelper.insertModifiedElement",
-                "title": "BEM Helper: Insert Modifier"
-            },
-            {
-                "command": "extension.bemHelper.generateStyleSheet",
-                "title": "BEM Helper: Generate Stylesheet"
-            },
-            {
-                "command": "extension.bemHelper.generateStyleSheetFromSelection",
-                "title": "BEM Helper: Generate Stylesheet From Selection"
-            },
-            {
-                "command": "extension.bemHelper.convertSelectionToCase",
-                "title": "BEM Helper: Convert Selection to Case"
-            }
-        ],
-        "keybindings": [
-            {
-                "command": "extension.bemHelper.insertElement",
-                "key": "alt+b e",
-                "when": "editorTextFocus"
-            },
-            {
-                "command": "extension.bemHelper.insertModifiedElement",
-                "key": "alt+b m",
-                "when": "editorTextFocus"
-            },
-            {
-                "command": "extension.bemHelper.generateStyleSheet",
-                "key": "alt+b s",
-                "when": "editorTextFocus"
-            }
-        ]
-    },
-    "scripts": {
-        "vscode:prepublish": "npm run compile-prod",
-        "compile-dev": "webpack --mode development",
-        "compile-prod": "webpack --mode production",
-        "compile-test": "tsc",
-        "watch": "webpack --mode development --watch",
-        "test": "npm run compile-test && node ./testing/test/runTest.js"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/Box-Of-Hats/Bem-VSCode-Extension"
-    },
-    "bugs": {
-        "url": "https://github.com/Box-Of-Hats/Bem-VSCode-Extension/issues"
-    },
-    "devDependencies": {
-        "@types/mocha": "^8.0.3",
-        "@types/node": "^14.11.5",
-        "@types/vscode": "^1.49.0",
-        "glob": "^7.1.6",
-        "mocha": "^8.1.3",
-        "ts-loader": "^8.0.4",
-        "tslint": "^6.1.3",
-        "typescript": "^4.0.3",
-        "vscode-test": "^1.4.0",
-        "webpack": "^4.44.2",
-        "webpack-cli": "^3.3.12"
-    },
-    "dependencies": {}
+	"name": "bemhelper",
+	"displayName": "BEM Helper",
+	"description": "Improve writing html using BEM naming conventions.",
+	"version": "1.2.0",
+	"author": "Box-Of-Hats",
+	"publisher": "Box-Of-Hats",
+	"engines": {
+		"vscode": "^1.32.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"icon": "images/bem.png",
+	"activationEvents": [
+		"onLanguage:html",
+		"onLanguage:aspnetcorerazor",
+		"onLanguage:javascriptreact",
+		"onLanguage:typescriptreact",
+		"onLanguage:javascript",
+		"onLanguage:typescript",
+		"onLanguage:php",
+		"onLanguage:razor",
+		"workspaceContains:*.jsx",
+		"workspaceContains:*.html",
+		"onCommand:extension.bemHelper.insertElement",
+		"onCommand:extension.bemHelper.insertModifiedElement",
+		"onCommand:extension.bemHelper.generateStyleSheet",
+		"onCommand:extension.bemHelper.convertSelectionToCase"
+	],
+	"main": "./dist/extension.js",
+	"contributes": {
+		"configuration": [
+			{
+				"title": "BEM linting options",
+				"properties": {
+					"bemHelper.showDepthWarnings": {
+						"type": "boolean",
+						"default": true,
+						"description": "Highlight classes that contain more than a block and element. e.g block__block2__element",
+						"scope": "window"
+					},
+					"bemHelper.ignoreClassNames": {
+						"type": "array",
+						"default": [
+							"material-icons"
+						],
+						"description": "A list of class names that should be ignored as parents (blocks) when inserting new elements",
+						"scope": "resource"
+					},
+					"bemHelper.blockSelectionMode": {
+						"type": "string",
+						"default": "prefer-explicit",
+						"enum": [
+							"prefer-explicit",
+							"first-parent",
+							"explicit-only"
+						],
+						"enumDescriptions": [
+							"Use the first explicit parent if found. Fall back to an implicit parent if not found.",
+							"Use the first parent, explicit or implicit.",
+							"Use only explicit parent blocks."
+						],
+						"description": "The mode to use to select a parent block when inserting new elements.",
+						"scope": "resource"
+					},
+					"bemHelper.classNameCase": {
+						"type": "string",
+						"pattern": "^((any|kebab|snake|camel|pascal){1},?)+$",
+						"examples": [
+							"any",
+							"kebab",
+							"snake",
+							"camel",
+							"pascal"
+						],
+						"default": "kebab",
+						"description": "The allowed case styling of class names. Multiple allowed cases can be used with comma-separated values. E.g: 'kebab,pascal' ",
+						"scope": "window"
+					},
+					"bemHelper.responsiveLinting": {
+						"type": "boolean",
+						"default": true,
+						"description": "Enable/disable linting checks whenever a file contents changes. Disable for increased performace. Reload window to take effect",
+						"scope": "window"
+					},
+					"bemHelper.newLineAfterInsert": {
+						"type": "boolean",
+						"default": true,
+						"description": "Should a newline be inserted after inserting an element?",
+						"scope": "resource"
+					},
+					"bemHelper.sortGeneratedStylesheets": {
+						"type": "boolean",
+						"default": true,
+						"description": "Controls whether generated stylesheets should be sorted alphabetically",
+						"scope": "resource"
+					},
+					"bemHelper.elementSeparator": {
+						"type": "string",
+						"default": "__",
+						"description": "The string to use as a separator for elements. By default is set to '__'. Reload window to take effect",
+						"scope": "window"
+					},
+					"bemHelper.modifierSeparator": {
+						"type": "string",
+						"default": "--",
+						"description": "The string to use as a separator for modifiers. By default is set to '--'. Reload window to take effect",
+						"scope": "window"
+					},
+					"bemHelper.maxWarningsCount": {
+						"type": "integer",
+						"default": 100,
+						"description": "The maximum number of diagnostic warnings to show",
+						"scope": "window"
+					}
+				}
+			}
+		],
+		"commands": [
+			{
+				"command": "extension.bemHelper.insertElement",
+				"title": "BEM Helper: Insert Element"
+			},
+			{
+				"command": "extension.bemHelper.insertModifiedElement",
+				"title": "BEM Helper: Insert Modifier"
+			},
+			{
+				"command": "extension.bemHelper.generateStyleSheet",
+				"title": "BEM Helper: Generate Stylesheet"
+			},
+			{
+				"command": "extension.bemHelper.generateStyleSheetFromSelection",
+				"title": "BEM Helper: Generate Stylesheet From Selection"
+			},
+			{
+				"command": "extension.bemHelper.convertSelectionToCase",
+				"title": "BEM Helper: Convert Selection to Case"
+			}
+		],
+		"keybindings": [
+			{
+				"command": "extension.bemHelper.insertElement",
+				"key": "alt+b e",
+				"when": "editorTextFocus"
+			},
+			{
+				"command": "extension.bemHelper.insertModifiedElement",
+				"key": "alt+b m",
+				"when": "editorTextFocus"
+			},
+			{
+				"command": "extension.bemHelper.generateStyleSheet",
+				"key": "alt+b s",
+				"when": "editorTextFocus"
+			}
+		]
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile-prod",
+		"compile-dev": "webpack --mode development",
+		"compile-prod": "webpack --mode production",
+		"compile-test": "tsc",
+		"watch": "webpack --mode development --watch",
+		"test": "npm run compile-test && node ./testing/test/runTest.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Box-Of-Hats/Bem-VSCode-Extension"
+	},
+	"bugs": {
+		"url": "https://github.com/Box-Of-Hats/Bem-VSCode-Extension/issues"
+	},
+	"devDependencies": {
+		"@types/mocha": "^8.0.3",
+		"@types/node": "^14.11.5",
+		"@types/vscode": "^1.49.0",
+		"glob": "^7.1.6",
+		"mocha": "^8.1.3",
+		"ts-loader": "^8.0.4",
+		"tslint": "^6.1.3",
+		"typescript": "^4.0.3",
+		"vscode-test": "^1.4.0",
+		"webpack": "^4.44.2",
+		"webpack-cli": "^3.3.12"
+	},
+	"dependencies": {}
 }
