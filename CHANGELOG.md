@@ -1,5 +1,17 @@
 # Change Log
 
+## 1.2.0 - Multiple class name cases
+
+-   Added support for multiple class name cases
+    -   These can be enabled in your `settings.json` using the setting "bemHelper.classNameCase" to use a comma separated list of cases
+
+```jsonc
+//settings.json
+{
+	"bemHelper.classNameCase": "kebab,camel"
+}
+```
+
 ## 1.1.6 - Docs improvements
 
 -   Improvements to the readme
@@ -44,10 +56,10 @@ Possible options:
 
 ```html
 <div class="explicit-parent">
-    <div class="implicit-parent__child"></div>
+	<div class="implicit-parent__child"></div>
 
-    <!-- Insert Element: explicit-parent is used because it is an explicit block -->
-    <div class="explicit-parent__"></div>
+	<!-- Insert Element: explicit-parent is used because it is an explicit block -->
+	<div class="explicit-parent__"></div>
 </div>
 ```
 
@@ -62,10 +74,10 @@ Possible options:
 
 ```html
 <div class="explicit-parent">
-    <div class="implicit-parent__child"></div>
+	<div class="implicit-parent__child"></div>
 
-    <!-- Insert Element: implicit-parent is used because it is the first parent-->
-    <div class="implicit-parent__"></div>
+	<!-- Insert Element: implicit-parent is used because it is the first parent-->
+	<div class="implicit-parent__"></div>
 </div>
 ```
 
@@ -73,10 +85,10 @@ Possible options:
 
 ```html
 <div class="explicit-parent">
-    <div class="implicit-parent__child"></div>
+	<div class="implicit-parent__child"></div>
 
-    <!-- Insert Element: explicit-parent is used -->
-    <div class="explicit-parent__"></div>
+	<!-- Insert Element: explicit-parent is used -->
+	<div class="explicit-parent__"></div>
 </div>
 ```
 
@@ -87,7 +99,7 @@ Possible options:
 ```json
 // settings.json
 {
-    "bemHelper.ignoreClassNames": ["material-icons"]
+	"bemHelper.ignoreClassNames": ["material-icons"]
 }
 ```
 
@@ -95,11 +107,11 @@ This was added for situations where you have class names that you don't want to 
 
 ```html
 <div class="actual-parent">
-    <i class="material-icons">arrow_right</i>
+	<i class="material-icons">arrow_right</i>
 
-    <!-- Trying to insert an element here should have a parent of `actual-parent` and not `material-icons` -->
-    <!-- GOOD: <div class="actual-parent__"></div> -->
-    <!-- BAD:  <div class="material-icons__"></div> -->
+	<!-- Trying to insert an element here should have a parent of `actual-parent` and not `material-icons` -->
+	<!-- GOOD: <div class="actual-parent__"></div> -->
+	<!-- BAD:  <div class="material-icons__"></div> -->
 </div>
 ```
 

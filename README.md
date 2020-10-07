@@ -43,7 +43,7 @@ If there are any languages that you want support added for then please open a [g
 
 | Setting                            | Description                                                                                                                    | Allowed Values                               |
 | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------- |
-| bemHelper.classNameCase            | The allowed case styling of class names                                                                                        | any, kebab, snake, camel, pascal             |
+| bemHelper.classNameCase            | The allowed case styling of class names. Can be a single value or a list of values, separated by commas (e.g `"kebab,snake"`)  | any, kebab, snake, camel, pascal             |
 | bemHelper.responsiveLinting        | Enable/disable linting checks whenever a file contents changes. Disable for increased performace. Reload window to take effect | true, false                                  |
 | bemHelper.showDepthWarnings        | Enable/disable depth warnings. e.g block\_\_block2\_\_element                                                                  | true, false                                  |
 | bemHelper.elementSeparator         | The string to use as a separator for elements. By default is set to `__`. Reload window to take effect                         | any string                                   |
