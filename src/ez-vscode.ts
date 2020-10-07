@@ -7,7 +7,7 @@ import * as vscode from "vscode";
  * @param fallBackValue The value to use if no configuration is found.
  */
 export function getConfigValue<T>(configName: string, fallBackValue: T): T {
-    let settingValue = vscode.workspace.getConfiguration().get(configName) as T;
+	let settingValue = vscode.workspace.getConfiguration().get(configName) as T;
 
-    return settingValue !== undefined ? settingValue : fallBackValue;
+	return settingValue !== undefined ? settingValue : fallBackValue;
 }

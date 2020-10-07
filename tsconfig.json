@@ -1,27 +1,27 @@
 {
-    "typeAcquisition": {
-        "enable": true
-    },
-    "compilerOptions": {
-        "module": "CommonJS",
-        "target": "ESNext",
-        "outDir": "testing",
-        "sourceMap": true,
-        "rootDir": "src",
-        "baseUrl": "./src/",
-        "strict": true,
-        "strictNullChecks": true,
-        "importHelpers": true,
-        /* Additional Checks */
-        "noUnusedLocals": false,
-        "noImplicitAny": false,
-        "noImplicitReturns": false,
-        "noFallthroughCasesInSwitch": true,
-        "noUnusedParameters": false
-    },
-    "exclude": [
-        "node_modules",
-        ".vscode-test"
-    ],
-    "compileOnSave": true
+	"typeAcquisition": {
+		"enable": true
+	},
+	"compilerOptions": {
+		"module": "CommonJS",
+		"target": "ESNext",
+		"outDir": "testing",
+		"sourceMap": true,
+		"rootDir": "src",
+		"baseUrl": "./src/",
+		"strict": true,
+		"strictNullChecks": true,
+		"importHelpers": true,
+		/* Additional Checks */
+		"noUnusedLocals": false,
+		"noImplicitAny": false,
+		"noImplicitReturns": false,
+		"noFallthroughCasesInSwitch": true,
+		"noUnusedParameters": false
+	},
+	"exclude": [
+		"node_modules",
+		".vscode-test"
+	],
+	"compileOnSave": true
 }

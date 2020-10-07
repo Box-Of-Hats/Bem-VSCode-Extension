@@ -1,5 +1,5 @@
 export interface LanguageProvider {
-    language: string;
-    classAttributeLabel: string;
-    htmlIgnorePatterns: RegExp[];
+	language: string;
+	classAttributeLabel: string;
+	htmlIgnorePatterns: RegExp[];
 }
