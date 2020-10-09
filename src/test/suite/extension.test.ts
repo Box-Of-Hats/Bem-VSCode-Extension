@@ -5,6 +5,7 @@ import { PhpLanguageProvider } from "../../languageProviders/LanguageProviders";
 
 import { BemDiagnosticProvider } from "../../BemDiagnosticProvider";
 import * as vscode from "vscode";
+import { areSameDiagnostics } from "./utils";
 
 suite("BemHelper Tests", () => {
 	test("Class extraction - Camel Case", () => {
@@ -865,9 +866,8 @@ suite("PHP language provider tests", () => {
 });
 
 suite("Integration tests", () => {
-	test("get diagnostics", async () => {
+	test("Get Diagnostics - Single html class in wrong casing", async () => {
 		const bemHelper = new BemHelper();
-
 		const diagnosticProvider = new BemDiagnosticProvider(bemHelper);
 
 		const html = /*html*/ `<body><div class="navBody"></div></body>`;
@@ -897,24 +897,31 @@ suite("Integration tests", () => {
 			),
 		];
 
-		expected.forEach((expectedDiagnostic, index) => {
-			const actualDiagnostic = actual[index];
+		areSameDiagnostics(actual, expected);
+	});
 
-			assert.ok(
-				actualDiagnostic.range.isEqual(expectedDiagnostic.range),
-				"range not equal"
-			);
+	test("Get Diagnostics - Single html class in correct casing", async () => {
+		const bemHelper = new BemHelper();
+		const diagnosticProvider = new BemDiagnosticProvider(bemHelper);
 
-			assert.strictEqual(
-				actualDiagnostic.severity,
-				expectedDiagnostic.severity,
-				"severity not equal"
-			);
-			assert.strictEqual(
-				actualDiagnostic.message,
-				expectedDiagnostic.message,
-				"message not equal"
-			);
+		const html = /*html*/ `<body><div class="nav-body"></div></body>`;
+
+		const document = await vscode.workspace.openTextDocument({
+			language: "html",
+			content: html,
 		});
+
+		const activeEditor = await vscode.window.showTextDocument(document);
+
+		const actual = diagnosticProvider.getClassNameCaseProblems(
+			html,
+			activeEditor!,
+			[ClassNameCases.Kebab],
+			100
+		);
+
+		const expected: vscode.Diagnostic[] = [];
+
+		areSameDiagnostics(actual, expected);
 	});
 });
