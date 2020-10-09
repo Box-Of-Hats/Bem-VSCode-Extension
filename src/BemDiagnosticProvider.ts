@@ -120,7 +120,7 @@ export class BemDiagnosticProvider {
 			let i = -1;
 			if (className === "") {
 				//Dont process empty class names as they can cause issues with indexOf
-				return;
+				return [];
 			}
 			while (
 				(i = html.indexOf(className, i + 1)) !== -1 &&
@@ -148,7 +148,7 @@ export class BemDiagnosticProvider {
 					code: "case",
 					message: `BEM - Class names must be in ${allowedCasings.join(
 						" or "
-					)} case `,
+					)} case`,
 					range: new vscode.Range(startPos, endPos),
 					severity: vscode.DiagnosticSeverity.Warning,
 					source: "bem helper",

@@ -1,6 +1,10 @@
 import * as assert from "assert";
+import { downloadAndUnzipVSCode } from "vscode-test";
 import { BemHelper, ClassNameCases } from "../../BemHelper";
 import { PhpLanguageProvider } from "../../languageProviders/LanguageProviders";
+
+import { BemDiagnosticProvider } from "../../BemDiagnosticProvider";
+import * as vscode from "vscode";
 
 suite("BemHelper Tests", () => {
 	test("Class extraction - Camel Case", () => {
@@ -857,5 +861,60 @@ suite("PHP language provider tests", () => {
 		const expected = ["navbar-brand", "second-class"];
 
 		assert.deepStrictEqual(actual, expected);
+	});
+});
+
+suite("Integration tests", () => {
+	test("get diagnostics", async () => {
+		const bemHelper = new BemHelper();
+
+		const diagnosticProvider = new BemDiagnosticProvider(bemHelper);
+
+		const html = /*html*/ `<body><div class="navBody"></div></body>`;
+
+		const document = await vscode.workspace.openTextDocument({
+			language: "html",
+			content: html,
+		});
+
+		const activeEditor = await vscode.window.showTextDocument(document);
+
+		const actual = diagnosticProvider.getClassNameCaseProblems(
+			html,
+			activeEditor!,
+			[ClassNameCases.Kebab],
+			100
+		);
+
+		const expected: vscode.Diagnostic[] = [
+			new vscode.Diagnostic(
+				new vscode.Range(
+					new vscode.Position(0, 18),
+					new vscode.Position(0, 25)
+				),
+				"BEM - Class names must be in kebab case",
+				vscode.DiagnosticSeverity.Warning
+			),
+		];
+
+		expected.forEach((expectedDiagnostic, index) => {
+			const actualDiagnostic = actual[index];
+
+			assert.ok(
+				actualDiagnostic.range.isEqual(expectedDiagnostic.range),
+				"range not equal"
+			);
+
+			assert.strictEqual(
+				actualDiagnostic.severity,
+				expectedDiagnostic.severity,
+				"severity not equal"
+			);
+			assert.strictEqual(
+				actualDiagnostic.message,
+				expectedDiagnostic.message,
+				"message not equal"
+			);
+		});
 	});
 });
