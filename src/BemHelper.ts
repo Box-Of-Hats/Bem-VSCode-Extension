@@ -112,8 +112,13 @@ export class BemHelper {
 	 *
 	 * @param html
 	 * @param language
+	 * @param asParts Should the classnames be split into parts, based on the separators?
 	 */
-	public getClasses(html: string, language?: string): string[] {
+	public getClasses(
+		html: string,
+		language?: string,
+		asParts?: boolean
+	): string[] {
 		this.resetRegex();
 		let classNames: string[] = [];
 		const ignoreStrings = this.languageProviders
@@ -142,8 +147,18 @@ export class BemHelper {
 				}
 			});
 		}
-		return classNames;
+
+		return asParts
+			? classNames.flatMap((className) =>
+					className
+						.split(this.elementSeparator)
+						.flatMap((className) =>
+							className.split(this.modifierSeparator)
+						)
+			  )
+			: classNames;
 	}
+
 	/**
 	 * Get the last class name from a block of html
 	 * @param html The html string to extract from

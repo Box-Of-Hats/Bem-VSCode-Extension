@@ -866,7 +866,7 @@ suite("PHP language provider tests", () => {
 });
 
 suite("Integration tests", () => {
-	test("Get Diagnostics - Single html class in wrong casing", async () => {
+	test("Get Diagnostics - Classname cases - Single html class in wrong casing", async () => {
 		const bemHelper = new BemHelper();
 		const diagnosticProvider = new BemDiagnosticProvider(bemHelper);
 
@@ -900,7 +900,7 @@ suite("Integration tests", () => {
 		areSameDiagnostics(actual, expected);
 	});
 
-	test("Get Diagnostics - Single html class in correct casing", async () => {
+	test("Get Diagnostics - Classname cases - Single html class in correct casing", async () => {
 		const bemHelper = new BemHelper();
 		const diagnosticProvider = new BemDiagnosticProvider(bemHelper);
 
@@ -917,6 +917,35 @@ suite("Integration tests", () => {
 			html,
 			activeEditor!,
 			[ClassNameCases.Kebab],
+			100
+		);
+
+		const expected: vscode.Diagnostic[] = [];
+
+		areSameDiagnostics(actual, expected);
+	});
+
+	test("Get Diagnostics - Classname cases - Multiple allowed cases", async () => {
+		const bemHelper = new BemHelper();
+		const diagnosticProvider = new BemDiagnosticProvider(bemHelper);
+
+		const html = /*html*/ `
+		<div className="TopNav">
+			<div className="TopNav__button-container"><div>
+		</div>
+		`;
+
+		const document = await vscode.workspace.openTextDocument({
+			language: "html",
+			content: html,
+		});
+
+		const activeEditor = await vscode.window.showTextDocument(document);
+
+		const actual = diagnosticProvider.getClassNameCaseProblems(
+			html,
+			activeEditor!,
+			[ClassNameCases.Kebab, ClassNameCases.Pascal],
 			100
 		);
 

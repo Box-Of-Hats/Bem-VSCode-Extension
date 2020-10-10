@@ -98,7 +98,7 @@ export class BemDiagnosticProvider {
 		maxCount: number
 	) {
 		let errors: vscode.Diagnostic[] = [];
-		let classes = this.bemHelper.getClasses(html);
+		let classes = this.bemHelper.getClasses(html, undefined, true);
 
 		if (!classes) {
 			return errors;

@@ -14,7 +14,7 @@ export const areSameDiagnostics = (
 	assert.strictEqual(
 		actual.length,
 		expected.length,
-		"Expected and actual had different number of diagnostics."
+		`Expected (${expected.length}) and actual (${actual.length}) had different number of diagnostics.`
 	);
 	expected.forEach((expectedDiagnostic, index) => {
 		const actualDiagnostic = actual[index];
