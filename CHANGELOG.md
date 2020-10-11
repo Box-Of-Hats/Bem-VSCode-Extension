@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.2.1 - Multiple class name cases
+
+-   Bug fix for multiple class name cases
+
 ## 1.2.0 - Multiple class name cases
 
 -   Added support for multiple class name cases
