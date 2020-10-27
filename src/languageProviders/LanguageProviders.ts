@@ -1,18 +1,18 @@
 import { LanguageProvider } from "./LanguageProvider";
 
 export class TypescriptReactLanguageProvider implements LanguageProvider {
-	language = "typescriptreact";
+	languages = ["typescriptreact"];
 	classAttributeLabel = "className";
 	htmlIgnorePatterns = [/\${.*}/g];
 }
 
 export class JavascriptReactLanguageProvider implements LanguageProvider {
-	language = "javascriptreact";
+	languages = ["javascriptreact"];
 	classAttributeLabel = "className";
 	htmlIgnorePatterns = [/\${.*}/g];
 }
 export class PhpLanguageProvider implements LanguageProvider {
-	language = "php";
+	languages = ["php"];
 	classAttributeLabel = "class";
 	htmlIgnorePatterns = [/<\?php\s+.*\?>/g];
 }

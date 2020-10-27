@@ -122,7 +122,7 @@ export class BemHelper {
 		this.resetRegex();
 		let classNames: string[] = [];
 		const ignoreStrings = this.languageProviders
-			.filter((lp) => !language || lp.language === language)
+			.filter((lp) => !language || lp.languages.includes(language))
 			.flatMap((lp) => lp.htmlIgnorePatterns);
 
 		ignoreStrings.forEach((regex) => {
@@ -419,7 +419,7 @@ export class BemHelper {
 		let classAttributeLabel = "class";
 
 		this.languageProviders.forEach((langProvider) => {
-			if (langProvider.language === language) {
+			if (langProvider.languages.includes(language)) {
 				classAttributeLabel = langProvider.classAttributeLabel;
 			}
 		});
@@ -438,12 +438,12 @@ export class BemHelper {
 	): void {
 		const languageProviderExists =
 			this.languageProviders.filter(
-				(lp) => lp.language === provider.language
+				(lp) => lp.languages === provider.languages
 			).length !== 0;
 
 		if (languageProviderExists && failOnDuplicate) {
 			throw new Error(
-				`Cannot register duplicate language provider for language: ${provider.language}`
+				`Cannot register duplicate language provider for language: ${provider.languages}`
 			);
 		}
 		this.languageProviders.push(provider);
