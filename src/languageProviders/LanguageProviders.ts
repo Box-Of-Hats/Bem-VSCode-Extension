@@ -11,8 +11,15 @@ export class JavascriptReactLanguageProvider implements LanguageProvider {
 	classAttributeLabel = "className";
 	htmlIgnorePatterns = [/\${.*}/g];
 }
+
 export class PhpLanguageProvider implements LanguageProvider {
 	languages = ["php"];
 	classAttributeLabel = "class";
 	htmlIgnorePatterns = [/<\?php\s+.*\?>/g];
+}
+
+export class RazorLanguageProvider implements LanguageProvider {
+	languages = ["razor", "cshtml", "aspnetcorerazor"];
+	classAttributeLabel = "class";
+	htmlIgnorePatterns = [/[-_\w\d@\()\.]*@[-_\w\d@\()\.]*/g, /@\(.*\)/g];
 }
