@@ -9,14 +9,23 @@ suite("Razor Language Provider", () => {
 
 		const html = /*razor*/ `
 			<div class="state @(someCount > 0 ? "active" : null)"></div>
+			<div class="state @(someCount > 0 ? "active" : null) another-class"></div>
+			<div class="state @variable"></div>
+			<div class="camelCaseClassName @variable"></div>
 			<div class="class-with-variable class-with-variable-@(variable.Something)"></div>
 			<div class="test-div-name">Title</div>
 		`;
 
 		const actual = bemHelper.getClasses(html, "aspnetcorerazor");
-		const expected = ["state", "class-with-variable", "test-div-name"];
+		const expected = [
+			"state",
+			"another-class",
+			"camelCaseClassName",
+			"class-with-variable",
+			"test-div-name",
+		];
 
-		assert.strictEqual(
+		assert.deepStrictEqual(
 			actual,
 			expected,
 			"Class list did not match expected"

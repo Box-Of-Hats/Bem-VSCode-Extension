@@ -21,5 +21,5 @@ export class PhpLanguageProvider implements LanguageProvider {
 export class RazorLanguageProvider implements LanguageProvider {
 	languages = ["razor", "cshtml", "aspnetcorerazor"];
 	classAttributeLabel = "class";
-	htmlIgnorePatterns = [/[-_\w\d@\()\.]*@[-_\w\d@\()\.]*/g, /@\(.*\)/g];
+	htmlIgnorePatterns = [/[\w\d-_]*@((\(.*\))|([\w\d-_]+))[\s]?/g];
 }
