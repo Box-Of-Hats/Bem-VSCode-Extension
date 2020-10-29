@@ -1,5 +1,10 @@
 # Change Log
 
+## 1.3.0 - Improved Razor support + SHOUTING_SNAKE
+
+-   Add support for SHOUTING_SNAKE_CASE
+-   Improved razor support
+
 ## 1.2.1 - Multiple class name cases
 
 -   Bug fix for multiple class name cases

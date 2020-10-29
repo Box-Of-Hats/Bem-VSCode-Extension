@@ -33,6 +33,7 @@ export class BemCommandProvider {
 					ClassNameCases.Snake.valueOf(),
 					ClassNameCases.Pascal.valueOf(),
 					ClassNameCases.Camel.valueOf(),
+					ClassNameCases.ShoutingSnake.valueOf(),
 				],
 				{
 					placeHolder: "Choose a class case",

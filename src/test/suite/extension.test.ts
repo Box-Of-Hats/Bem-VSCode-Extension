@@ -106,6 +106,29 @@ suite("BemHelper Tests", () => {
 		assert.deepEqual(actual.sort(), expected.sort());
 	});
 
+	test("Class extraction - Shouting Snake Case", () => {
+		const html = /*html*/ `
+			<body>
+				<div class="NAV_BODY">
+					<div class="NAV_BODY__LIST_ITEM">One</div>
+					<div class="NAV_BODY__LIST_ITEM">Two</div>
+					<div class="NAV_BODY__LIST_ITEM--WIDE">Three</div>
+					<div class="NAV_BODY__LIST_ITEM--WIDE">Four</div>
+				</div>
+				<div class="NAV_FOOTER"></div>
+			</body>
+		`;
+		const expected = [
+			"NAV_BODY",
+			"NAV_BODY__LIST_ITEM",
+			"NAV_BODY__LIST_ITEM--WIDE",
+			"NAV_FOOTER",
+		];
+		let bemHelper = new BemHelper();
+		let actual = bemHelper.getClasses(html);
+		assert.deepEqual(actual, expected);
+	});
+
 	test("Class extraction - Basic", () => {
 		const html = /*html*/ `
 			<body>
@@ -351,6 +374,24 @@ suite("BemHelper Tests", () => {
 		assert.equal(actual, expected);
 	});
 
+	test("Get Preceding Class - Block - Shouting Snake Case", () => {
+		let html = `
+			<div class="BODY_CLASS">
+				<div class="BODY_CLASS__CHILD_ELEMENT"></div>
+				<div class="BODY_CLASS__ANOTHER_CHILD"></div>
+				<div
+					class="BODY_CLASS__CHILD_ELEMENT BODY_CLASS__CHILD_ELEMENT--MODIFIED"
+				></div>
+			</div>
+			<div class="BODY_CLASS_2">
+				<div class="BODY_CLASS_2__CHILD_1"></div>
+		`;
+		let bemHelper = new BemHelper();
+		let actual = bemHelper.getPrecedingClassName(html, false);
+		let expected = "BODY_CLASS_2";
+		assert.equal(actual, expected);
+	});
+
 	test("Get Preceding Class - Element - Kebab Case", () => {
 		let html = `
 			<div class="body-class">
@@ -413,6 +454,24 @@ suite("BemHelper Tests", () => {
 		let bemHelper = new BemHelper();
 		let actual = bemHelper.getPrecedingClassName(html, true);
 		let expected = "body_class_2__child_1";
+		assert.equal(actual, expected);
+	});
+
+	test("Get Preceding Class - Element - Shouting Snake Case", () => {
+		let html = `
+			<div class="BODY_CLASS">
+				<div class="BODY_CLASS__CHILD_ELEMENT"></div>
+				<div class="BODY_CLASS__ANOTHER_CHILD"></div>
+				<div
+					class="BODY_CLASS__CHILD_ELEMENT BODY_CLASS__CHILD_ELEMENT--MODIFIED"
+				></div>
+			</div>
+			<div class="BODY_CLASS_2">
+				<div class="BODY_CLASS_2__CHILD_1"></div>
+		`;
+		let bemHelper = new BemHelper();
+		let actual = bemHelper.getPrecedingClassName(html, true);
+		let expected = "BODY_CLASS_2__CHILD_1";
 		assert.equal(actual, expected);
 	});
 
@@ -695,6 +754,17 @@ suite("BemHelper Tests", () => {
 		assert.equal(actual, expected);
 	});
 
+	test("Convert Class - Block Element Modifier - Kebab => Shouting Snake", () => {
+		let inputClassName = "test-class__test-child--modi-fier";
+		let expected = "TEST_CLASS__TEST_CHILD--MODI_FIER";
+		let bemHelper = new BemHelper();
+		let actual = bemHelper.convertClass(
+			inputClassName,
+			ClassNameCases.ShoutingSnake
+		);
+		assert.equal(actual, expected);
+	});
+
 	test("Convert Class - Block Element Modifier - Snake => Kebab", () => {
 		let inputClassName = "test_class__test_child--modi_fier";
 		let expected = "test-class__test-child--modi-fier";
@@ -713,7 +783,6 @@ suite("BemHelper Tests", () => {
 		let bemHelper = new BemHelper();
 		let actual = bemHelper.convertClass(
 			inputClassName,
-
 			ClassNameCases.Pascal
 		);
 		assert.equal(actual, expected);
@@ -725,8 +794,18 @@ suite("BemHelper Tests", () => {
 		let bemHelper = new BemHelper();
 		let actual = bemHelper.convertClass(
 			inputClassName,
-
 			ClassNameCases.Camel
+		);
+		assert.equal(actual, expected);
+	});
+
+	test("Convert Class - Block Element Modifier - Snake => Shouting Snake", () => {
+		let inputClassName = "test_class__test_child--modi_fier";
+		let expected = "TEST_CLASS__TEST_CHILD--MODI_FIER";
+		let bemHelper = new BemHelper();
+		let actual = bemHelper.convertClass(
+			inputClassName,
+			ClassNameCases.ShoutingSnake
 		);
 		assert.equal(actual, expected);
 	});
@@ -761,8 +840,18 @@ suite("BemHelper Tests", () => {
 		let bemHelper = new BemHelper();
 		let actual = bemHelper.convertClass(
 			inputClassName,
-
 			ClassNameCases.Pascal
+		);
+		assert.equal(actual, expected);
+	});
+
+	test("Convert Class - Block Element Modifier - Camel => Shouting Snake", () => {
+		let inputClassName = "testClass__testChild--modiFier";
+		let expected = "TEST_CLASS__TEST_CHILD--MODI_FIER";
+		let bemHelper = new BemHelper();
+		let actual = bemHelper.convertClass(
+			inputClassName,
+			ClassNameCases.ShoutingSnake
 		);
 		assert.equal(actual, expected);
 	});
@@ -802,34 +891,88 @@ suite("BemHelper Tests", () => {
 		assert.equal(actual, expected);
 	});
 
+	test("Convert Class - Block Element Modifier - Pascal => Shouting Snake", () => {
+		let inputClassName = "TestClass__TestChild--ModiFier";
+		let expected = "TEST_CLASS__TEST_CHILD--MODI_FIER";
+		let bemHelper = new BemHelper();
+		let actual = bemHelper.convertClass(
+			inputClassName,
+			ClassNameCases.ShoutingSnake
+		);
+		assert.equal(actual, expected);
+	});
+
 	test("Is Case Match - All Cases", () => {
-		let pascalClass = "PascalClass__Elem--ModIfier";
-		let camelClass = "camelClass__elem--modIfier";
-		let kebabClass = "kebab-class__elem--mod-ifier";
-		let snakeClass = "snake_class__elem__mod_ifier";
+		const pascalClass = "PascalClass__Elem--ModIfier";
+		const camelClass = "camelClass__elem--modIfier";
+		const kebabClass = "kebab-class__elem--mod-ifier";
+		const snakeClass = "snake_class__elem__mod_ifier";
+		const shoutingSnakeClass = "SNAKE_CLASS__ELEM__MOD_IFIER";
+
 		let bemHelper = new BemHelper();
 
-		let snakeCase = ClassNameCases.Snake;
-		let kebabCase = ClassNameCases.Kebab;
-		let pascalCase = ClassNameCases.Pascal;
-		let camelCase = ClassNameCases.Camel;
+		const snakeCase = ClassNameCases.Snake;
+		const kebabCase = ClassNameCases.Kebab;
+		const pascalCase = ClassNameCases.Pascal;
+		const camelCase = ClassNameCases.Camel;
+		const shoutingSnakeCase = ClassNameCases.ShoutingSnake;
 
 		assert.equal(bemHelper.isCaseMatch(camelClass, camelCase), true);
 		assert.equal(bemHelper.isCaseMatch(camelClass, kebabCase), false);
 		assert.equal(bemHelper.isCaseMatch(camelClass, pascalCase), false);
 		assert.equal(bemHelper.isCaseMatch(camelClass, snakeCase), false);
+		assert.equal(
+			bemHelper.isCaseMatch(camelCase, shoutingSnakeCase),
+			false
+		);
+
 		assert.equal(bemHelper.isCaseMatch(kebabClass, camelCase), false);
 		assert.equal(bemHelper.isCaseMatch(kebabClass, kebabCase), true);
 		assert.equal(bemHelper.isCaseMatch(kebabClass, pascalCase), false);
 		assert.equal(bemHelper.isCaseMatch(kebabClass, snakeCase), false);
+		assert.equal(
+			bemHelper.isCaseMatch(kebabCase, shoutingSnakeCase),
+			false
+		);
+
 		assert.equal(bemHelper.isCaseMatch(pascalClass, camelCase), false);
 		assert.equal(bemHelper.isCaseMatch(pascalClass, kebabCase), false);
 		assert.equal(bemHelper.isCaseMatch(pascalClass, pascalCase), true);
 		assert.equal(bemHelper.isCaseMatch(pascalClass, snakeCase), false);
+		assert.equal(
+			bemHelper.isCaseMatch(pascalCase, shoutingSnakeCase),
+			false
+		);
+
 		assert.equal(bemHelper.isCaseMatch(snakeClass, camelCase), false);
 		assert.equal(bemHelper.isCaseMatch(snakeClass, kebabCase), false);
 		assert.equal(bemHelper.isCaseMatch(snakeClass, pascalCase), false);
 		assert.equal(bemHelper.isCaseMatch(snakeClass, snakeCase), true);
+		assert.equal(
+			bemHelper.isCaseMatch(snakeClass, shoutingSnakeCase),
+			false
+		);
+
+		assert.equal(
+			bemHelper.isCaseMatch(shoutingSnakeClass, shoutingSnakeCase),
+			true
+		);
+		assert.equal(
+			bemHelper.isCaseMatch(shoutingSnakeClass, camelCase),
+			false
+		);
+		assert.equal(
+			bemHelper.isCaseMatch(shoutingSnakeClass, kebabCase),
+			false
+		);
+		assert.equal(
+			bemHelper.isCaseMatch(shoutingSnakeClass, pascalCase),
+			false
+		);
+		assert.equal(
+			bemHelper.isCaseMatch(shoutingSnakeClass, snakeCase),
+			false
+		);
 	});
 
 	test("Is Case Match - Custom Separater", () => {

@@ -6,6 +6,7 @@ export enum ClassNameCases {
 	Snake = "snake",
 	Camel = "camel",
 	Pascal = "pascal",
+	ShoutingSnake = "shoutingSnake",
 }
 
 export interface BemClass {
@@ -25,6 +26,7 @@ export class BemHelper {
 	// Case regex
 	private readonly kebabCaseRegex = /^[a-z0-9-]+$/;
 	private readonly snakeCaseRegex = /^[a-z0-9_]+$/;
+	private readonly shoutingSnakeCaseRegex = /^[A-Z0-9_]+$/;
 	private readonly pascalCaseRegex = /^[A-Z]{1}[a-zA-Z0-9]+$/;
 	private readonly camelCaseRegex = /^[a-z]{1}[a-zA-Z0-9]+$/;
 	/** Class names that should be ignored for parent classes */
@@ -239,6 +241,8 @@ export class BemHelper {
 			return ClassNameCases.Pascal;
 		} else if (className.match(this.camelCaseRegex)) {
 			return ClassNameCases.Camel;
+		} else if (className.match(this.shoutingSnakeCaseRegex)) {
+			return ClassNameCases.ShoutingSnake;
 		}
 		return ClassNameCases.Any;
 	}
@@ -273,8 +277,8 @@ export class BemHelper {
 		let outputClass = word;
 
 		let classNameWords = word
-			.replace("-", " ")
-			.replace("_", " ")
+			.replace(/-/g, " ")
+			.replace(/_/g, " ")
 			.split("")
 			.map((char) => {
 				if (char.match(/^[A-Z]$/)) {
@@ -314,6 +318,9 @@ export class BemHelper {
 						return `${word[0].toUpperCase()}${word.slice(1)}`;
 					})
 					.join("");
+				break;
+			case ClassNameCases.ShoutingSnake:
+				outputClass = classNameWords.join("_").toUpperCase();
 				break;
 			default:
 				break;
@@ -402,6 +409,9 @@ export class BemHelper {
 			case ClassNameCases.Camel:
 				allowedClassNamePattern = this.camelCaseRegex;
 				break;
+			case ClassNameCases.ShoutingSnake:
+				allowedClassNamePattern = this.shoutingSnakeCaseRegex;
+				break;
 			default:
 				return false;
 		}
@@ -456,5 +466,6 @@ export class BemHelper {
 		this.snakeCaseRegex.lastIndex = 0;
 		this.pascalCaseRegex.lastIndex = 0;
 		this.camelCaseRegex.lastIndex = 0;
+		this.shoutingSnakeCaseRegex.lastIndex = 0;
 	}
 }

@@ -66,13 +66,14 @@
 					},
 					"bemHelper.classNameCase": {
 						"type": "string",
-						"pattern": "^((any|kebab|snake|camel|pascal){1},?)+$",
+						"pattern": "^((any|kebab|snake|camel|pascal|shoutingSnake){1},?)+$",
 						"examples": [
 							"any",
 							"kebab",
 							"snake",
 							"camel",
-							"pascal"
+							"pascal",
+							"shoutingSnake"
 						],
 						"default": "kebab",
 						"description": "The allowed case styling of class names. Multiple allowed cases can be used with comma-separated values. E.g: 'kebab,pascal' ",
