@@ -1,4 +1,8 @@
-import { LanguageProvider } from "./LanguageProvider";
+export interface LanguageProvider {
+	languages: string[];
+	classAttributeLabel: string;
+	htmlIgnorePatterns: RegExp[];
+}
 
 export class TypescriptReactLanguageProvider implements LanguageProvider {
 	languages = ["typescriptreact"];

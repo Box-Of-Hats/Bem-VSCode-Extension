@@ -1,4 +1,4 @@
-import { LanguageProvider } from "./languageProviders/LanguageProvider";
+import { LanguageProvider } from "languageProviders/LanguageProviders";
 
 export enum ClassNameCases {
 	Any = "any",
