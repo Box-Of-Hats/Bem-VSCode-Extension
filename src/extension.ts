@@ -10,6 +10,7 @@ import {
 	PhpLanguageProvider,
 	RazorLanguageProvider,
 } from "./languageProviders/LanguageProviders";
+import { defaultClassNameProviders } from "./classNameProviders";
 
 // Initialise global BemHelper object
 const bemHelper = new BemHelper();
@@ -18,6 +19,10 @@ bemHelper.registerLanguageProvider(new TypescriptReactLanguageProvider());
 bemHelper.registerLanguageProvider(new JavascriptReactLanguageProvider());
 bemHelper.registerLanguageProvider(new RazorLanguageProvider());
 bemHelper.registerLanguageProvider(new PhpLanguageProvider());
+
+defaultClassNameProviders.forEach((provider) => {
+	bemHelper.registerClassNameProvider(provider);
+});
 
 const codeActionsProvider = new BemHelperCodeActionsProvider(bemHelper);
 

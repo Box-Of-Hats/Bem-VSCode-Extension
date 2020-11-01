@@ -1,9 +1,9 @@
 import * as assert from "assert";
-import { BemHelper, ClassNameCases } from "../../BemHelper";
-
+import { ClassNameCases } from "../../BemHelper";
 import { BemDiagnosticProvider } from "../../BemDiagnosticProvider";
+import { areSameDiagnostics, newBemHelper } from "./utils";
+
 import * as vscode from "vscode";
-import { areSameDiagnostics } from "./utils";
 
 suite("BemHelper Tests", () => {
 	test("Class extraction - Camel Case", () => {
@@ -24,7 +24,7 @@ suite("BemHelper Tests", () => {
 			"navBody__listItem--wide",
 			"navFooter",
 		];
-		let bemHelper = new BemHelper();
+		let bemHelper = newBemHelper();
 		let actual = bemHelper.getClasses(html);
 		assert.deepEqual(actual, expected);
 	});
@@ -47,7 +47,7 @@ suite("BemHelper Tests", () => {
 			"NavBody__ListItem--Wide",
 			"NavFooter",
 		];
-		let bemHelper = new BemHelper();
+		let bemHelper = newBemHelper();
 		let actual = bemHelper.getClasses(html);
 		assert.deepEqual(actual, expected);
 	});
@@ -70,7 +70,7 @@ suite("BemHelper Tests", () => {
 			"nav_body__list_item--wide",
 			"nav_footer",
 		];
-		let bemHelper = new BemHelper();
+		let bemHelper = newBemHelper();
 		let actual = bemHelper.getClasses(html);
 		assert.deepEqual(actual, expected);
 	});
@@ -101,7 +101,7 @@ suite("BemHelper Tests", () => {
 			"nav-two__item--two",
 			"menu__item",
 		];
-		let bemHelper = new BemHelper();
+		let bemHelper = newBemHelper();
 		let actual = bemHelper.getClasses(html);
 		assert.deepEqual(actual.sort(), expected.sort());
 	});
@@ -124,7 +124,7 @@ suite("BemHelper Tests", () => {
 			"NAV_BODY__LIST_ITEM--WIDE",
 			"NAV_FOOTER",
 		];
-		let bemHelper = new BemHelper();
+		let bemHelper = newBemHelper();
 		let actual = bemHelper.getClasses(html);
 		assert.deepEqual(actual, expected);
 	});
@@ -142,7 +142,7 @@ suite("BemHelper Tests", () => {
 			</body>
 		`;
 		const expected = ["nav", "nav__item", "nav-two"];
-		let bemHelper = new BemHelper();
+		let bemHelper = newBemHelper();
 		let actual = bemHelper.getClasses(html);
 		assert.deepEqual(actual.sort(), expected.sort());
 	});
@@ -160,7 +160,7 @@ suite("BemHelper Tests", () => {
 			</body>
 		`;
 		const expected = ["nav", "nav__item", "nav-two"];
-		let bemHelper = new BemHelper();
+		let bemHelper = newBemHelper();
 		let actual = bemHelper.getClasses(html);
 		assert.deepEqual(actual.sort(), expected.sort());
 	});
@@ -178,7 +178,7 @@ suite("BemHelper Tests", () => {
 			</body>
 		`;
 		const expected = ["nav", "nav__item", "nav-two"];
-		let bemHelper = new BemHelper();
+		let bemHelper = newBemHelper();
 		let actual = bemHelper.getClasses(html);
 		assert.deepEqual(actual.sort(), expected.sort());
 	});
@@ -186,7 +186,7 @@ suite("BemHelper Tests", () => {
 	test("Class extraction - No Classes", () => {
 		const html = /*html*/ ``;
 		const expected: string[] = [];
-		let bemHelper = new BemHelper();
+		let bemHelper = newBemHelper();
 		let actual = bemHelper.getClasses(html);
 		assert.deepEqual(actual.sort(), expected.sort());
 	});
@@ -194,7 +194,7 @@ suite("BemHelper Tests", () => {
 	test("Class extraction - React", () => {
 		const html = /*html*/ `<div className="parent-class"><div className="parent-class__child"></div></div>`;
 		const expected = ["parent-class", "parent-class__child"];
-		let bemHelper = new BemHelper();
+		let bemHelper = newBemHelper();
 		let actual = bemHelper.getClasses(html, "javascriptreact");
 		assert.deepEqual(actual.sort(), expected.sort());
 	});
@@ -222,7 +222,7 @@ suite("BemHelper Tests", () => {
 			"nav~~item++mod1",
 			"nav-two++modified",
 		];
-		let bemHelper = new BemHelper();
+		let bemHelper = newBemHelper();
 		bemHelper.elementSeparator = "~~";
 		bemHelper.modifierSeparator = "++";
 		let actual = bemHelper.getClasses(html);
@@ -252,7 +252,7 @@ suite("BemHelper Tests", () => {
 			"nav__item_mod1",
 			"nav-two_modified",
 		];
-		let bemHelper = new BemHelper();
+		let bemHelper = newBemHelper();
 		bemHelper.elementSeparator = "__";
 		bemHelper.modifierSeparator = "_";
 		let actual = bemHelper.getClasses(html);
@@ -260,14 +260,14 @@ suite("BemHelper Tests", () => {
 	});
 
 	test("CSS Generation - Single Flat", () => {
-		let bemHelper = new BemHelper();
+		let bemHelper = newBemHelper();
 		let actual = bemHelper.generateStyleSheet(["test-class"], true);
 		let expected = ".test-class{}";
 		assert.equal(actual, expected);
 	});
 
 	test("CSS Generation - Multiple Flat", () => {
-		let bemHelper = new BemHelper();
+		let bemHelper = newBemHelper();
 		let actual = bemHelper.generateStyleSheet(
 			["test-class", "test-class-two", "class-test"],
 			true
@@ -277,14 +277,14 @@ suite("BemHelper Tests", () => {
 	});
 
 	test("CSS Generation - Single Nested", () => {
-		let bemHelper = new BemHelper();
+		let bemHelper = newBemHelper();
 		let actual = bemHelper.generateStyleSheet(["test-class"], false);
 		let expected = ".test-class{}";
 		assert.equal(actual, expected);
 	});
 
 	test("CSS Generation - Multiple Nested", () => {
-		let bemHelper = new BemHelper();
+		let bemHelper = newBemHelper();
 		let actual = bemHelper.generateStyleSheet(
 			[
 				"test-class",
@@ -300,7 +300,7 @@ suite("BemHelper Tests", () => {
 	});
 
 	test("CSS Generation - Modified Blocks Nested", () => {
-		let bemHelper = new BemHelper();
+		let bemHelper = newBemHelper();
 		let actual = bemHelper.generateStyleSheet(
 			["test-block", "test-block--mod", "test-block--mod-2"],
 			false
@@ -319,7 +319,7 @@ suite("BemHelper Tests", () => {
 			<div class="body-class-2">
 				<div class="body-class-2__child-1"></div>
 		`;
-		let bemHelper = new BemHelper();
+		let bemHelper = newBemHelper();
 		let actual = bemHelper.getPrecedingClassName(html, false);
 		let expected = "body-class-2";
 		assert.equal(actual, expected);
@@ -335,7 +335,7 @@ suite("BemHelper Tests", () => {
 			<div class="bodyClass-2">
 				<div class="bodyClass-2__child-1"></div>
 		`;
-		let bemHelper = new BemHelper();
+		let bemHelper = newBemHelper();
 		let actual = bemHelper.getPrecedingClassName(html, false);
 		let expected = "bodyClass-2";
 		assert.equal(actual, expected);
@@ -350,7 +350,7 @@ suite("BemHelper Tests", () => {
 			<div class="BodyClass-2">
 					<div class="BodyClass-2__Child-1"></div>
 			`;
-		let bemHelper = new BemHelper();
+		let bemHelper = newBemHelper();
 		let actual = bemHelper.getPrecedingClassName(html, false);
 		let expected = "BodyClass-2";
 		assert.equal(actual, expected);
@@ -368,7 +368,7 @@ suite("BemHelper Tests", () => {
 			<div class="body_class_2">
 				<div class="body_class_2__child_1"></div>
 		`;
-		let bemHelper = new BemHelper();
+		let bemHelper = newBemHelper();
 		let actual = bemHelper.getPrecedingClassName(html, false);
 		let expected = "body_class_2";
 		assert.equal(actual, expected);
@@ -386,7 +386,7 @@ suite("BemHelper Tests", () => {
 			<div class="BODY_CLASS_2">
 				<div class="BODY_CLASS_2__CHILD_1"></div>
 		`;
-		let bemHelper = new BemHelper();
+		let bemHelper = newBemHelper();
 		let actual = bemHelper.getPrecedingClassName(html, false);
 		let expected = "BODY_CLASS_2";
 		assert.equal(actual, expected);
@@ -402,7 +402,7 @@ suite("BemHelper Tests", () => {
 			<div class="body-class-2">
 				<div class="body-class-2__child-1"></div>
 		`;
-		let bemHelper = new BemHelper();
+		let bemHelper = newBemHelper();
 		let actual = bemHelper.getPrecedingClassName(html, true);
 		let expected = "body-class-2__child-1";
 		assert.equal(actual, expected);
@@ -418,7 +418,7 @@ suite("BemHelper Tests", () => {
 			<div class="bodyClass-2">
 				<div class="bodyClass-2__child-1"></div>
 		`;
-		let bemHelper = new BemHelper();
+		let bemHelper = newBemHelper();
 		let actual = bemHelper.getPrecedingClassName(html, true);
 		let expected = "bodyClass-2__child-1";
 		assert.equal(actual, expected);
@@ -433,7 +433,7 @@ suite("BemHelper Tests", () => {
 			<div class="BodyClass-2">
 					<div class="BodyClass-2__Child-1"></div>
 			`;
-		let bemHelper = new BemHelper();
+		let bemHelper = newBemHelper();
 		let actual = bemHelper.getPrecedingClassName(html, true);
 		let expected = "BodyClass-2__Child-1";
 		assert.equal(actual, expected);
@@ -451,7 +451,7 @@ suite("BemHelper Tests", () => {
 			<div class="body_class_2">
 				<div class="body_class_2__child_1"></div>
 		`;
-		let bemHelper = new BemHelper();
+		let bemHelper = newBemHelper();
 		let actual = bemHelper.getPrecedingClassName(html, true);
 		let expected = "body_class_2__child_1";
 		assert.equal(actual, expected);
@@ -469,7 +469,7 @@ suite("BemHelper Tests", () => {
 			<div class="BODY_CLASS_2">
 				<div class="BODY_CLASS_2__CHILD_1"></div>
 		`;
-		let bemHelper = new BemHelper();
+		let bemHelper = newBemHelper();
 		let actual = bemHelper.getPrecedingClassName(html, true);
 		let expected = "BODY_CLASS_2__CHILD_1";
 		assert.equal(actual, expected);
@@ -484,7 +484,7 @@ suite("BemHelper Tests", () => {
 				</div>
 			</div>
 		`;
-		const bemHelper = new BemHelper();
+		const bemHelper = newBemHelper();
 		let expected = "block";
 		let actual = bemHelper.getPrecedingClassName(html, false);
 		assert.equal(actual, expected);
@@ -499,7 +499,7 @@ suite("BemHelper Tests", () => {
 				</div>
 			</div>
 		`;
-		const bemHelper = new BemHelper();
+		const bemHelper = newBemHelper();
 		let expected = "block__element";
 		let actual = bemHelper.getPrecedingClassName(html, true);
 		assert.equal(actual, expected);
@@ -514,7 +514,7 @@ suite("BemHelper Tests", () => {
 				</div>
 			</div>
 		`;
-		const bemHelper = new BemHelper();
+		const bemHelper = newBemHelper();
 		let expected = "block__element";
 		let actual = bemHelper.getPrecedingClassName(html, true);
 		assert.equal(actual, expected);
@@ -529,7 +529,7 @@ suite("BemHelper Tests", () => {
 				</div>
 			</div>
 		`;
-		const bemHelper = new BemHelper();
+		const bemHelper = newBemHelper();
 		let expected = "block";
 		let actual = bemHelper.getPrecedingClassName(html, false);
 		assert.equal(actual, expected);
@@ -539,7 +539,7 @@ suite("BemHelper Tests", () => {
 		let html = `
 			<div class="nav-bar" :class="{'is-hidden':isHidden}"></div>
 		`;
-		let bemHelper = new BemHelper();
+		let bemHelper = newBemHelper();
 		let actual = bemHelper.getPrecedingClassName(html, false);
 		let expected = "nav-bar";
 		assert.equal(actual, expected);
@@ -549,7 +549,7 @@ suite("BemHelper Tests", () => {
 		let html = `
 			<div :class="{'is-hidden':isHidden}" class="nav-bar" ></div>
 		`;
-		let bemHelper = new BemHelper();
+		let bemHelper = newBemHelper();
 		let actual = bemHelper.getPrecedingClassName(html, false);
 		let expected = "nav-bar";
 		assert.equal(actual, expected);
@@ -560,7 +560,7 @@ suite("BemHelper Tests", () => {
 			<div class="parent-class">
 				<i class="material-icons">account_balance</i>
 		`;
-		const bemHelper = new BemHelper();
+		const bemHelper = newBemHelper();
 		bemHelper.ignoredParentClasses = ["material-icons"];
 		const actual = bemHelper.getPrecedingClassName(html, false);
 		const expected = "parent-class";
@@ -571,7 +571,7 @@ suite("BemHelper Tests", () => {
 		const html = /*html*/ `
 			<div class="parent-class__child-1">
 		`;
-		const bemHelper = new BemHelper();
+		const bemHelper = newBemHelper();
 
 		const expected = "parent-class";
 
@@ -588,7 +588,7 @@ suite("BemHelper Tests", () => {
 		const html = /*html*/ `
 			<div class="parent-class">
 		`;
-		const bemHelper = new BemHelper();
+		const bemHelper = newBemHelper();
 
 		const expected = "parent-class";
 
@@ -606,7 +606,7 @@ suite("BemHelper Tests", () => {
 		<div class="parent-class-1">
 			<div class="parent-class-2__child-1">
 		`;
-		const bemHelper = new BemHelper();
+		const bemHelper = newBemHelper();
 
 		const expected = "parent-class-2";
 
@@ -621,7 +621,7 @@ suite("BemHelper Tests", () => {
 
 	test("Get preceding class - explicit-only - Ignore implicit block ", () => {
 		const html = /*html*/ `<div class="parent-class__child-1">`;
-		const bemHelper = new BemHelper();
+		const bemHelper = newBemHelper();
 
 		const expected = undefined;
 
@@ -639,7 +639,7 @@ suite("BemHelper Tests", () => {
 			<div class="parent-class">
 				<div class="parent-class__child-1">
 		`;
-		const bemHelper = new BemHelper();
+		const bemHelper = newBemHelper();
 
 		const expected = "parent-class";
 
@@ -657,7 +657,7 @@ suite("BemHelper Tests", () => {
 			<div class="parent-class-explicit">
 				<div class="parent-class-implicit__child-1">
 		`;
-		const bemHelper = new BemHelper();
+		const bemHelper = newBemHelper();
 
 		const expected = "parent-class-explicit";
 
@@ -674,7 +674,7 @@ suite("BemHelper Tests", () => {
 		const html = /*html*/ `
 			<div class="parent-class__child-1">
 		`;
-		const bemHelper = new BemHelper();
+		const bemHelper = newBemHelper();
 
 		const expected = "parent-class";
 
@@ -691,7 +691,7 @@ suite("BemHelper Tests", () => {
 		const html = /*html*/ `
 			<div class="parent-class">
 		`;
-		const bemHelper = new BemHelper();
+		const bemHelper = newBemHelper();
 
 		const expected = "parent-class";
 
@@ -709,7 +709,7 @@ suite("BemHelper Tests", () => {
 		<div class="parent-class">
 			<div class="ignored-class"></div>
 		`;
-		const bemHelper = new BemHelper();
+		const bemHelper = newBemHelper();
 		bemHelper.ignoredParentClasses = ["ignored-class"];
 		const actual = bemHelper.getPrecedingClassName(
 			html,
@@ -724,7 +724,7 @@ suite("BemHelper Tests", () => {
 	test("Convert Class - Block Element Modifier - Kebab => Snake", () => {
 		let inputClassName = "test-class__test-child--modi-fier";
 		let expected = "test_class__test_child--modi_fier";
-		let bemHelper = new BemHelper();
+		let bemHelper = newBemHelper();
 		let actual = bemHelper.convertClass(
 			inputClassName,
 			ClassNameCases.Snake
@@ -735,7 +735,7 @@ suite("BemHelper Tests", () => {
 	test("Convert Class - Block Element Modifier - Kebab => Pascal", () => {
 		let inputClassName = "test-class__test-child--modi-fier";
 		let expected = "TestClass__TestChild--ModiFier";
-		let bemHelper = new BemHelper();
+		let bemHelper = newBemHelper();
 		let actual = bemHelper.convertClass(
 			inputClassName,
 			ClassNameCases.Pascal
@@ -746,7 +746,7 @@ suite("BemHelper Tests", () => {
 	test("Convert Class - Block Element Modifier - Kebab => Camel", () => {
 		let inputClassName = "test-class__test-child--modi-fier";
 		let expected = "testClass__testChild--modiFier";
-		let bemHelper = new BemHelper();
+		let bemHelper = newBemHelper();
 		let actual = bemHelper.convertClass(
 			inputClassName,
 			ClassNameCases.Camel
@@ -757,7 +757,7 @@ suite("BemHelper Tests", () => {
 	test("Convert Class - Block Element Modifier - Kebab => Shouting Snake", () => {
 		let inputClassName = "test-class__test-child--modi-fier";
 		let expected = "TEST_CLASS__TEST_CHILD--MODI_FIER";
-		let bemHelper = new BemHelper();
+		let bemHelper = newBemHelper();
 		let actual = bemHelper.convertClass(
 			inputClassName,
 			ClassNameCases.ShoutingSnake
@@ -768,7 +768,7 @@ suite("BemHelper Tests", () => {
 	test("Convert Class - Block Element Modifier - Snake => Kebab", () => {
 		let inputClassName = "test_class__test_child--modi_fier";
 		let expected = "test-class__test-child--modi-fier";
-		let bemHelper = new BemHelper();
+		let bemHelper = newBemHelper();
 		let actual = bemHelper.convertClass(
 			inputClassName,
 
@@ -780,7 +780,7 @@ suite("BemHelper Tests", () => {
 	test("Convert Class - Block Element Modifier - Snake => Pascal", () => {
 		let inputClassName = "test_class__test_child--modi_fier";
 		let expected = "TestClass__TestChild--ModiFier";
-		let bemHelper = new BemHelper();
+		let bemHelper = newBemHelper();
 		let actual = bemHelper.convertClass(
 			inputClassName,
 			ClassNameCases.Pascal
@@ -791,7 +791,7 @@ suite("BemHelper Tests", () => {
 	test("Convert Class - Block Element Modifier - Snake => Camel", () => {
 		let inputClassName = "test_class__test_child--modi_fier";
 		let expected = "testClass__testChild--modiFier";
-		let bemHelper = new BemHelper();
+		let bemHelper = newBemHelper();
 		let actual = bemHelper.convertClass(
 			inputClassName,
 			ClassNameCases.Camel
@@ -802,7 +802,7 @@ suite("BemHelper Tests", () => {
 	test("Convert Class - Block Element Modifier - Snake => Shouting Snake", () => {
 		let inputClassName = "test_class__test_child--modi_fier";
 		let expected = "TEST_CLASS__TEST_CHILD--MODI_FIER";
-		let bemHelper = new BemHelper();
+		let bemHelper = newBemHelper();
 		let actual = bemHelper.convertClass(
 			inputClassName,
 			ClassNameCases.ShoutingSnake
@@ -813,7 +813,7 @@ suite("BemHelper Tests", () => {
 	test("Convert Class - Block Element Modifier - Camel => Kebab", () => {
 		let inputClassName = "testClass__testChild--modiFier";
 		let expected = "test-class__test-child--modi-fier";
-		let bemHelper = new BemHelper();
+		let bemHelper = newBemHelper();
 		let actual = bemHelper.convertClass(
 			inputClassName,
 
@@ -825,7 +825,7 @@ suite("BemHelper Tests", () => {
 	test("Convert Class - Block Element Modifier - Camel => Snake", () => {
 		let inputClassName = "testClass__testChild--modiFier";
 		let expected = "test_class__test_child--modi_fier";
-		let bemHelper = new BemHelper();
+		let bemHelper = newBemHelper();
 		let actual = bemHelper.convertClass(
 			inputClassName,
 
@@ -837,7 +837,7 @@ suite("BemHelper Tests", () => {
 	test("Convert Class - Block Element Modifier - Camel => Pascal", () => {
 		let inputClassName = "testClass__testChild--modiFier";
 		let expected = "TestClass__TestChild--ModiFier";
-		let bemHelper = new BemHelper();
+		let bemHelper = newBemHelper();
 		let actual = bemHelper.convertClass(
 			inputClassName,
 			ClassNameCases.Pascal
@@ -848,7 +848,7 @@ suite("BemHelper Tests", () => {
 	test("Convert Class - Block Element Modifier - Camel => Shouting Snake", () => {
 		let inputClassName = "testClass__testChild--modiFier";
 		let expected = "TEST_CLASS__TEST_CHILD--MODI_FIER";
-		let bemHelper = new BemHelper();
+		let bemHelper = newBemHelper();
 		let actual = bemHelper.convertClass(
 			inputClassName,
 			ClassNameCases.ShoutingSnake
@@ -859,7 +859,7 @@ suite("BemHelper Tests", () => {
 	test("Convert Class - Block Element Modifier - Pascal => Kebab", () => {
 		let inputClassName = "TestClass__TestChild--ModiFier";
 		let expected = "test-class__test-child--modi-fier";
-		let bemHelper = new BemHelper();
+		let bemHelper = newBemHelper();
 		let actual = bemHelper.convertClass(
 			inputClassName,
 
@@ -871,7 +871,7 @@ suite("BemHelper Tests", () => {
 	test("Convert Class - Block Element Modifier - Pascal => Camel", () => {
 		let inputClassName = "TestClass__TestChild--ModiFier";
 		let expected = "testClass__testChild--modiFier";
-		let bemHelper = new BemHelper();
+		let bemHelper = newBemHelper();
 		let actual = bemHelper.convertClass(
 			inputClassName,
 
@@ -883,7 +883,7 @@ suite("BemHelper Tests", () => {
 	test("Convert Class - Block Element Modifier - Pascal => Snake", () => {
 		let inputClassName = "TestClass__testChild--modiFier";
 		let expected = "test_class__test_child--modi_fier";
-		let bemHelper = new BemHelper();
+		let bemHelper = newBemHelper();
 		let actual = bemHelper.convertClass(
 			inputClassName,
 			ClassNameCases.Snake
@@ -894,7 +894,7 @@ suite("BemHelper Tests", () => {
 	test("Convert Class - Block Element Modifier - Pascal => Shouting Snake", () => {
 		let inputClassName = "TestClass__TestChild--ModiFier";
 		let expected = "TEST_CLASS__TEST_CHILD--MODI_FIER";
-		let bemHelper = new BemHelper();
+		let bemHelper = newBemHelper();
 		let actual = bemHelper.convertClass(
 			inputClassName,
 			ClassNameCases.ShoutingSnake
@@ -909,7 +909,7 @@ suite("BemHelper Tests", () => {
 		const snakeClass = "snake_class__elem__mod_ifier";
 		const shoutingSnakeClass = "SNAKE_CLASS__ELEM__MOD_IFIER";
 
-		let bemHelper = new BemHelper();
+		let bemHelper = newBemHelper();
 
 		const snakeCase = ClassNameCases.Snake;
 		const kebabCase = ClassNameCases.Kebab;
@@ -976,7 +976,7 @@ suite("BemHelper Tests", () => {
 	});
 
 	test("Is Case Match - Custom Separater", () => {
-		let bemHelper = new BemHelper();
+		let bemHelper = newBemHelper();
 		bemHelper.modifierSeparator = "_";
 		bemHelper.elementSeparator = "__";
 
@@ -991,7 +991,7 @@ suite("BemHelper Tests", () => {
 
 suite("Integration tests", () => {
 	test("Get Diagnostics - Classname cases - Single html class in wrong casing", async () => {
-		const bemHelper = new BemHelper();
+		const bemHelper = newBemHelper();
 		const diagnosticProvider = new BemDiagnosticProvider(bemHelper);
 
 		const html = /*html*/ `<body><div class="navBody"></div></body>`;
@@ -1025,7 +1025,7 @@ suite("Integration tests", () => {
 	});
 
 	test("Get Diagnostics - Classname cases - Single html class in correct casing", async () => {
-		const bemHelper = new BemHelper();
+		const bemHelper = newBemHelper();
 		const diagnosticProvider = new BemDiagnosticProvider(bemHelper);
 
 		const html = /*html*/ `<body><div class="nav-body"></div></body>`;
@@ -1050,7 +1050,7 @@ suite("Integration tests", () => {
 	});
 
 	test("Get Diagnostics - Classname cases - Multiple allowed cases", async () => {
-		const bemHelper = new BemHelper();
+		const bemHelper = newBemHelper();
 		const diagnosticProvider = new BemDiagnosticProvider(bemHelper);
 
 		const html = /*html*/ `

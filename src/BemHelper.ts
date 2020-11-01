@@ -1,3 +1,4 @@
+import { ClassNameProvider } from "classNameProviders";
 import { LanguageProvider } from "languageProviders/LanguageProviders";
 
 export enum ClassNameCases {
@@ -23,16 +24,11 @@ export class BemHelper {
 	readonly classPropertyValueRegex = /[\s]+class(Name)?=["'`]{1}([^"'`])+["'`]{1}/g;
 	/** Regex to extract actual class names as groups from a class property string */
 	readonly classNameRegex = /["'`]{1}(.*)["'`]{1}/;
-	// Case regex
-	private readonly kebabCaseRegex = /^[a-z0-9-]+$/;
-	private readonly snakeCaseRegex = /^[a-z0-9_]+$/;
-	private readonly shoutingSnakeCaseRegex = /^[A-Z0-9_]+$/;
-	private readonly pascalCaseRegex = /^[A-Z]{1}[a-zA-Z0-9]+$/;
-	private readonly camelCaseRegex = /^[a-z]{1}[a-zA-Z0-9]+$/;
 	/** Class names that should be ignored for parent classes */
 	public ignoredParentClasses: string[] = [];
 
 	private languageProviders: LanguageProvider[] = [];
+	private classNameProviders: ClassNameProvider[] = [];
 
 	/**
 	 * Generate a stylesheet from a list of BEM class names
@@ -233,17 +229,12 @@ export class BemHelper {
 			.replace(this.elementSeparator, "")
 			.replace(this.modifierSeparator, "");
 
-		if (className.match(this.kebabCaseRegex)) {
-			return ClassNameCases.Kebab;
-		} else if (className.match(this.snakeCaseRegex)) {
-			return ClassNameCases.Snake;
-		} else if (className.match(this.pascalCaseRegex)) {
-			return ClassNameCases.Pascal;
-		} else if (className.match(this.camelCaseRegex)) {
-			return ClassNameCases.Camel;
-		} else if (className.match(this.shoutingSnakeCaseRegex)) {
-			return ClassNameCases.ShoutingSnake;
-		}
+		this.classNameProviders.forEach((provider) => {
+			if (className.match(provider.nameMatchRegex)) {
+				return provider.name;
+			}
+		});
+
 		return ClassNameCases.Any;
 	}
 
@@ -295,35 +286,12 @@ export class BemHelper {
 				return word;
 			});
 
-		switch (toClassType) {
-			case ClassNameCases.Kebab:
-				outputClass = classNameWords.join("-");
-				break;
-			case ClassNameCases.Snake:
-				outputClass = classNameWords.join("_");
-				break;
-			case ClassNameCases.Camel:
-				outputClass = classNameWords
-					.map((word, index) => {
-						if (index === 0) {
-							return word;
-						}
-						return `${word[0].toUpperCase()}${word.slice(1)}`;
-					})
-					.join("");
-				break;
-			case ClassNameCases.Pascal:
-				outputClass = classNameWords
-					.map((word) => {
-						return `${word[0].toUpperCase()}${word.slice(1)}`;
-					})
-					.join("");
-				break;
-			case ClassNameCases.ShoutingSnake:
-				outputClass = classNameWords.join("_").toUpperCase();
-				break;
-			default:
-				break;
+		const nameJoinFunction = this.classNameProviders.find(
+			(provider) => provider.name === toClassType
+		)?.convertWordsToClassName;
+
+		if (nameJoinFunction) {
+			outputClass = nameJoinFunction(classNameWords);
 		}
 		return outputClass;
 	}
@@ -393,33 +361,15 @@ export class BemHelper {
 				.replace(this.elementSeparator, "");
 		}
 
-		let allowedClassNamePattern;
-		switch (caseType) {
-			case ClassNameCases.Any:
-				return true;
-			case ClassNameCases.Kebab:
-				allowedClassNamePattern = this.kebabCaseRegex;
-				break;
-			case ClassNameCases.Snake:
-				allowedClassNamePattern = this.snakeCaseRegex;
-				break;
-			case ClassNameCases.Pascal:
-				allowedClassNamePattern = this.pascalCaseRegex;
-				break;
-			case ClassNameCases.Camel:
-				allowedClassNamePattern = this.camelCaseRegex;
-				break;
-			case ClassNameCases.ShoutingSnake:
-				allowedClassNamePattern = this.shoutingSnakeCaseRegex;
-				break;
-			default:
-				return false;
-		}
-		let matches = className.match(allowedClassNamePattern);
-		if (!matches) {
+		const classNameProvider = this.classNameProviders.find(
+			(provider) => provider.name === caseType
+		);
+
+		if (!classNameProvider) {
 			return false;
 		}
-		return true;
+
+		return className.match(classNameProvider.nameMatchRegex) ? true : false;
 	}
 
 	/**
@@ -459,13 +409,20 @@ export class BemHelper {
 		this.languageProviders.push(provider);
 	}
 
+	/**
+	 * Register a new class name provider in BemHelper
+	 *
+	 * @param provider The class name provider to be registered
+	 */
+	public registerClassNameProvider(provider: ClassNameProvider): void {
+		this.classNameProviders.push(provider);
+	}
+
 	private resetRegex(): void {
 		this.classPropertyValueRegex.lastIndex = 0;
+		this.classNameProviders.forEach((provider) => {
+			provider.nameMatchRegex.lastIndex = 0;
+		});
 		this.classNameRegex.lastIndex = 0;
-		this.kebabCaseRegex.lastIndex = 0;
-		this.snakeCaseRegex.lastIndex = 0;
-		this.pascalCaseRegex.lastIndex = 0;
-		this.camelCaseRegex.lastIndex = 0;
-		this.shoutingSnakeCaseRegex.lastIndex = 0;
 	}
 }
