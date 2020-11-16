@@ -1,5 +1,5 @@
 import { ClassNameProvider } from "classNameProviders";
-import { LanguageProvider } from "languageProviders/LanguageProviders";
+import { LanguageProvider } from "languageProviders";
 
 export enum ClassNameCases {
 	Any = "any",

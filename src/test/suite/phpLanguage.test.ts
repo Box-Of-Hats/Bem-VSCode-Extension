@@ -1,6 +1,6 @@
 import * as assert from "assert";
 import { BemHelper } from "../../BemHelper";
-import { PhpLanguageProvider } from "../../languageProviders/LanguageProviders";
+import { PhpLanguageProvider } from "../../languageProviders";
 
 suite("PHP language provider tests", () => {
 	test("ignore list", () => {

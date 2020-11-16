@@ -27,3 +27,10 @@ export class RazorLanguageProvider implements LanguageProvider {
 	classAttributeLabel = "class";
 	htmlIgnorePatterns = [/[\w\d-_]*@((\(.*\))|([\w\d-_]+))[\s]?/g];
 }
+
+export const defaultLanguageProviders = [
+	new RazorLanguageProvider(),
+	new JavascriptReactLanguageProvider(),
+	new PhpLanguageProvider(),
+	new TypescriptReactLanguageProvider(),
+];

@@ -1,6 +1,6 @@
 import * as assert from "assert";
 import { BemHelper } from "../../BemHelper";
-import { RazorLanguageProvider } from "../../languageProviders/LanguageProviders";
+import { RazorLanguageProvider } from "../../languageProviders";
 
 suite("Razor Language Provider", () => {
 	test("ignore list", () => {
