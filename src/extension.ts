@@ -4,18 +4,19 @@ import { BemHelperCodeActionsProvider } from "./BemCodeActionsProvider";
 import { BemDiagnosticProvider } from "./BemDiagnosticProvider";
 import { getConfigValue } from "./ez-vscode";
 import { BemHelper } from "./BemHelper";
-import {
-	TypescriptReactLanguageProvider,
-	JavascriptReactLanguageProvider,
-	PhpLanguageProvider,
-} from "./languageProviders/LanguageProviders";
+import { defaultLanguageProviders } from "./languageProviders";
+import { defaultClassNameProviders } from "./classNameProviders";
 
 // Initialise global BemHelper object
 const bemHelper = new BemHelper();
-// Register language providers
-bemHelper.registerLanguageProvider(new TypescriptReactLanguageProvider());
-bemHelper.registerLanguageProvider(new JavascriptReactLanguageProvider());
-bemHelper.registerLanguageProvider(new PhpLanguageProvider());
+
+defaultLanguageProviders.forEach((provider) =>
+	bemHelper.registerLanguageProvider(provider)
+);
+
+defaultClassNameProviders.forEach((provider) =>
+	bemHelper.registerClassNameProvider(provider)
+);
 
 const codeActionsProvider = new BemHelperCodeActionsProvider(bemHelper);
 

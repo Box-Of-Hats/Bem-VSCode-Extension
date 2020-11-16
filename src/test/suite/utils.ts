@@ -1,4 +1,6 @@
 import assert = require("assert");
+import { BemHelper } from "../../BemHelper";
+import { defaultClassNameProviders } from "../../classNameProviders";
 import * as vscode from "vscode";
 
 /**
@@ -35,4 +37,13 @@ export const areSameDiagnostics = (
 			`Message not equal at index ${index}`
 		);
 	});
+};
+
+/** Helper function to initialise a new BemHelper object */
+export const newBemHelper = () => {
+	const bemHelper = new BemHelper();
+	defaultClassNameProviders.forEach((provider) => {
+		bemHelper.registerClassNameProvider(provider);
+	});
+	return bemHelper;
 };
