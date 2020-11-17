@@ -1086,8 +1086,48 @@ suite("Integration tests", () => {
 		bemHelper.elementSeparator = "__";
 
 		const html = /*html*/ `
+			<div className="block block--location--top  block--color--green">
+				<div className="block__element--color--red"><div>
+				<div className="block__element--color--blue"><div>
+				<div className="block__element--orange"><div>
+			</div>
+		`;
+
+		const document = await vscode.workspace.openTextDocument({
+			language: "html",
+			content: html,
+		});
+
+		const activeEditor = await vscode.window.showTextDocument(document);
+
+		const actual = [
+			...diagnosticProvider.getClassNameCaseProblems(
+				html,
+				activeEditor!,
+				[ClassNameCases.Kebab],
+				100
+			),
+			...diagnosticProvider.getClassNameDepthProblems(
+				html,
+				activeEditor!
+			),
+		];
+
+		const expected: vscode.Diagnostic[] = [];
+
+		areSameDiagnostics(actual, expected);
+	});
+
+	test("Get Diagnostics - Same modifier/element separators - No errors", async () => {
+		const bemHelper = newBemHelper();
+		const diagnosticProvider = new BemDiagnosticProvider(bemHelper);
+		bemHelper.modifierSeparator = "--";
+		bemHelper.elementSeparator = "--";
+
+		const html = /*html*/ `
 			<div className="block">
-				<div className="block__element--modifier-name--modifier-value"><div>
+				<div className="block--element--modifier"><div>
+				<div className="block--element--modifier-name--modifier-value"><div>
 			</div>
 		`;
 
