@@ -1,5 +1,15 @@
 # Change Log
 
+## 1.4.0
+
+-   Add support for key-value modifiers in class names
+    -   [Key-value modifiers explained](https://en.bem.info/methodology/quick-start/#key-value)
+
+```html
+<!-- No longer raises any diagnostic issues -->
+<div class="block__element--color--green"></div>
+```
+
 ## 1.3.0 - Improved Razor support + SHOUTING_SNAKE
 
 -   Add support for SHOUTING_SNAKE_CASE
