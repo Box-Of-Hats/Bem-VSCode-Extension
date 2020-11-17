@@ -4,6 +4,12 @@ export interface LanguageProvider {
 	htmlIgnorePatterns: RegExp[];
 }
 
+export class HtmlLanguageProvider implements LanguageProvider {
+	languages = ["html"];
+	classAttributeLabel = "class";
+	htmlIgnorePatterns = [];
+}
+
 export class TypescriptReactLanguageProvider implements LanguageProvider {
 	languages = ["typescriptreact"];
 	classAttributeLabel = "className";
@@ -29,6 +35,7 @@ export class RazorLanguageProvider implements LanguageProvider {
 }
 
 export const defaultLanguageProviders = [
+	new HtmlLanguageProvider(),
 	new RazorLanguageProvider(),
 	new JavascriptReactLanguageProvider(),
 	new PhpLanguageProvider(),
