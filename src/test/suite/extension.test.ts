@@ -1052,6 +1052,8 @@ suite("Integration tests", () => {
 	test("Get Diagnostics - Classname cases - Multiple allowed cases", async () => {
 		const bemHelper = newBemHelper();
 		const diagnosticProvider = new BemDiagnosticProvider(bemHelper);
+		bemHelper.elementSeparator = "__";
+		bemHelper.modifierSeparator = "--";
 
 		const html = /*html*/ `
 		<div className="TopNav">
@@ -1072,6 +1074,42 @@ suite("Integration tests", () => {
 			[ClassNameCases.Kebab, ClassNameCases.Pascal],
 			100
 		);
+
+		const expected: vscode.Diagnostic[] = [];
+		areSameDiagnostics(actual, expected);
+	});
+
+	test("Get Diagnostics - Key value modifier class - No errors", async () => {
+		const bemHelper = newBemHelper();
+		const diagnosticProvider = new BemDiagnosticProvider(bemHelper);
+		bemHelper.modifierSeparator = "--";
+		bemHelper.elementSeparator = "__";
+
+		const html = /*html*/ `
+			<div className="block">
+				<div className="block__element--modifier-name--modifier-value"><div>
+			</div>
+		`;
+
+		const document = await vscode.workspace.openTextDocument({
+			language: "html",
+			content: html,
+		});
+
+		const activeEditor = await vscode.window.showTextDocument(document);
+
+		const actual = [
+			...diagnosticProvider.getClassNameCaseProblems(
+				html,
+				activeEditor!,
+				[ClassNameCases.Kebab],
+				100
+			),
+			...diagnosticProvider.getClassNameDepthProblems(
+				html,
+				activeEditor!
+			),
+		];
 
 		const expected: vscode.Diagnostic[] = [];
 

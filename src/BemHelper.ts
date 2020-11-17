@@ -341,7 +341,7 @@ export class BemHelper {
 
 		return !(
 			className.split(this.elementSeparator).length > 2 ||
-			className.split(this.modifierSeparator).length > 2
+			className.split(this.modifierSeparator).length > 3
 		);
 	}
 
