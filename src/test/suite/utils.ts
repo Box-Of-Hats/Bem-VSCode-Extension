@@ -13,11 +13,6 @@ export const areSameDiagnostics = (
 	actual: vscode.Diagnostic[],
 	expected: vscode.Diagnostic[]
 ) => {
-	assert.strictEqual(
-		actual.length,
-		expected.length,
-		`Expected (${expected.length}) and actual (${actual.length}) had different number of diagnostics.`
-	);
 	expected.forEach((expectedDiagnostic, index) => {
 		const actualDiagnostic = actual[index];
 
@@ -37,6 +32,11 @@ export const areSameDiagnostics = (
 			`Message not equal at index ${index}`
 		);
 	});
+	assert.strictEqual(
+		actual.length,
+		expected.length,
+		`Expected (${expected.length}) and actual (${actual.length}) had different number of diagnostics.`
+	);
 };
 
 /** Helper function to initialise a new BemHelper object */

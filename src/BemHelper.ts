@@ -341,7 +341,7 @@ export class BemHelper {
 
 		return !(
 			className.split(this.elementSeparator).length > 2 ||
-			className.split(this.modifierSeparator).length > 2
+			className.split(this.modifierSeparator).length > 3
 		);
 	}
 
@@ -418,6 +418,9 @@ export class BemHelper {
 		this.classNameProviders.push(provider);
 	}
 
+	/**
+	 * Reset regex for all class name providers
+	 */
 	private resetRegex(): void {
 		this.classPropertyValueRegex.lastIndex = 0;
 		this.classNameProviders.forEach((provider) => {
