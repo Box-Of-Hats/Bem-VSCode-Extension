@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.4.1
+
+-   Add support for the [twig](https://twig.symfony.com/) language
+
 ## 1.4.0
 
 -   Add support for key-value modifiers in class names
