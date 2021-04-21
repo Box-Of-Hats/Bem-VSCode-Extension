@@ -21,6 +21,7 @@
 		"onLanguage:typescript",
 		"onLanguage:php",
 		"onLanguage:razor",
+		"onLanguage:twig",
 		"workspaceContains:*.jsx",
 		"workspaceContains:*.html",
 		"onCommand:extension.bemHelper.insertElement",

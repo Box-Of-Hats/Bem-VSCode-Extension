@@ -34,10 +34,20 @@ export class RazorLanguageProvider implements LanguageProvider {
 	htmlIgnorePatterns = [/[\w\d-_]*@((\(.*\))|([\w\d-_]+))[\s]?/g];
 }
 
+export class TwigLanguageProvider implements LanguageProvider {
+	languages = ["twig"];
+	classAttributeLabel = "class";
+	htmlIgnorePatterns = [
+		/\{\{[\d\w_\-=\s'"`|]*\}\}/g,
+		/\{\%[\d\w_\-=\s'"`|]*\%\}/g,
+	];
+}
+
 export const defaultLanguageProviders = [
 	new HtmlLanguageProvider(),
 	new RazorLanguageProvider(),
 	new JavascriptReactLanguageProvider(),
 	new PhpLanguageProvider(),
 	new TypescriptReactLanguageProvider(),
+	new TwigLanguageProvider(),
 ];
