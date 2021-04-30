@@ -184,7 +184,7 @@ export class BemCommandProvider {
 			);
 			return;
 		}
-		let classProperty = this.bemHelper.getClassPropertyWord(
+		const classProperty = this.bemHelper.getClassPropertyWord(
 			textEditor.document.languageId
 		);
 

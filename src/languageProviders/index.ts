@@ -1,6 +1,9 @@
 export interface LanguageProvider {
+	/**A list of languages that the provider should be used for	 */
 	languages: string[];
+	/**The class attribute name to use when inserting new elements	 */
 	classAttributeLabel: string;
+	/** Regex matching patterns of strings that should be ignored within classes */
 	htmlIgnorePatterns: RegExp[];
 }
 
@@ -43,6 +46,12 @@ export class TwigLanguageProvider implements LanguageProvider {
 	];
 }
 
+export class SvelteLanguageProvider implements LanguageProvider {
+	languages = ["svelte"];
+	classAttributeLabel = "class";
+	htmlIgnorePatterns = [/\{[^{}]*\}/g];
+}
+
 export const defaultLanguageProviders = [
 	new HtmlLanguageProvider(),
 	new RazorLanguageProvider(),
@@ -50,4 +59,5 @@ export const defaultLanguageProviders = [
 	new PhpLanguageProvider(),
 	new TypescriptReactLanguageProvider(),
 	new TwigLanguageProvider(),
+	new SvelteLanguageProvider(),
 ];
