@@ -95,51 +95,68 @@ export class BemCommandProvider {
 	}
 
 	private async generateStyleSheetForText(html: string) {
-		const stylesheetLanguage = await vscode.window
-			.showQuickPick(["scss", "less", "css"], {
+		const stylesheetLanguage = await vscode.window.showQuickPick(
+			["scss", "less", "css"],
+			{
 				placeHolder: "Choose a type of stylesheet to generate",
-			});
+			}
+		);
 
 		if (!stylesheetLanguage) {
-			vscode.window.showErrorMessage(
-				"No stylesheet type selected."
-			);
+			vscode.window.showErrorMessage("No stylesheet type selected.");
 			return;
 		}
+
+		const outputType = await vscode.window.showQuickPick(
+			["To new editor", "To clipboard"],
+			{
+				placeHolder:
+					"Where do you want to generate the new stylesheet?",
+			}
+		);
+
+		if (!outputType) {
+			vscode.window.showErrorMessage("No output type selected.");
+			return;
+		}
+
 		const infoMessage = vscode.window.setStatusBarMessage(
 			`Generating ${stylesheetLanguage}...`
 		);
 
 		let classes = this.bemHelper.getClasses(html);
-		if (!classes) {
+		if (!classes || classes.length === 0) {
+			vscode.window.showErrorMessage(
+				"No classes found to generate stylesheet from."
+			);
 			return;
 		}
 
-		if (
-			getConfigValue("bemHelper.sortGeneratedStylesheets", false)
-		) {
+		if (getConfigValue("bemHelper.sortGeneratedStylesheets", false)) {
 			classes = classes.sort();
 		}
-		let stylesheet = this.bemHelper.generateStyleSheet(
+
+		const stylesheet = this.bemHelper.generateStyleSheet(
 			classes,
 			stylesheetLanguage === "css"
 		);
 
-		const document = await vscode.workspace
-			.openTextDocument({
-				language: stylesheetLanguage,
-				content: stylesheet,
-			});
+		if (outputType === "To clipboard") {
+			vscode.env.clipboard.writeText(stylesheet);
+			return;
+		}
+
+		const document = await vscode.workspace.openTextDocument({
+			language: stylesheetLanguage,
+			content: stylesheet,
+		});
 
 		vscode.window
 			.showTextDocument(document)
 			.then(() => {
-				vscode.commands.executeCommand(
-					"editor.action.formatDocument"
-				);
+				vscode.commands.executeCommand("editor.action.formatDocument");
 			})
 			.then(infoMessage.dispose());
-
 	}
 
 	public insertElementAtCursor(isModified: boolean): void {
@@ -194,12 +211,15 @@ export class BemCommandProvider {
 		);
 
 		if (isModified) {
-			snippet = `<\${3:div} ${classProperty}="${className}${this.bemHelper.elementSeparator
-				}$1 ${className}${this.bemHelper.elementSeparator}$1${this.bemHelper.modifierSeparator
-				}$2">$4</$3>${insertNewline ? "\n" : ""}$0`;
+			snippet = `<\${3:div} ${classProperty}="${className}${
+				this.bemHelper.elementSeparator
+			}$1 ${className}${this.bemHelper.elementSeparator}$1${
+				this.bemHelper.modifierSeparator
+			}$2">$4</$3>${insertNewline ? "\n" : ""}$0`;
 		} else {
-			snippet = `<\${2:div} ${classProperty}="${className}${this.bemHelper.elementSeparator
-				}$1">$3</$2>${insertNewline ? "\n" : ""}$0`;
+			snippet = `<\${2:div} ${classProperty}="${className}${
+				this.bemHelper.elementSeparator
+			}$1">$3</$2>${insertNewline ? "\n" : ""}$0`;
 		}
 
 		textEditor.insertSnippet(new vscode.SnippetString(snippet));
