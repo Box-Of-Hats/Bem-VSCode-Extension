@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.4.2
+
+-   Add support for [Svelte](https://svelte.dev/) language
+-   Add option to generate CSS directly to the clipboard instead of a new editor
+    -   You will be prompted for this when generating a stylesheet
+
 ## 1.4.1
 
 -   Add support for the [twig](https://twig.symfony.com/) language
