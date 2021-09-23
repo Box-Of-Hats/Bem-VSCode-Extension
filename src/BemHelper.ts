@@ -21,7 +21,8 @@ export class BemHelper {
 	public elementSeparator = "__";
 	public modifierSeparator = "--";
 	/** Regex to extract a class property value from a block of html text */
-	readonly classPropertyValueRegex = /[\s]+class(Name)?(:[\w]*)?=["'`]{1}([^"'`])+["'`]{1}/g;
+	readonly classPropertyValueRegex =
+		/[\s]+class(Name)?(:[\w]*)?=["'`]{1}([^"'`])+["'`]{1}/g;
 	/** Regex to extract actual class names as groups from a class property string */
 	readonly classNameRegex = /["'`]{1}(.*)["'`]{1}/;
 	/** Class names that should be ignored for parent classes */
@@ -123,6 +124,7 @@ export class BemHelper {
 			.filter((lp) => !language || lp.languages.includes(language))
 			.flatMap((lp) => lp.htmlIgnorePatterns);
 
+		// Remove ignored strings from the html
 		ignoreStrings.forEach((regex) => {
 			html = html.replace(regex, " ");
 		});
@@ -140,11 +142,15 @@ export class BemHelper {
 				if (className === "") {
 					return;
 				}
-				if (classNames.indexOf(className) === -1) {
+				if (!classNames.includes(className)) {
 					classNames.push(className);
 				}
 			});
 		}
+
+		classNames = classNames.filter(
+			(cName) => !this.ignoredParentClasses.includes(cName)
+		);
 
 		return asParts
 			? classNames.flatMap((className) =>

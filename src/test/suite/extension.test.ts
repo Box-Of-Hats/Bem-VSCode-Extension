@@ -29,6 +29,32 @@ suite("BemHelper Tests", () => {
 		assert.deepEqual(actual, expected);
 	});
 
+	test("Class extraction - With ignore list", () => {
+		const html = /*html*/ `
+			<body class="container">
+				<div class="row">
+					<div class="NavBody col-12">
+						<div class="NavBody__ListItem">One</div>
+						<div class="NavBody__ListItem">Two</div>
+						<div class="NavBody__ListItem--Wide">Three</div>
+						<div class="NavBody__ListItem--Wide">Four</div>
+					</div>
+				</div>
+				<div class="NavFooter"></div>
+			</body>
+		`;
+		const expected = [
+			"NavBody",
+			"NavBody__ListItem",
+			"NavBody__ListItem--Wide",
+			"NavFooter",
+		];
+		let bemHelper = newBemHelper();
+		bemHelper.ignoredParentClasses = ["container", "col", "row", "col-12"];
+		let actual = bemHelper.getClasses(html);
+		assert.deepEqual(actual, expected);
+	});
+
 	test("Class extraction - Pascal Case", () => {
 		const html = /*html*/ `
 			<body>

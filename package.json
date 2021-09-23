@@ -47,7 +47,7 @@
 						"default": [
 							"material-icons"
 						],
-						"description": "A list of class names that should be ignored as parents (blocks) when inserting new elements",
+						"description": "A list of class names that should be ignored as parents (blocks) when inserting new elements or when generating a stylesheet.",
 						"scope": "resource"
 					},
 					"bemHelper.blockSelectionMode": {
