@@ -6,15 +6,15 @@ Get it on the [VSCode Marketplace](https://marketplace.visualstudio.com/items?it
 
 Got any feedback, issues or feature requests? Send them my way via [GitHub Issues](https://github.com/Box-Of-Hats/Bem-VSCode-Extension/issues/new).
 
--   [BEM Helper](#bem-helper)
-    -   [Language Support](#language-support)
-    -   [Commands](#commands)
-    -   [Settings](#settings)
-    -   [Generating LESS / SCSS / CSS](#generating-less--scss--css)
-    -   [Inserting Elements](#inserting-elements)
-    -   [Diagnostic Help](#diagnostic-help)
-        -   [Classes not following BEM standards](#classes-not-following-bem-standards)
-        -   [Classes not following the specified case](#classes-not-following-the-specified-case)
+- [BEM Helper](#bem-helper)
+  - [Language Support](#language-support)
+  - [Commands](#commands)
+  - [Settings](#settings)
+  - [Generating LESS / SCSS / CSS](#generating-less--scss--css)
+  - [Inserting Elements](#inserting-elements)
+  - [Diagnostic Help](#diagnostic-help)
+    - [Classes not following BEM standards](#classes-not-following-bem-standards)
+    - [Classes not following the specified case](#classes-not-following-the-specified-case)
 
 ## Language Support
 
@@ -50,7 +50,7 @@ If there are any languages that you want support added for then please open a [g
 | bemHelper.modifierSeparator        | The string to use as a separator for modifiers. By default is set to `--`. Reload window to take effect                        | any string                                      |
 | bemHelper.sortGeneratedStylesheets | Controls whether generated stylesheets should be sorted alphabetically                                                         | true, false                                     |
 | bemHelper.maxWarningsCount         | The maximum number of diagnostic warnings to show. Defaults to 100.                                                            | number                                          |
-| bemHelper.ignoreClassNames         | A list of class names that should be ignored as parents (blocks) when inserting new elements                                   | A list of strings                               |
+| bemHelper.ignoreClassNames         | A list of class names that should be ignored as parents (blocks) when inserting new elements or when generating a stylesheet.  | A list of strings                               |
 | bemHelper.blockSelectionMode       | The method to use for selecting a parent block when inserting elements                                                         | prefer-explicit, first-parent, explicit-only    |
 | bemHelper.newLineAfterInsert       | Should a newline be inserted after inserting an element?                                                                       | true, false                                     |
 

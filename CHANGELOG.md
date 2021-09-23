@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.4.3
+
+-   Respect `bemHelper.ignoreClassNames` user setting when generating stylesheets (as suggested by [#45](https://github.com/Box-Of-Hats/Bem-VSCode-Extension/issues/45))
+
 ## 1.4.2
 
 -   Add support for [Svelte](https://svelte.dev/) language
