@@ -6,6 +6,8 @@ export class BemCommandProvider {
 	bemHelper: BemHelper;
 	constructor(bemHelper: BemHelper) {
 		this.bemHelper = bemHelper;
+
+		this.loadIgnoredClasses();
 	}
 
 	public setBemSeparators(elementSeparator: string, modifierSeparator) {
@@ -124,6 +126,8 @@ export class BemCommandProvider {
 			`Generating ${stylesheetLanguage}...`
 		);
 
+		// Get classes from text
+		this.loadIgnoredClasses();
 		let classes = this.bemHelper.getClasses(html);
 		if (!classes || classes.length === 0) {
 			vscode.window.showErrorMessage(
@@ -159,6 +163,16 @@ export class BemCommandProvider {
 			.then(infoMessage.dispose());
 	}
 
+	/**
+	 * Load the ignored class names from user configuration
+	 */
+	private loadIgnoredClasses = () => {
+		this.bemHelper.ignoredParentClasses = getConfigValue(
+			"bemHelper.ignoreClassNames",
+			["material-icons"]
+		);
+	};
+
 	public insertElementAtCursor(isModified: boolean): void {
 		let textEditor = vscode.window.activeTextEditor;
 		const blockSelectionMode = getConfigValue(
@@ -166,10 +180,7 @@ export class BemCommandProvider {
 			"prefer-explicit"
 		);
 
-		this.bemHelper.ignoredParentClasses = getConfigValue(
-			"bemHelper.ignoreClassNames",
-			["material-icons"]
-		);
+		this.loadIgnoredClasses();
 
 		if (textEditor === undefined) {
 			vscode.window.showErrorMessage(

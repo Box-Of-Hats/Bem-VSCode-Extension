@@ -55,6 +55,45 @@ suite("BemHelper Tests", () => {
 		assert.deepStrictEqual(actual, expected);
 	});
 
+	test("Class extraction - With larger ignore list", () => {
+		const html = /*html*/ `
+		<div class="inner-wrapper video-w-image">
+			<div class="medium-width-wrapper">
+				<div class="topper-bg--image-wrapper">
+					<img class="topper-bg--image" src="" />
+				</div>
+				<div class="row">
+					<div class="col-12">
+						<div class="topper-bg">
+							<p class="topper-bg--sub-headline"></p>
+							<h2 class="topper-bg--headline"></h2>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		`;
+		const expected = [
+			"inner-wrapper",
+			"medium-width-wrapper",
+			"topper-bg--image-wrapper",
+			"topper-bg--image",
+			"row",
+			"topper-bg",
+			"topper-bg--sub-headline",
+			"topper-bg--headline",
+		];
+		let bemHelper = newBemHelper();
+		bemHelper.ignoredParentClasses = [
+			"video-w-image",
+			"col-12",
+			"aside",
+			"material-icons",
+		];
+		let actual = bemHelper.getClasses(html);
+		assert.deepStrictEqual(actual, expected);
+	});
+
 	test("Class extraction - Pascal Case", () => {
 		const html = /*html*/ `
 			<body>
