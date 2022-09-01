@@ -28,7 +28,8 @@
 		"onCommand:extension.bemHelper.insertElement",
 		"onCommand:extension.bemHelper.insertModifiedElement",
 		"onCommand:extension.bemHelper.generateStyleSheet",
-		"onCommand:extension.bemHelper.convertSelectionToCase"
+		"onCommand:extension.bemHelper.convertSelectionToCase",
+		"onCommand:extension.bemHelper.insertClassName"
 	],
 	"main": "./dist/extension.js",
 	"contributes": {
@@ -140,6 +141,10 @@
 			{
 				"command": "extension.bemHelper.convertSelectionToCase",
 				"title": "BEM Helper: Convert Selection to Case"
+			},
+			{
+				"command": "extension.bemHelper.insertClassName",
+				"title": "BEM Helper: Insert Class Name"
 			}
 		],
 		"keybindings": [
@@ -156,6 +161,11 @@
 			{
 				"command": "extension.bemHelper.generateStyleSheet",
 				"key": "alt+b s",
+				"when": "editorTextFocus"
+			}
+			,{
+				"command": "extension.bemHelper.insertClassName",
+				"key": "alt+b c",
 				"when": "editorTextFocus"
 			}
 		]

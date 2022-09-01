@@ -122,6 +122,12 @@ function registerCommands(context: vscode.ExtensionContext) {
 			() => {
 				bemCommandProvider.convertSelectionToCase();
 			}
+		),
+		vscode.commands.registerCommand(
+			"extension.bemHelper.insertClassName",
+			() => {
+				bemCommandProvider.insertClassName();
+			}
 		)
 	);
 }
