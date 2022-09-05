@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.4.5
+
+-   ## Add new command `BEM Helper: Insert Class Name`
+    -   Thanks to [@ILScc](https://github.com/ILScc)!
+    -   Closes [#53](https://github.com/Box-Of-Hats/Bem-VSCode-Extension/issues/53)
+
 ## 1.4.4
 
 -   Fix bug where ignored class list was not loading prior to generating a stylesheet
