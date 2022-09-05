@@ -235,4 +235,36 @@ export class BemCommandProvider {
 
 		textEditor.insertSnippet(new vscode.SnippetString(snippet));
 	}
+	public insertClassName() {
+		const textEditor = vscode.window.activeTextEditor;
+
+		if (textEditor === undefined) {
+			vscode.window.showErrorMessage(
+				'No active text editor. Please open a file'
+			);
+			return;
+		}
+		const blockSelectionMode = getConfigValue(
+			'bemHelper.blockSelectionMode',
+			'prefer-explicit'
+		);
+
+		const className =
+			this.bemHelper.getPrecedingClassName(
+				textEditor.document.getText(
+					new vscode.Range(
+						0,
+						0,
+						textEditor.selection.active.line,
+						textEditor.selection.active.character
+					)
+				),
+				false,
+				blockSelectionMode,
+				false,
+				textEditor.document.languageId
+			) ?? '';
+
+		textEditor.insertSnippet(new vscode.SnippetString(className));
+	}
 }
