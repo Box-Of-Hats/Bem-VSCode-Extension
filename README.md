@@ -35,6 +35,7 @@ If there are any languages that you want support added for then please open a [g
 | ----------------------------------------- | --------------------------------------------------------------------------------------- | --------- |
 | bemHelper.insertBemElement                | Insert a new BEM element under the current block                                        | alt + b e |
 | bemHelper.insertBemModifier               | Insert a new BEM modified element, copying the classname prefix of the previous element | alt + b m |
+| bemHelper.insertClassName                 | Insert a BEM classname in the current cursor position                                   | alt + b c |
 | bemHelper.generateStyleSheet              | Generate a new file containing CSS/LESS/SCSS for the current HTML file                  | alt + b s |
 | bemHelper.generateStyleSheetFromSelection | Generate a new file containing CSS/LESS/SCSS for the current selected elements          |           |
 | bemHelper.convertSelectionToCase          | Convert the current text selection to a given case                                      |           |
