@@ -116,6 +116,23 @@
 						"default": 100,
 						"description": "The maximum number of diagnostic warnings to show",
 						"scope": "window"
+					},
+					"bemHelper.languages": {
+						"type": "array",
+						"default": [
+							"html",
+							"aspnetcorerazor",
+							"javascriptreact",
+							"typescriptreact",
+							"javascript",
+							"typescript",
+							"php",
+							"razor",
+							"twig",
+							"svelte"
+						],
+						"description": "Languages that shoule be checked for BEM issues",
+						"scope": "window"
 					}
 				}
 			}

@@ -190,6 +190,14 @@ export class BemDiagnosticProvider {
 			return;
 		}
 
+		// Don't check for issues if language is not enabled
+		const languages = getConfigValue<string[]>("bemHelper.languages", []);
+		if (!languages.includes(activeEditor.document.languageId)) {
+			collection.clear();
+            this.errors = [];
+			return;
+		}
+
 		let maxWarningCount = getConfigValue("bemHelper.maxWarningsCount", 100);
 
 		const docText = document.getText();
@@ -204,9 +212,7 @@ export class BemDiagnosticProvider {
 
 		//Verify class name cases
 
-		const classNameCaseSetting:
-			| string
-			| undefined = vscode.workspace
+		const classNameCaseSetting: string | undefined = vscode.workspace
 			.getConfiguration()
 			.get("bemHelper.classNameCase");
 

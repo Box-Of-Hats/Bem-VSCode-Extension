@@ -54,6 +54,7 @@ If there are any languages that you want support added for then please open a [g
 | bemHelper.ignoreClassNames         | A list of class names that should be ignored as parents (blocks) when inserting new elements or when generating a stylesheet.  | A list of strings                               |
 | bemHelper.blockSelectionMode       | The method to use for selecting a parent block when inserting elements                                                         | prefer-explicit, first-parent, explicit-only    |
 | bemHelper.newLineAfterInsert       | Should a newline be inserted after inserting an element?                                                                       | true, false                                     |
+| bemHelper.languages                | The list of languages for which the diagnostics should be enabled                                                              | string[]                                        |
 
 ## Generating LESS / SCSS / CSS
 
