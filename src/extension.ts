@@ -6,80 +6,88 @@ import { getConfigValue } from "./ez-vscode";
 import { BemHelper } from "./BemHelper";
 import { defaultLanguageProviders } from "./languageProviders";
 import { defaultClassNameProviders } from "./classNameProviders";
+import { debounce } from "./debounce";
 
 // Initialise global BemHelper object
 const bemHelper = new BemHelper();
 
 defaultLanguageProviders.forEach((provider) =>
-	bemHelper.registerLanguageProvider(provider)
+    bemHelper.registerLanguageProvider(provider)
 );
 
 defaultClassNameProviders.forEach((provider) =>
-	bemHelper.registerClassNameProvider(provider)
+    bemHelper.registerClassNameProvider(provider)
 );
 
 const codeActionsProvider = new BemHelperCodeActionsProvider(bemHelper);
 
 export function activate(context: vscode.ExtensionContext) {
-	registerCommands(context);
-	registerDiagnostics(context);
-	registerCodeActions(context);
+    registerCommands(context);
+    registerDiagnostics(context);
+    registerCodeActions(context);
 }
 
 export function deactivate() {}
 
 function registerDiagnostics(context: vscode.ExtensionContext) {
-	const bemDiagnosticProvider = new BemDiagnosticProvider(bemHelper);
-	const collection = vscode.languages.createDiagnosticCollection(
-		bemDiagnosticProvider.diagnosticCollectionName
-	);
-	if (vscode.window.activeTextEditor) {
-		bemDiagnosticProvider.updateDiagnostics(
-			vscode.window.activeTextEditor.document,
-			collection
-		);
-		// Update code actions provider so that quick fixes can be generated
-		BemHelperCodeActionsProvider.diagnostics = bemDiagnosticProvider.errors;
-	}
-	context.subscriptions.push(
-		vscode.workspace.onDidSaveTextDocument((e) => {
-			bemDiagnosticProvider.updateDiagnostics(e, collection);
-			// Update code actions provider so that quick fixes can be generated
-			BemHelperCodeActionsProvider.diagnostics =
-				bemDiagnosticProvider.errors;
-		}),
+    const bemDiagnosticProvider = new BemDiagnosticProvider(bemHelper);
+    const collection = vscode.languages.createDiagnosticCollection(
+        bemDiagnosticProvider.diagnosticCollectionName
+    );
+    if (vscode.window.activeTextEditor) {
+        bemDiagnosticProvider.updateDiagnostics(
+            vscode.window.activeTextEditor.document,
+            collection
+        );
+        // Update code actions provider so that quick fixes can be generated
+        BemHelperCodeActionsProvider.diagnostics = bemDiagnosticProvider.errors;
+    }
+    context.subscriptions.push(
+        vscode.workspace.onDidSaveTextDocument((e) => {
+            bemDiagnosticProvider.updateDiagnostics(e, collection);
+            // Update code actions provider so that quick fixes can be generated
+            BemHelperCodeActionsProvider.diagnostics =
+                bemDiagnosticProvider.errors;
+        }),
 
-		vscode.workspace.onDidOpenTextDocument((e) => {
-			bemDiagnosticProvider.updateDiagnostics(e, collection);
-			// Update code actions provider so that quick fixes can be generated
-			BemHelperCodeActionsProvider.diagnostics =
-				bemDiagnosticProvider.errors;
-		}),
-		vscode.window.onDidChangeActiveTextEditor((e) => {
-			if (e) {
-				bemDiagnosticProvider.updateDiagnostics(e.document, collection);
-			}
-			// Update code actions provider so that quick fixes can be generated
-			BemHelperCodeActionsProvider.diagnostics =
-				bemDiagnosticProvider.errors;
-		})
-	);
-	if (getConfigValue("bemHelper.responsiveLinting", false)) {
-		// Update on character press if specified in settings
-		context.subscriptions.push(
-			vscode.workspace.onDidChangeTextDocument((e) => {
-				if (e) {
-					bemDiagnosticProvider.updateDiagnostics(
-						e.document,
-						collection
-					);
-					// Update code actions provider so that quick fixes can be generated
-					BemHelperCodeActionsProvider.diagnostics =
-						bemDiagnosticProvider.errors;
-				}
-			})
-		);
-	}
+        vscode.workspace.onDidOpenTextDocument((e) => {
+            bemDiagnosticProvider.updateDiagnostics(e, collection);
+            // Update code actions provider so that quick fixes can be generated
+            BemHelperCodeActionsProvider.diagnostics =
+                bemDiagnosticProvider.errors;
+        }),
+        vscode.window.onDidChangeActiveTextEditor((e) => {
+            if (e) {
+                bemDiagnosticProvider.updateDiagnostics(e.document, collection);
+            }
+            // Update code actions provider so that quick fixes can be generated
+            BemHelperCodeActionsProvider.diagnostics =
+                bemDiagnosticProvider.errors;
+        })
+    );
+
+    if (getConfigValue("bemHelper.responsiveLinting", false)) {
+        // Update on character press if specified in settings
+        const debouncedUpdateDiagnostics = debounce(
+            (ev: vscode.TextDocumentChangeEvent) => {
+                bemDiagnosticProvider.updateDiagnostics(
+                    ev.document,
+                    collection
+                );
+                // Update code actions provider so that quick fixes can be generated
+                BemHelperCodeActionsProvider.diagnostics =
+                    bemDiagnosticProvider.errors;
+            },
+            500
+        );
+        context.subscriptions.push(
+            vscode.workspace.onDidChangeTextDocument((e) => {
+                if (e) {
+                    debouncedUpdateDiagnostics(e);
+                }
+            })
+        );
+    }
 }
 
 function registerCommands(context: vscode.ExtensionContext) {
