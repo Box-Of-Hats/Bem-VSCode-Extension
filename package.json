@@ -2,7 +2,7 @@
 	"name": "bemhelper",
 	"displayName": "BEM Helper",
 	"description": "Improve writing html using BEM naming conventions.",
-	"version": "1.4.5",
+	"version": "2.0.0",
 	"author": "Box-Of-Hats",
 	"publisher": "Box-Of-Hats",
 	"engines": {
@@ -24,11 +24,7 @@
 		"onLanguage:twig",
 		"onLanguage:svelte",
 		"workspaceContains:*.jsx",
-		"workspaceContains:*.html",
-		"onCommand:extension.bemHelper.insertElement",
-		"onCommand:extension.bemHelper.insertModifiedElement",
-		"onCommand:extension.bemHelper.generateStyleSheet",
-		"onCommand:extension.bemHelper.convertSelectionToCase"
+		"workspaceContains:*.html"
 	],
 	"main": "./dist/extension.js",
 	"contributes": {
