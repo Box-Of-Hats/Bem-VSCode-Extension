@@ -1,5 +1,12 @@
 # Change Log
 
+## 2.0.0
+
+- Major performance improvements
+- Add new setting `bemHelper.languages`
+- Disable diagnostics for files in languages not specified in `bemHelper.languages`
+- Debounce diagnostic updates when typing
+
 ## 1.4.5
 
 -   ## Add new command `BEM Helper: Insert Class Name`
